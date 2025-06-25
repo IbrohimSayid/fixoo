@@ -20,6 +20,7 @@ import ConfirmModal from "@/components/confirm-modal"
 import { Trash2 } from "lucide-react"
 // Import the storage utility
 import { saveUserProfile, deleteUserAccount } from "@/lib/storage"
+import toast from 'react-hot-toast'
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -110,7 +111,11 @@ export default function SettingsPage() {
     })
 
     if (success) {
-      alert(getTranslation("profileUpdated", language))
+      toast.success(
+        language === 'uz' ? "Profil muvaffaqiyatli yangilandi!" :
+        language === 'ru' ? "Профиль успешно обновлен!" :
+        "Profile updated successfully!"
+      )
     } else {
       alert(getTranslation("profileUpdateFailed", language))
     }

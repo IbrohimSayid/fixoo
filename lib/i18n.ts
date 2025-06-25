@@ -103,7 +103,7 @@ export const translations: Translations = {
   hidePassword: {
     en: "Hide password",
     uz: "Parolni yashirish",
-    ru: "��крыть пароль",
+    ru: "Закрыть пароль",
   },
 
   // Registration
@@ -574,9 +574,12 @@ export const getTranslation = (key: string, language: string): string => {
 
 // Language options for the dropdown
 export const languageOptions = [
-  { value: "uz", label: "O'zbek" },
   { value: "en", label: "English" },
+  { value: "uz", label: "O'zbekcha" },
   { value: "ru", label: "Русский" },
+  { value: "kz", label: "Қазақша" },
+  { value: "kg", label: "Кыргызча" },
+  { value: "qq", label: "Qaraqalpaqsha" },
 ]
 
 // Get the stored language or default to Uzbek

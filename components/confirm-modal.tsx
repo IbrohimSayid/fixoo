@@ -22,7 +22,7 @@ interface ConfirmModalProps {
 export default function ConfirmModal({ isOpen, onClose, onConfirm, title, description, language }: ConfirmModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

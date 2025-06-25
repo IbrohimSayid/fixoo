@@ -17,6 +17,7 @@ import { Eye, EyeOff } from "lucide-react"
 import FadeIn from "@/components/fade-in"
 // Yangi loader komponentini import qilish
 import CrescentLoader from "@/components/crescent-loader"
+import toast from 'react-hot-toast'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -68,19 +69,33 @@ export default function LoginPage() {
     // Formani oq rangga o'zgartirish uchun timeout
     setTimeout(() => {
       try {
-        const success = loginUser(specialistData.phone, specialistData.password)
-        if (success) {
-          // Router.push ni o'zgartirmasdan oldin loading ko'rsatilsin
+        const user = loginUser(specialistData.phone, specialistData.password)
+        if (user) {
+          toast.success(
+            language === 'uz' ? `Xush kelibsiz, ${user.firstName}!` :
+            language === 'ru' ? `Добро пожаловать, ${user.firstName}!` :
+            `Welcome back, ${user.firstName}!`
+          )
           setTimeout(() => {
             router.push("/home")
           }, 500)
         } else {
           setError("User not found. Please check your phone number or register.")
           setIsLoading(false)
+          toast.error(
+            language === 'uz' ? "Telefon raqami yoki parol noto'g'ri!" :
+            language === 'ru' ? "Неверный номер телефона или пароль!" :
+            "Invalid phone number or password!"
+          )
         }
       } catch (err) {
         setError("Login failed. Please try again.")
         setIsLoading(false)
+        toast.error(
+          language === 'uz' ? "Xatolik yuz berdi. Qaytadan urinib ko'ring!" :
+          language === 'ru' ? "Произошла ошибка. Попробуйте еще раз!" :
+          "An error occurred. Please try again!"
+        )
       }
     }, 1500)
   }
@@ -94,19 +109,33 @@ export default function LoginPage() {
     // Formani oq rangga o'zgartirish uchun timeout
     setTimeout(() => {
       try {
-        const success = loginUser(clientData.phone, clientData.password)
-        if (success) {
-          // Router.push ni o'zgartirmasdan oldin loading ko'rsatilsin
+        const user = loginUser(clientData.phone, clientData.password)
+        if (user) {
+          toast.success(
+            language === 'uz' ? `Xush kelibsiz, ${user.firstName}!` :
+            language === 'ru' ? `Добро пожаловать, ${user.firstName}!` :
+            `Welcome back, ${user.firstName}!`
+          )
           setTimeout(() => {
             router.push("/home")
           }, 500)
         } else {
           setError("User not found. Please check your phone number or register.")
           setIsLoading(false)
+          toast.error(
+            language === 'uz' ? "Telefon raqami yoki parol noto'g'ri!" :
+            language === 'ru' ? "Неверный номер телефона или пароль!" :
+            "Invalid phone number or password!"
+          )
         }
       } catch (err) {
         setError("Login failed. Please try again.")
         setIsLoading(false)
+        toast.error(
+          language === 'uz' ? "Xatolik yuz berdi. Qaytadan urinib ko'ring!" :
+          language === 'ru' ? "Произошла ошибка. Попробуйте еще раз!" :
+          "An error occurred. Please try again!"
+        )
       }
     }, 1500)
   }

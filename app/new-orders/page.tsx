@@ -11,6 +11,7 @@ import BottomNavigation from "@/components/bottom-navigation"
 import { Clock, CheckCircle, XCircle } from "lucide-react"
 import { getNewSpecialistOrders, updateOrderStatus } from "@/lib/storage"
 import { formatDistanceToNow } from "date-fns"
+import toast from 'react-hot-toast'
 
 export default function NewOrdersPage() {
   const router = useRouter()
@@ -61,6 +62,11 @@ export default function NewOrdersPage() {
     const success = updateOrderStatus(orderId, "accepted")
 
     if (success) {
+      toast.success(
+        language === 'uz' ? "Buyurtma qabul qilindi! Mijoz bilan bog'lanishingiz mumkin." :
+        language === 'ru' ? "Заказ принят! Вы можете связаться с клиентом." :
+        "Order accepted! You can contact the client."
+      )
       // Update the UI
       loadNewOrders(user.id)
     }
@@ -71,6 +77,11 @@ export default function NewOrdersPage() {
     const success = updateOrderStatus(orderId, "rejected")
 
     if (success) {
+      toast.success(
+        language === 'uz' ? "Buyurtma rad etildi." :
+        language === 'ru' ? "Заказ отклонен." :
+        "Order rejected."
+      )
       // Update the UI
       loadNewOrders(user.id)
     }

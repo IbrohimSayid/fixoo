@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label"
 import { getTranslation } from "@/lib/i18n"
 import { saveOrder } from "@/lib/storage"
 import { getUserData } from "@/lib/auth"
+import toast from 'react-hot-toast'
 
 interface JobRequestModalProps {
   isOpen: boolean
@@ -71,7 +72,11 @@ export default function JobRequestModal({ isOpen, onClose, specialist, language 
     onClose()
 
     // Show success message
-    alert(getTranslation("orderSubmittedSuccessfully", language))
+    toast.success(
+      language === 'uz' ? "Buyurtmangiz muvaffaqiyatli yuborildi! Tez orada javob olasiz." :
+      language === 'ru' ? "Ваш заказ успешно отправлен! Скоро получите ответ." :
+      "Your order has been sent successfully! You'll receive a response soon."
+    )
   }
 
   return (

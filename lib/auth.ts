@@ -56,12 +56,12 @@ export const loginUser = (phone: string, password?: string) => {
   // Find user by phone
   const user = users.find((user: any) => user.phone === phone)
   if (!user) {
-    return false
+    return null
   }
 
   // Check password if provided
   if (password && user.password !== password) {
-    return false
+    return null
   }
 
   // Update token expiry
@@ -74,7 +74,7 @@ export const loginUser = (phone: string, password?: string) => {
   // Set current user
   localStorage.setItem("fixoo_current_user", JSON.stringify(user))
 
-  return true
+  return user
 }
 
 // Check if user is authenticated

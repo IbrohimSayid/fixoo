@@ -8,6 +8,7 @@ import { getTranslation } from "@/lib/i18n"
 import { useMobile } from "@/hooks/use-mobile"
 import { useState } from "react"
 import ConfirmModal from "@/components/confirm-modal"
+import toast from 'react-hot-toast'
 
 type HeaderProps = {
   user: any
@@ -25,8 +26,13 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
   }
 
   const handleConfirmLogout = () => {
-    setIsLogoutModalOpen(false)
+    toast.success(
+      language === 'uz' ? "Xayr, ko'rishguncha!" :
+      language === 'ru' ? "До свидания!" :
+      "Goodbye, see you soon!"
+    )
     onLogout()
+    setIsLogoutModalOpen(false)
   }
 
   return (

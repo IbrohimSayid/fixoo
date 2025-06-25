@@ -18,8 +18,8 @@ import { getTranslation, getStoredLanguage } from "@/lib/i18n"
 import LanguageSwitcher from "@/components/language-switcher"
 import { Eye, EyeOff } from "lucide-react"
 import FadeIn from "@/components/fade-in"
-// Yangi loader komponentini import qilish
 import CrescentLoader from "@/components/crescent-loader"
+import toast from 'react-hot-toast'
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -30,10 +30,8 @@ export default function SignUpPage() {
   const [language, setLanguage] = useState("uz")
   const [showSpecialistPassword, setShowSpecialistPassword] = useState(false)
   const [showClientPassword, setShowClientPassword] = useState(false)
-  // useState qismiga loading holatini qo'shish
   const [isLoading, setIsLoading] = useState(false)
 
-  // Specialist form data
   const [specialistData, setSpecialistData] = useState({
     firstName: "",
     lastName: "",
@@ -45,7 +43,6 @@ export default function SignUpPage() {
     district: "",
   })
 
-  // Client form data
   const [clientData, setClientData] = useState({
     firstName: "",
     lastName: "",
@@ -57,7 +54,6 @@ export default function SignUpPage() {
     const storedLanguage = getStoredLanguage()
     setLanguage(storedLanguage)
 
-    // Check if type is specified in URL
     const type = searchParams.get("type")
     if (type === "specialist" || type === "client") {
       setUserType(type)
@@ -90,12 +86,10 @@ export default function SignUpPage() {
     setClientData((prev) => ({ ...prev, [name]: value }))
   }
 
-  // handleSpecialistSubmit funksiyasini yangilash
   const handleSpecialistSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Formani oq rangga o'zgartirish uchun timeout
     setTimeout(() => {
       try {
         const result = registerUser({
@@ -104,28 +98,37 @@ export default function SignUpPage() {
         })
 
         if (result.success) {
-          // Muvaffaqiyatli ro'yxatdan o'tish
+          toast.success(
+            language === 'uz' ? "Tabriklaymiz! Muvaffaqiyatli ro'yxatdan o'tdingiz!" :
+            language === 'ru' ? "Поздравляем! Вы успешно зарегистрировались!" :
+            "Congratulations! You have successfully registered!"
+          )
           setTimeout(() => {
             router.push("/home")
           }, 500)
         } else {
-          // Xatolik yuz berdi
           setIsLoading(false)
-          alert(result.error || "Registration failed. Please try again.")
+          toast.error(
+            language === 'uz' ? "Xatolik! Iltimos, qaytadan urinib ko'ring." :
+            language === 'ru' ? "Ошибка! Пожалуйста, попробуйте еще раз." :
+            "Error! Please try again."
+          )
         }
       } catch (err) {
         setIsLoading(false)
-        alert("Registration failed. Please try again.")
+        toast.error(
+          language === 'uz' ? "Xatolik! Iltimos, qaytadan urinib ko'ring." :
+          language === 'ru' ? "Ошибка! Пожалуйста, попробуйте еще раз." :
+          "Error! Please try again."
+        )
       }
     }, 1500)
   }
 
-  // handleClientSubmit funksiyasini yangilash
   const handleClientSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Formani oq rangga o'zgartirish uchun timeout
     setTimeout(() => {
       try {
         const result = registerUser({
@@ -134,18 +137,29 @@ export default function SignUpPage() {
         })
 
         if (result.success) {
-          // Muvaffaqiyatli ro'yxatdan o'tish
+          toast.success(
+            language === 'uz' ? "Tabriklaymiz! Muvaffaqiyatli ro'yxatdan o'tdingiz!" :
+            language === 'ru' ? "Поздравляем! Вы успешно зарегистрировались!" :
+            "Congratulations! You have successfully registered!"
+          )
           setTimeout(() => {
             router.push("/home")
           }, 500)
         } else {
-          // Xatolik yuz berdi
           setIsLoading(false)
-          alert(result.error || "Registration failed. Please try again.")
+          toast.error(
+            language === 'uz' ? "Xatolik! Iltimos, qaytadan urinib ko'ring." :
+            language === 'ru' ? "Ошибка! Пожалуйста, попробуйте еще раз." :
+            "Error! Please try again."
+          )
         }
       } catch (err) {
         setIsLoading(false)
-        alert("Registration failed. Please try again.")
+        toast.error(
+          language === 'uz' ? "Xatolik! Iltimos, qaytadan urinib ko'ring." :
+          language === 'ru' ? "Ошибка! Пожалуйста, попробуйте еще раз." :
+          "Error! Please try again."
+        )
       }
     }, 1500)
   }
@@ -160,7 +174,6 @@ export default function SignUpPage() {
         {isLoading && (
           <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
             <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              {/* Yangi loader komponentini ishlatish */}
               <CrescentLoader size={60} className="mx-auto mb-4" />
               <p className="text-primary font-medium">{getTranslation("loading", language)}...</p>
             </div>
@@ -349,11 +362,9 @@ export default function SignUpPage() {
                         </div>
                       </div>
 
-                      {/* Specialist formasi uchun submit buttonni yangilash */}
                       <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                           <div className="flex items-center justify-center gap-2">
-                            {/* Yangi loader komponentini ishlatish */}
                             <div className="w-5 h-5 rounded-full animate-spin border-y-2 border-solid border-purple-500 border-t-transparent shadow-md"></div>
                             <span>{getTranslation("loading", language)}...</span>
                           </div>
@@ -449,11 +460,9 @@ export default function SignUpPage() {
                         </div>
                       </div>
 
-                      {/* Client formasi uchun submit buttonni yangilash */}
                       <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                           <div className="flex items-center justify-center gap-2">
-                            {/* Yangi loader komponentini ishlatish */}
                             <div className="w-5 h-5 rounded-full animate-spin border-y-2 border-solid border-purple-500 border-t-transparent shadow-md"></div>
                             <span>{getTranslation("loading", language)}...</span>
                           </div>
