@@ -1,7 +1,6 @@
 "use client"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { Globe } from "lucide-react"
 import { languageOptions, storeLanguage, getTranslation } from "@/lib/i18n"
 import Image from "next/image"
 
@@ -16,16 +15,20 @@ export default function LanguageSwitcher({ onLanguageChange, currentLanguage }: 
     onLanguageChange(language)
   }
 
+  const currentOption = languageOptions.find(option => option.value === currentLanguage)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="h-8 gap-2 bg-white text-primary outline outline-primary hover:bg-primary hover:text-white hover:outline-white transition-colors"
-        >
-          <Globe className="h-4 w-4" />
-          <span>{getTranslation("language", currentLanguage)}</span>
+        <Button variant="outline" size="sm" className="gap-2">
+          <Image
+            src={`/flags/${currentLanguage}.png`}
+            alt={currentLanguage}
+            width={20}
+            height={15}
+            className="object-cover"
+          />
+          <span>{currentOption?.label || getTranslation(currentLanguage, currentLanguage)}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -33,11 +36,15 @@ export default function LanguageSwitcher({ onLanguageChange, currentLanguage }: 
           <DropdownMenuItem
             key={option.value}
             onClick={() => handleLanguageChange(option.value)}
-            className={`${currentLanguage === option.value ? "bg-primary/10 font-medium" : ""} flex items-center gap-2`}
+            className="flex items-center gap-2"
           >
-            <div className="w-5 h-3 relative overflow-hidden">
-              <Image src={`/flags/${option.value}.svg`} alt={option.label} fill className="object-cover" />
-            </div>
+            <Image
+              src={`/flags/${option.value}.png`}
+              alt={option.value}
+              width={20}
+              height={15}
+              className="object-cover"
+            />
             {option.label}
           </DropdownMenuItem>
         ))}

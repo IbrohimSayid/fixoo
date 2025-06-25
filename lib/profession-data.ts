@@ -6,6 +6,9 @@ type Profession = {
     en: string
     uz: string
     ru: string
+    kz: string
+    kg: string
+    qq: string
   }
 }
 
@@ -16,6 +19,9 @@ export const professions: Profession[] = [
       en: "Plumber",
       uz: "Santexnik",
       ru: "Сантехник",
+      kz: "Сантехник",
+      kg: "Сантехник",
+      qq: "Santexnik",
     },
   },
   {
@@ -24,6 +30,9 @@ export const professions: Profession[] = [
       en: "Electrician",
       uz: "Elektrik",
       ru: "Электрик",
+      kz: "Электрик",
+      kg: "Электрик",
+      qq: "Elektrik",
     },
   },
   {
@@ -32,6 +41,9 @@ export const professions: Profession[] = [
       en: "Carpenter",
       uz: "Duradgor",
       ru: "Плотник",
+      kz: "Ағаш ұстасы",
+      kg: "Жыгач устасы",
+      qq: "Duradgor",
     },
   },
   {
@@ -40,6 +52,9 @@ export const professions: Profession[] = [
       en: "Painter",
       uz: "Bo'yoqchi",
       ru: "Маляр",
+      kz: "Бояушы",
+      kg: "Боёкчу",
+      qq: "Bo'yoqshı",
     },
   },
   {
@@ -48,6 +63,9 @@ export const professions: Profession[] = [
       en: "Mechanic",
       uz: "Mexanik",
       ru: "Механик",
+      kz: "Механик",
+      kg: "Механик",
+      qq: "Mexanik",
     },
   },
   {
@@ -56,6 +74,9 @@ export const professions: Profession[] = [
       en: "Gardener",
       uz: "Bog'bon",
       ru: "Садовник",
+      kz: "Бағбан",
+      kg: "Багбан",
+      qq: "Baǵban",
     },
   },
   {
@@ -64,6 +85,9 @@ export const professions: Profession[] = [
       en: "Cleaner",
       uz: "Tozalovchi",
       ru: "Уборщик",
+      kz: "Тазалаушы",
+      kg: "Тазалоочу",
+      qq: "Tazalawshı",
     },
   },
   {
@@ -72,6 +96,9 @@ export const professions: Profession[] = [
       en: "Builder",
       uz: "Quruvchi",
       ru: "Строитель",
+      kz: "Құрылысшы",
+      kg: "Куруучу",
+      qq: "Qurıwshı",
     },
   },
   {
@@ -80,6 +107,9 @@ export const professions: Profession[] = [
       en: "Locksmith",
       uz: "Qulfchi",
       ru: "Слесарь",
+      kz: "Құлыпшы",
+      kg: "Кулпучу",
+      qq: "Qulıpshı",
     },
   },
   {
@@ -88,6 +118,9 @@ export const professions: Profession[] = [
       en: "Appliance Repair",
       uz: "Maishiy texnika ta'miri",
       ru: "Ремонт бытовой техники",
+      kz: "Тұрмыстық техника жөндеуі",
+      kg: "Турмуштук техника оңдоо",
+      qq: "Maıshıy texnika jóndewi",
     },
   },
   {
@@ -96,6 +129,9 @@ export const professions: Profession[] = [
       en: "HVAC Technician",
       uz: "Isitish va sovutish tizimi mutaxassisi",
       ru: "Специалист по отоплению и охлаждению",
+      kz: "Жылыту және салқындату жүйесі маманы",
+      kg: "Жылуулук жана муздатуу системасынын адиси",
+      qq: "Isıtıw hám salqındatıw sisteması mutaxassısı",
     },
   },
   {
@@ -104,6 +140,9 @@ export const professions: Profession[] = [
       en: "Roofer",
       uz: "Tom yopuvchi",
       ru: "Кровельщик",
+      kz: "Шатыр жабушысы",
+      kg: "Чатыр жабуучу",
+      qq: "Tom jabıwshı",
     },
   },
   {
@@ -112,6 +151,9 @@ export const professions: Profession[] = [
       en: "Welder",
       uz: "Payvandchi",
       ru: "Сварщик",
+      kz: "Дәнекерлеуші",
+      kg: "Дарылдоочу",
+      qq: "Payvandshı",
     },
   },
   {
@@ -120,6 +162,9 @@ export const professions: Profession[] = [
       en: "Tiler",
       uz: "Kafelchi",
       ru: "Плиточник",
+      kz: "Кафель салушысы",
+      kg: "Кафель салуучу",
+      qq: "Kafelshı",
     },
   },
   {
@@ -128,6 +173,9 @@ export const professions: Profession[] = [
       en: "Plasterer",
       uz: "Suvoqchi",
       ru: "Штукатур",
+      kz: "Сылақшы",
+      kg: "Сылакчы",
+      qq: "Sıwaqshı",
     },
   },
   {
@@ -136,6 +184,9 @@ export const professions: Profession[] = [
       en: "Furniture Assembler",
       uz: "Mebel yig'uvchi",
       ru: "Сборщик мебели",
+      kz: "Жиһаз жинаушысы",
+      kg: "Эмерек чогултуучу",
+      qq: "Mebel jıynawshı",
     },
   },
   {
@@ -144,6 +195,9 @@ export const professions: Profession[] = [
       en: "Computer Repair",
       uz: "Kompyuter ta'miri",
       ru: "Ремонт компьютеров",
+      kz: "Компьютер жөндеуі",
+      kg: "Компьютер оңдоо",
+      qq: "Kompyuter jóndewi",
     },
   },
   {
@@ -152,6 +206,9 @@ export const professions: Profession[] = [
       en: "Phone Repair",
       uz: "Telefon ta'miri",
       ru: "Ремонт телефонов",
+      kz: "Телефон жөндеуі",
+      kg: "Телефон оңдоо",
+      qq: "Telefon jóndewi",
     },
   },
   {
@@ -160,6 +217,9 @@ export const professions: Profession[] = [
       en: "Photographer",
       uz: "Fotograf",
       ru: "Фотограф",
+      kz: "Фотограф",
+      kg: "Фотограф",
+      qq: "Fotograf",
     },
   },
   {
@@ -168,6 +228,9 @@ export const professions: Profession[] = [
       en: "Videographer",
       uz: "Videograf",
       ru: "Видеограф",
+      kz: "Видеограф",
+      kg: "Видеограф",
+      qq: "Videograf",
     },
   },
   {
@@ -176,6 +239,9 @@ export const professions: Profession[] = [
       en: "Tutor",
       uz: "Repetitor",
       ru: "Репетитор",
+      kz: "Репетитор",
+      kg: "Репетитор",
+      qq: "Repetitor",
     },
   },
   {
@@ -184,6 +250,9 @@ export const professions: Profession[] = [
       en: "Translator",
       uz: "Tarjimon",
       ru: "Переводчик",
+      kz: "Аудармашы",
+      kg: "Котормочу",
+      qq: "Tarjımanshı",
     },
   },
   {
@@ -192,6 +261,9 @@ export const professions: Profession[] = [
       en: "Driver",
       uz: "Haydovchi",
       ru: "Водитель",
+      kz: "Жүргізуші",
+      kg: "Айдоочу",
+      qq: "Haydawshı",
     },
   },
   {
@@ -200,6 +272,9 @@ export const professions: Profession[] = [
       en: "Cook",
       uz: "Oshpaz",
       ru: "Повар",
+      kz: "Аспаз",
+      kg: "Ашпоз",
+      qq: "Ashpaz",
     },
   },
   {
@@ -208,6 +283,9 @@ export const professions: Profession[] = [
       en: "Tailor",
       uz: "Tikuvchi",
       ru: "Портной",
+      kz: "Тігінші",
+      kg: "Тикүүчү",
+      qq: "Tikiwshi",
     },
   },
 ]
@@ -217,5 +295,5 @@ export const getProfessionLabel = (value: string, language: string): string => {
   const profession = professions.find((p) => p.value === value)
   if (!profession) return value
 
-  return profession.label[language as keyof typeof profession.label] || value
+  return profession.label[language as keyof typeof profession.label] || profession.label.en || value
 }

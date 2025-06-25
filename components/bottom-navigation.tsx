@@ -24,7 +24,10 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
       shortLabel: {
         uz: "Yangi",
         ru: "Новые",
-        en: "New"
+        en: "New",
+        kz: "Жаңа",
+        kg: "Жаңы",
+        qq: "Jańa"
       }
     },
     {
@@ -34,7 +37,10 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
       shortLabel: {
         uz: "Qidirish",
         ru: "Поиск",
-        en: "Search"
+        en: "Search",
+        kz: "Іздеу",
+        kg: "Издөө",
+        qq: "İzlew"
       }
     },
     {
@@ -44,7 +50,10 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
       shortLabel: {
         uz: "Buyurtmalar",
         ru: "Заказы",
-        en: "Orders"
+        en: "Orders",
+        kz: "Тапсырыстар",
+        kg: "Заказдар",
+        qq: "Buyırtmalar"
       }
     },
     {
@@ -54,7 +63,10 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
       shortLabel: {
         uz: "Sozlamalar",
         ru: "Настройки",
-        en: "Settings"
+        en: "Settings",
+        kz: "Баптаулар",
+        kg: "Жөндөөлөр",
+        qq: "Sazlawlar"
       }
     }
   ]
@@ -65,18 +77,18 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
         {navItems.map((item) => {
           const Icon = item.icon
           return (
-            <Link
+        <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center w-full h-full ${
+          className={`flex flex-col items-center justify-center w-full h-full ${
                 isActive(item.href) ? "text-white" : "text-white/70"
-              }`}
-            >
+          }`}
+        >
               <Icon className="h-6 w-6" />
               <span className="text-xs mt-1">
                 {item.shortLabel[language as keyof typeof item.shortLabel] || getTranslation(item.labelKey, language)}
               </span>
-            </Link>
+        </Link>
           )
         })}
       </div>

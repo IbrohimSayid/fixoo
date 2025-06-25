@@ -149,15 +149,15 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-4">
         <FadeIn>
           {isLoading && (
-            <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
-              <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="fixed inset-0 bg-white flex items-center justify-center z-50 p-0 m-0">
+              <div className="text-center bg-white w-full h-full flex flex-col items-center justify-center">
                 {/* Yangi loader komponentini ishlatish */}
                 <CrescentLoader size={60} className="mx-auto mb-4" />
                 <p className="text-primary font-medium">{getTranslation("loading", language)}...</p>
               </div>
             </div>
           )}
-          <div className="w-full max-w-md space-y-8">
+          <div className="w-full max-w-sm space-y-8">
             <div className="text-center">
               <h1 className="text-4xl font-bold text-white">Fixoo</h1>
               <p className="mt-2 text-white/80">{getTranslation("loginToAccount", language)}</p>

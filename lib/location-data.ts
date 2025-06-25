@@ -6,6 +6,9 @@ type Region = {
     en: string
     uz: string
     ru: string
+    kz?: string
+    kg?: string
+    qq?: string
   }
 }
 
@@ -15,6 +18,9 @@ type District = {
     en: string
     uz: string
     ru: string
+    kz?: string
+    kg?: string
+    qq?: string
   }
 }
 
@@ -1471,7 +1477,7 @@ export const getRegionLabel = (value: string, language: string): string => {
   const region = regions.find((r) => r.value === value)
   if (!region) return value
 
-  return region.label[language as keyof typeof region.label] || value
+  return region.label[language as keyof typeof region.label] || region.label.en || value
 }
 
 // Get district label based on language
@@ -1479,7 +1485,7 @@ export const getDistrictLabel = (regionValue: string, districtValue: string, lan
   const district = getDistricts(regionValue).find((d) => d.value === districtValue)
   if (!district) return districtValue
 
-  return district.label[language as keyof typeof district.label] || districtValue
+  return district.label[language as keyof typeof district.label] || district.label.en || districtValue
 }
 
 // Get districts for a region
