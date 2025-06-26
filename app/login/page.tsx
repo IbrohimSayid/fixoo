@@ -16,7 +16,7 @@ import LanguageSwitcher from "@/components/language-switcher"
 import { Eye, EyeOff } from "lucide-react"
 import FadeIn from "@/components/fade-in"
 // Yangi loader komponentini import qilish
-import CrescentLoader from "@/components/crescent-loader"
+import HammerLoader from "@/components/hammer-loader"
 import toast from 'react-hot-toast'
 
 export default function LoginPage() {
@@ -152,8 +152,7 @@ export default function LoginPage() {
             <div className="fixed inset-0 bg-white flex items-center justify-center z-50 p-0 m-0">
               <div className="text-center bg-white w-full h-full flex flex-col items-center justify-center">
                 {/* Yangi loader komponentini ishlatish */}
-                <CrescentLoader size={60} className="mx-auto mb-4" />
-                <p className="text-primary font-medium">{getTranslation("loading", language)}...</p>
+                <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
               </div>
             </div>
           )}

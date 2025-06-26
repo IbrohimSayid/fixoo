@@ -18,6 +18,7 @@ import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
 import ConfirmModal from "@/components/confirm-modal"
 import { Trash2 } from "lucide-react"
+import HammerLoader from "@/components/hammer-loader"
 // Import the storage utility
 import { saveUserProfile, deleteUserAccount } from "@/lib/storage"
 import toast from 'react-hot-toast'
@@ -140,11 +141,7 @@ export default function SettingsPage() {
   }
 
   if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-primary text-white">
-        {getTranslation("loading", language)}...
-      </div>
-    )
+    return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 
   return (

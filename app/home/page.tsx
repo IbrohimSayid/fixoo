@@ -21,6 +21,7 @@ import MediaUpload from "@/components/media-upload"
 import JobRequestModal from "@/components/job-request-modal"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Phone, MapPin, Briefcase, Star, Calendar, Camera } from "lucide-react"
+import HammerLoader from "@/components/hammer-loader"
 
 // Import the storage utility
 import { saveUserMedia, getUserMedia, updateSpecialistAvailability } from "@/lib/storage"
@@ -209,11 +210,7 @@ export default function HomePage() {
   }
 
   if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-primary text-white">
-        {getTranslation("loading", language)}...
-      </div>
-    )
+    return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 
   return (

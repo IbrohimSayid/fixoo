@@ -11,6 +11,7 @@ import Header from "@/components/header"
 import ClientBottomNavigation from "@/components/client-bottom-navigation"
 import { getClientOrders } from "@/lib/storage"
 import { formatDistanceToNow } from "date-fns"
+import HammerLoader from "@/components/hammer-loader"
 
 export default function ClientOrdersPage() {
   const router = useRouter()
@@ -77,11 +78,7 @@ export default function ClientOrdersPage() {
   }
 
   if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-primary text-white">
-        {getTranslation("loading", language)}...
-      </div>
-    )
+    return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 
   return (

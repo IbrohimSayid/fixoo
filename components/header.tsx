@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, LogOut, PlusCircle, ClipboardList, Settings } from "lucide-react"
+import { Menu, LogOut, PlusCircle, ClipboardList, Settings, Search, Home } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import LanguageSwitcher from "@/components/language-switcher"
 import { getTranslation } from "@/lib/i18n"
@@ -55,6 +55,37 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
                 </SheetTrigger>
                 <SheetContent className="bg-primary text-white">
                   <div className="flex flex-col gap-4 mt-8">
+                    {user.type === "specialist" && (
+                      <>
+                        <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-2">
+                          <Home className="h-4 w-4" />
+                          <span>{getTranslation("home", language)}</span>
+                        </Link>
+
+                        <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-2">
+                          <Search className="h-4 w-4" />
+                          <span>{getTranslation("findSpecialists", language)}</span>
+                        </Link>
+
+                        <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-2">
+                          <ClipboardList className="h-4 w-4" />
+                          <span>{getTranslation("ordersList", language)}</span>
+                        </Link>
+                      </>
+                    )}
+
+                    {user.type === "client" && (
+                      <Link href="/client-orders" className="text-white hover:text-white/80 flex items-center gap-2">
+                        <ClipboardList className="h-4 w-4" />
+                        <span>{getTranslation("ordersList", language)}</span>
+                      </Link>
+                    )}
+
+                    <Link href="/settings" className="text-white hover:text-white/80 flex items-center gap-2">
+                      <Settings className="h-4 w-4" />
+                      <span>{getTranslation("settings", language)}</span>
+                    </Link>
+
                     <Button
                       variant="destructive"
                       className="w-full flex items-center gap-2"
@@ -73,9 +104,14 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
 
               {user.type === "specialist" && (
                 <>
-                  <Link href="/new-orders" className="text-white hover:text-white/80 flex items-center gap-1">
-                    <PlusCircle className="h-4 w-4" />
-                    <span>{getTranslation("newOrders", language)}</span>
+                  <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-1">
+                    <Home className="h-4 w-4" />
+                    <span>{getTranslation("home", language)}</span>
+                  </Link>
+
+                  <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-1">
+                    <Search className="h-4 w-4" />
+                    <span>{getTranslation("findSpecialists", language)}</span>
                   </Link>
 
                   <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-1">

@@ -8,7 +8,7 @@ type Region = {
     ru: string
     kz?: string
     kg?: string
-    qq?: string
+    kk?: string
   }
 }
 
@@ -20,7 +20,7 @@ type District = {
     ru: string
     kz?: string
     kg?: string
-    qq?: string
+    kk?: string
   }
 }
 

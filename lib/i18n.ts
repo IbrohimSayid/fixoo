@@ -14,7 +14,7 @@ export const translations: Translations = {
     ru: "Fixoo - Свяжитесь со специалистами",
     kz: "Fixoo - Мамандармен байланысыңыз",
     kg: "Fixoo - Адистер менен байланышыңыз",
-    qq: "Fixoo - Ustalar menen baylanısıńız",
+    kk: "Fixoo - Ustalar menen baylanısıńız",
   },
   welcome: {
     en: "Welcome",
@@ -22,7 +22,7 @@ export const translations: Translations = {
     ru: "Добро пожаловать",
     kz: "Қош келдіңіз",
     kg: "Кош келиңиз",
-    qq: "Qosh kelipsiz",
+    kk: "Qosh kelipsiz",
   },
   logout: {
     en: "Logout",
@@ -30,7 +30,7 @@ export const translations: Translations = {
     ru: "Выход",
     kz: "Шығу",
     kg: "Чыгуу",
-    qq: "Shıǵıw",
+    kk: "Shıǵıw",
   },
   loading: {
     en: "Loading",
@@ -38,7 +38,7 @@ export const translations: Translations = {
     ru: "Загрузка",
     kz: "Жүктелуде",
     kg: "Жүктөлүүдө",
-    qq: "Júktelıwde",
+    kk: "Júktelıwde",
   },
   yes: {
     en: "Yes",
@@ -46,7 +46,7 @@ export const translations: Translations = {
     ru: "Да",
     kz: "Иә",
     kg: "Ооба",
-    qq: "Áwa",
+    kk: "Áwa",
   },
   no: {
     en: "No",
@@ -54,7 +54,7 @@ export const translations: Translations = {
     ru: "Нет",
     kz: "Жоқ",
     kg: "Жок",
-    qq: "Joq",
+    kk: "Joq",
   },
   submit: {
     en: "Submit",
@@ -62,7 +62,7 @@ export const translations: Translations = {
     ru: "Отправить",
     kz: "Жіберу",
     kg: "Жөнөтүү",
-    qq: "Jiberiw",
+    kk: "Jiberiw",
   },
   submitting: {
     en: "Submitting...",
@@ -70,7 +70,7 @@ export const translations: Translations = {
     ru: "Отправка...",
     kz: "Жіберілуде...",
     kg: "Жөнөтүлүүдө...",
-    qq: "Jiberilmekte...",
+    kk: "Jiberilmekte...",
   },
   cancel: {
     en: "Cancel",
@@ -78,7 +78,7 @@ export const translations: Translations = {
     ru: "Отмена",
     kz: "Болдырмау",
     kg: "Жокко чыгаруу",
-    qq: "Bekor qılıw",
+    kk: "Bekor qılıw",
   },
 
   // Authentication
@@ -88,7 +88,7 @@ export const translations: Translations = {
     ru: "Вход",
     kz: "Кіру",
     kg: "Кирүү",
-    qq: "Kiriw",
+    kk: "Kiriw",
   },
   register: {
     en: "Register",
@@ -96,7 +96,7 @@ export const translations: Translations = {
     ru: "Регистрация",
     kz: "Тіркелу",
     kg: "Катталуу",
-    qq: "Dizimnan ótiw",
+    kk: "Dizimnan ótiw",
   },
   alreadyHaveAccount: {
     en: "Already have an account?",
@@ -104,7 +104,7 @@ export const translations: Translations = {
     ru: "Уже есть аккаунт?",
     kz: "Аккаунтыңыз бар ма?",
     kg: "Аккаунтуңуз барбы?",
-    qq: "Akkountıńız barmı?",
+    kk: "Akkountıńız barmı?",
   },
   dontHaveAccount: {
     en: "Don't have an account?",
@@ -112,7 +112,7 @@ export const translations: Translations = {
     ru: "Нет аккаунта?",
     kz: "Аккаунтыңыз жоқ па?",
     kg: "Аккаунтуңуз жокпу?",
-    qq: "Akkountıńız joqpı?",
+    kk: "Akkountıńız joqpı?",
   },
   phoneNumber: {
     en: "Phone Number",
@@ -120,7 +120,7 @@ export const translations: Translations = {
     ru: "Номер телефона",
     kz: "Телефон нөірі",
     kg: "Телефон номери",
-    qq: "Telefon nomeri",
+    kk: "Telefon nomeri",
   },
   enterPhoneToLogin: {
     en: "Enter your phone number to login",
@@ -128,7 +128,7 @@ export const translations: Translations = {
     ru: "Введите номер телефона для входа",
     kz: "Кіру үшін телефон нөміріңізді енгізіңіз",
     kg: "Кирүү үчүн телефон номериңизди киргизиңиз",
-    qq: "Kiriw ushın telefon nomerińizdi kiritiń",
+    kk: "Kiriw ushın telefon nomerińizdi kiritiń",
   },
   loginToAccount: {
     en: "Login to your account",
@@ -136,7 +136,7 @@ export const translations: Translations = {
     ru: "Войдите в свой аккаунт",
     kz: "Аккаунтыңызға кіріңіз",
     kg: "Аккаунтуңузга кириңиз",
-    qq: "Akkountıńızǵa kiriń",
+    kk: "Akkountıńızǵa kiriń",
   },
   password: {
     en: "Password",
@@ -144,7 +144,7 @@ export const translations: Translations = {
     ru: "Пароль",
     kz: "Пароль",
     kg: "Пароль",
-    qq: "Parol",
+    kk: "Parol",
   },
   showPassword: {
     en: "Show password",
@@ -152,7 +152,7 @@ export const translations: Translations = {
     ru: "Показать пароль",
     kz: "Парольді көрсету",
     kg: "Парольду көрсөтүү",
-    qq: "Parolnı kórsetiw",
+    kk: "Parolnı kórsetiw",
   },
   hidePassword: {
     en: "Hide password",
@@ -160,7 +160,7 @@ export const translations: Translations = {
     ru: "Закрыть пароль",
     kz: "Парольді жасыру",
     kg: "Парольду жашыруу",
-    qq: "Parolnı jasırıw",
+    kk: "Parolnı jasırıw",
   },
 
   // Registration
@@ -170,7 +170,7 @@ export const translations: Translations = {
     ru: "Имя",
     kz: "Ат",
     kg: "Ат",
-    qq: "At",
+    kk: "At",
   },
   lastName: {
     en: "Last Name",
@@ -178,7 +178,7 @@ export const translations: Translations = {
     ru: "Фамилия",
     kz: "Тегі",
     kg: "Фамилия",
-    qq: "Familiya",
+    kk: "Familiya",
   },
   specialistRegistration: {
     en: "Specialist Registration",
@@ -186,7 +186,7 @@ export const translations: Translations = {
     ru: "Регистрация специалиста",
     kz: "Маман тіркелуі",
     kg: "Адис катталуусу",
-    qq: "Usta dizimnan ótiw",
+    kk: "Usta dizimnan ótiw",
   },
   clientRegistration: {
     en: "Client Registration",
@@ -194,7 +194,7 @@ export const translations: Translations = {
     ru: "Регистрация клиента",
     kz: "Клиент тіркелуі",
     kg: "Кардар катталуусу",
-    qq: "Mijoz dizimnan ótiw",
+    kk: "Mijoz dizimnan ótiw",
   },
   createAccountSpecialist: {
     en: "Create an account to offer your services",
@@ -202,7 +202,7 @@ export const translations: Translations = {
     ru: "Создайте аккаунт, чтобы предлагать свои услуги",
     kz: "Қызметтеріңізді ұсыну үшін аккаунт жасаңыз",
     kg: "Кызматтарыңызды сунуш кылуу үчүн аккаунт жаратыңыз",
-    qq: "Xızmetlerińizdi táklif etiw ushın akkount jaratıń",
+    kk: "Xızmetlerińizdi táklif etiw ushın akkount jaratıń",
   },
   createAccountClient: {
     en: "Create an account to find specialists",
@@ -210,7 +210,7 @@ export const translations: Translations = {
     ru: "Создайте аккаунт, чтобы найти специалистов",
     kz: "Мамандарды табу үшін аккаунт жасаңыз",
     kg: "Адистерди табуу үчүн аккаунт жаратыңыз",
-    qq: "Ustaları tabiw ushın akkount jaratıń",
+    kk: "Ustaları tabiw ushın akkount jaratıń",
   },
   specialist: {
     en: "Specialist",
@@ -218,7 +218,7 @@ export const translations: Translations = {
     ru: "Специалист",
     kz: "Маман",
     kg: "Адис",
-    qq: "Usta",
+    kk: "Usta",
   },
   client: {
     en: "Client",
@@ -226,7 +226,7 @@ export const translations: Translations = {
     ru: "Клиент",
     kz: "Клиент",
     kg: "Кардар",
-    qq: "Mijoz",
+    kk: "Mijoz",
   },
   profession: {
     en: "Profession",
@@ -234,7 +234,7 @@ export const translations: Translations = {
     ru: "Профессия",
     kz: "Мамандық",
     kg: "Кесип",
-    qq: "Kasıp",
+    kk: "Kasıp",
   },
   selectProfession: {
     en: "Select profession",
@@ -242,7 +242,7 @@ export const translations: Translations = {
     ru: "Выберите профессию",
     kz: "Мамандықты таңдаңыз",
     kg: "Кесипти тандаңыз",
-    qq: "Kasıptı tańlań",
+    kk: "Kasıptı tańlań",
   },
   address: {
     en: "Address",
@@ -250,7 +250,7 @@ export const translations: Translations = {
     ru: "Адрес",
     kz: "Мекенжай",
     kg: "Дарек",
-    qq: "Manzil",
+    kk: "Manzil",
   },
   yourAddress: {
     en: "Your address",
@@ -258,7 +258,7 @@ export const translations: Translations = {
     ru: "Ваш адрес",
     kz: "Сіздің мекенжайыңыз",
     kg: "Сиздин дарегиңиз",
-    qq: "Sizdiń manziliniz",
+    kk: "Sizdiń manziliniz",
   },
   region: {
     en: "Region",
@@ -266,7 +266,7 @@ export const translations: Translations = {
     ru: "Регион",
     kz: "Облыс",
     kg: "Аймак",
-    qq: "Viloyat",
+    kk: "Viloyat",
   },
   selectRegion: {
     en: "Select region",
@@ -274,7 +274,7 @@ export const translations: Translations = {
     ru: "Выберите регион",
     kz: "Облысты таңдаңыз",
     kg: "Аймакты тандаңыз",
-    qq: "Viloyattı tańlań",
+    kk: "Viloyattı tańlań",
   },
   district: {
     en: "District",
@@ -282,7 +282,7 @@ export const translations: Translations = {
     ru: "Район",
     kz: "Аудан",
     kg: "Район",
-    qq: "Tuman",
+    kk: "Tuman",
   },
   selectDistrict: {
     en: "Select district",
@@ -290,7 +290,7 @@ export const translations: Translations = {
     ru: "Выберите район",
     kz: "Ауданды таңдаңыз",
     kg: "Районду тандаңыз",
-    qq: "Tumannı tańlań",
+    kk: "Tumannı tańlań",
   },
   selectRegionFirst: {
     en: "Please select a region first",
@@ -298,17 +298,25 @@ export const translations: Translations = {
     ru: "Сначала выберите регион",
     kz: "Алдымен облысты таңдаңыз",
     kg: "Адегенде аймакты тандаңыз",
-    qq: "Aldı benen viloyattı tańlań",
+    kk: "Aldı benen viloyattı tańlań",
   },
 
   // Home page
+  home: {
+    en: "Home",
+    uz: "Bosh sahifa",
+    ru: "Главная",
+    kz: "Басты бет",
+    kg: "Башкы бет",
+    kk: "Bas bet",
+  },
   findSpecialists: {
     en: "Find Specialists",
     uz: "Ustalarni topish",
     ru: "Найти специалистов",
     kz: "Мамандарды табу",
     kg: "Адистерди табуу",
-    qq: "Ustaları tabiw",
+    kk: "Ustaları tabiw",
   },
   allProfessions: {
     en: "All Professions",
@@ -316,7 +324,7 @@ export const translations: Translations = {
     ru: "Все профессии",
     kz: "Барлық мамандықтар",
     kg: "Бардык кесиптер",
-    qq: "Barlıq kasıplar",
+    kk: "Barlıq kasıplar",
   },
   allRegions: {
     en: "All Regions",
@@ -324,7 +332,7 @@ export const translations: Translations = {
     ru: "Все регионы",
     kz: "Барлық облыстар",
     kg: "Бардык аймактар",
-    qq: "Barlıq viloyatlar",
+    kk: "Barlıq viloyatlar",
   },
   allDistricts: {
     en: "All Districts",
@@ -332,7 +340,7 @@ export const translations: Translations = {
     ru: "Все районы",
     kz: "Барлық аудандар",
     kg: "Бардык райондор",
-    qq: "Barlıq tumanlar",
+    kk: "Barlıq tumanlar",
   },
   searchByName: {
     en: "Search by name or profession",
@@ -340,7 +348,7 @@ export const translations: Translations = {
     ru: "Поиск по имени или профессии",
     kz: "Ат немесе мамандық бойынша іздеу",
     kg: "Ат же кесип боюнча издөө",
-    qq: "At yaki kasıp boyınsha izlew",
+    kk: "At yaki kasıp boyınsha izlew",
   },
   noSpecialistsFound: {
     en: "No specialists found matching your criteria",
@@ -348,7 +356,7 @@ export const translations: Translations = {
     ru: "Не найдено специалистов, соответствующих вашим критериям",
     kz: "Сіздің критерийлеріңізге сәйкес мамандар табылмады",
     kg: "Сиздин критерийлериңизге дал келген адистер табылган жок",
-    qq: "Sizdiń kriteriylerińizge sáykes ustalar tabılmadı",
+    kk: "Sizdiń kriteriylerińizge sáykes ustalar tabılmadı",
   },
   contact: {
     en: "Contact",
@@ -356,7 +364,7 @@ export const translations: Translations = {
     ru: "Контакт",
     kz: "Байланыс",
     kg: "Байланыш",
-    qq: "Baylanıs",
+    kk: "Baylanıs",
   },
   contactSpecialist: {
     en: "Contact Specialist",
@@ -364,7 +372,7 @@ export const translations: Translations = {
     ru: "Связаться со специалистом",
     kz: "Мамандармен байланысу",
     kg: "Адис менен байланышуу",
-    qq: "Usta menen baylanısıw",
+    kk: "Usta menen baylanısıw",
   },
   specialistAvailable: {
     en: "Available",
@@ -372,7 +380,7 @@ export const translations: Translations = {
     ru: "Доступен",
     kz: "Қолжетімді",
     kg: "Жеткиликтүү",
-    qq: "Qoljetimdi",
+    kk: "Qoljetimdi",
   },
   specialistBusy: {
     en: "Busy",
@@ -380,7 +388,7 @@ export const translations: Translations = {
     ru: "Занят",
     kz: "Бос емес",
     kg: "Бош эмес",
-    qq: "Band",
+    kk: "Band",
   },
   yourSpecialistProfile: {
     en: "Your Specialist Profile",
@@ -388,7 +396,7 @@ export const translations: Translations = {
     ru: "Ваш профиль специалиста",
     kz: "Сіздің маман профиліңіз",
     kg: "Сиздин адис профилиңиз",
-    qq: "Sizdiń usta profilińiz",
+    kk: "Sizdiń usta profilińiz",
   },
   personalInformation: {
     en: "Personal Information",
@@ -396,7 +404,7 @@ export const translations: Translations = {
     ru: "Личная информация",
     kz: "Жеке ақпарат",
     kg: "Жеке маалымат",
-    qq: "Jeke málimeller",
+    kk: "Jeke málimeller",
   },
   name: {
     en: "Name",
@@ -404,7 +412,7 @@ export const translations: Translations = {
     ru: "Имя",
     kz: "Ат",
     kg: "Ат",
-    qq: "At",
+    kk: "At",
   },
   phone: {
     en: "Phone",
@@ -412,7 +420,7 @@ export const translations: Translations = {
     ru: "Телефон",
     kz: "Телефон",
     kg: "Телефон",
-    qq: "Telefon",
+    kk: "Telefon",
   },
   location: {
     en: "Location",
@@ -420,7 +428,7 @@ export const translations: Translations = {
     ru: "Местоположение",
     kz: "Орналасу",
     kg: "Жайгашуу",
-    qq: "Ornalasıw",
+    kk: "Ornalasıw",
   },
   accountStatus: {
     en: "Account Status",
@@ -428,7 +436,7 @@ export const translations: Translations = {
     ru: "Статус аккаунта",
     kz: "Аккаунт жағдайы",
     kg: "Аккаунт абалы",
-    qq: "Akkount jaǵdayı",
+    kk: "Akkount jaǵdayı",
   },
   profileActive: {
     en: "Your profile is active and visible to clients",
@@ -436,7 +444,7 @@ export const translations: Translations = {
     ru: "Ваш профиль активен и виден клиентам",
     kz: "Сіздің профиліңіз белсенді және клиенттерге көрінеді",
     kg: "Сиздин профилиңиз активдүү жана кардарларга көрүнөт",
-    qq: "Sizdiń profiliińiz aktiv hám mijozlarǵa kórinedi",
+    kk: "Sizdiń profiliińiz aktiv hám mijozlarǵa kórinedi",
   },
   accountActiveFor: {
     en: "Your account will remain active for 30 days",
@@ -444,7 +452,7 @@ export const translations: Translations = {
     ru: "Ваш аккаунт будет активен в течение 30 дней",
     kz: "Сіздің аккаунтыңыз 30 күн бойы белсенді болады",
     kg: "Сиздин аккаунтуңуз 30 күн активдүү болот",
-    qq: "Sizdiń akkountıńız 30 kún dawam aktiv boladı",
+    kk: "Sizdiń akkountıńız 30 kún dawam aktiv boladı",
   },
 
   // Languages
@@ -454,7 +462,7 @@ export const translations: Translations = {
     ru: "Язык",
     kz: "Тіл",
     kg: "Тил",
-    qq: "Til",
+    kk: "Til",
   },
   english: {
     en: "English",
@@ -462,7 +470,7 @@ export const translations: Translations = {
     ru: "Английский",
     kz: "Ағылшын",
     kg: "Англис",
-    qq: "İngliz",
+    kk: "İngliz",
   },
   uzbek: {
     en: "Uzbek",
@@ -470,7 +478,7 @@ export const translations: Translations = {
     ru: "Узбекский",
     kz: "Өзбек",
     kg: "Өзбек",
-    qq: "O'zbek",
+    kk: "O'zbek",
   },
   russian: {
     en: "Russian",
@@ -478,7 +486,7 @@ export const translations: Translations = {
     ru: "Русский",
     kz: "Орыс",
     kg: "Орус",
-    qq: "Орысша",
+    kk: "Орысша",
   },
   kazakh: {
     en: "Kazakh",
@@ -486,7 +494,7 @@ export const translations: Translations = {
     ru: "Казахский",
     kz: "Қазақша",
     kg: "Қазақча", 
-    qq: "Qazaqsha",
+    kk: "Qazaqsha",
   },
   kyrgyz: {
     en: "Kyrgyz",
@@ -494,7 +502,7 @@ export const translations: Translations = {
     ru: "Киргизский",
     kz: "Қырғыз",
     kg: "Кыргызча",
-    qq: "Qırg'ızsha",
+    kk: "Qırg'ızsha",
   },
   karakalpak: {
     en: "Karakalpak",
@@ -502,7 +510,7 @@ export const translations: Translations = {
     ru: "Каракалпакский",
     kz: "Қарақалпақ",
     kg: "Каракалпак",
-    qq: "Qaraqalpaqsha",
+    kk: "Qaraqalpaqsha",
   },
 
   // Navigation
@@ -512,7 +520,7 @@ export const translations: Translations = {
     ru: "Новые заказы",
     kz: "Жаңа тапсырыстар",
     kg: "Жаңы заказдар",
-    qq: "Jańa buyırtmalar",
+    kk: "Jańa buyırtmalar",
   },
   ordersList: {
     en: "Orders List",
@@ -520,7 +528,15 @@ export const translations: Translations = {
     ru: "Список заказов",
     kz: "Тапсырыстар тізімі",
     kg: "Заказдардын тизмеси",
-    qq: "Buyırtmalar dizimi",
+    kk: "Buyırtmalar dizimi",
+  },
+  ordersHistory: {
+    en: "Orders History",
+    uz: "Buyurtmalar tarixi",
+    ru: "История заказов",
+    kz: "Тапсырыстар тарихы",
+    kg: "Заказдардын тарыхы",
+    kk: "Buyırtmalar tarıxı",
   },
   settings: {
     en: "Settings",
@@ -528,7 +544,7 @@ export const translations: Translations = {
     ru: "Настройки",
     kz: "Баптаулар",
     kg: "Жөндөөлөр",
-    qq: "Sazlawlar",
+    kk: "Sazlawlar",
   },
 
   // Orders
@@ -538,7 +554,7 @@ export const translations: Translations = {
     ru: "Описание работы",
     kz: "Сипаттама",
     kg: "Сүрөттөмө",
-    qq: "Sıpattama",
+    kk: "Sıpattama",
   },
   date: {
     en: "Date",
@@ -546,7 +562,7 @@ export const translations: Translations = {
     ru: "Дата",
     kz: "Күні",
     kg: "Күнү",
-    qq: "Sana",
+    kk: "Sana",
   },
   status: {
     en: "Status",
@@ -554,7 +570,7 @@ export const translations: Translations = {
     ru: "Статус",
     kz: "Мәртебе",
     kg: "Абал",
-    qq: "Jaǵday",
+    kk: "Jaǵday",
   },
   accept: {
     en: "Accept",
@@ -562,7 +578,7 @@ export const translations: Translations = {
     ru: "Принять",
     kz: "Қабылдау",
     kg: "Кабыл алуу",
-    qq: "Qabıl etiw",
+    kk: "Qabıl etiw",
   },
   reject: {
     en: "Reject",
@@ -570,7 +586,7 @@ export const translations: Translations = {
     ru: "Отклонить",
     kz: "Бас тарту",
     kg: "Четке кагуу",
-    qq: "Ret etiw",
+    kk: "Ret etiw",
   },
   accepted: {
     en: "Accepted",
@@ -578,7 +594,7 @@ export const translations: Translations = {
     ru: "Принято",
     kz: "Қабылданған",
     kg: "Кабыл алынган",
-    qq: "Qabıl alınǵan",
+    kk: "Qabıl alınǵan",
   },
   rejected: {
     en: "Rejected",
@@ -586,7 +602,7 @@ export const translations: Translations = {
     ru: "Отклонено",
     kz: "Бас тартылған",
     kg: "Четке кагылган",
-    qq: "Ret etilgen",
+    kk: "Ret etilgen",
   },
   completed: {
     en: "Completed",
@@ -594,7 +610,7 @@ export const translations: Translations = {
     ru: "Выполнено",
     kz: "Орындалған",
     kg: "Аткарылган",
-    qq: "Orındalǵan",
+    kk: "Orındalǵan",
   },
   pending: {
     en: "Pending",
@@ -602,7 +618,7 @@ export const translations: Translations = {
     ru: "В ожидании",
     kz: "Күтуде",
     kg: "Күтүүдө",
-    qq: "Kútilmekte",
+    kk: "Kútilmekte",
   },
   noNewOrders: {
     en: "No new orders at the moment",
@@ -610,7 +626,7 @@ export const translations: Translations = {
     ru: "На данный момент новых заказов нет",
     kz: "Қазіргі уақытта жаңа тапсырыстар жоқ",
     kg: "Азыркы учурда жаңы заказдар жок",
-    qq: "Házirge waqıtta jańa buyırtmalar joq",
+    kk: "Házirge waqıtta jańa buyırtmalar joq",
   },
   allOrders: {
     en: "All Orders",
@@ -618,7 +634,7 @@ export const translations: Translations = {
     ru: "Все заказы",
     kz: "Барлық тапсырыстар",
     kg: "Бардык заказдар",
-    qq: "Barlıq buyırtmalar",
+    kk: "Barlıq buyırtmalar",
   },
   clientName: {
     en: "Client Name",
@@ -626,7 +642,7 @@ export const translations: Translations = {
     ru: "Имя клиента",
     kz: "Клиент аты",
     kg: "Кардардын аты",
-    qq: "Mijoz atı",
+    kk: "Mijoz atı",
   },
   specialistName: {
     en: "Specialist Name",
@@ -634,7 +650,7 @@ export const translations: Translations = {
     ru: "Имя специалиста",
     kz: "Маман аты",
     kg: "Адистин аты",
-    qq: "Usta atı",
+    kk: "Usta atı",
   },
 
   // Job Request
@@ -644,7 +660,7 @@ export const translations: Translations = {
     ru: "Заказать специалиста",
     kz: "Маманға тапсырыс беру",
     kg: "Адиске заказ берүү",
-    qq: "Ustaǵa buyırtma beriw",
+    kk: "Ustaǵa buyırtma beriw",
   },
   requestSpecialistDescription: {
     en: "Please provide details about the job you need help with from",
@@ -652,7 +668,7 @@ export const translations: Translations = {
     ru: "Пожалуйста, предоставьте информацию о работе, с которой вам нужна помощь от",
     kz: "Көмек керек болатын жұмыс туралы ақпарат беріңіз",
     kg: "Жардам керек болгон жумуш жөнүндө маалымат бериңиз",
-    qq: "Járdem kerek bolǵan jumıs haqqında málimeller beriń",
+    kk: "Járdem kerek bolǵan jumıs haqqında málimeller beriń",
   },
   jobDescription: {
     en: "Job Description",
@@ -660,7 +676,7 @@ export const translations: Translations = {
     ru: "Описание работы",
     kz: "Жұмыс сипаттамасы",
     kg: "Жумуштун сүрөттөмөсү",
-    qq: "Jumıs sıpattaması",
+    kk: "Jumıs sıpattaması",
   },
   jobDescriptionPlaceholder: {
     en: "Please describe the job you need help with...",
@@ -668,7 +684,7 @@ export const translations: Translations = {
     ru: "Пожалуйста, опишите работу, с которой вам нужна помощь...",
     kz: "Көмеk керек болатын жұмысты сипаттаңыз...",
     kg: "Жардам керек болгон жумушту сүрөттөп бериңиз...",
-    qq: "Járdem kerek bolǵan jumıstı sıpattap beriń...",
+    kk: "Járdem kerek bolǵan jumıstı sıpattap beriń...",
   },
   jobLocation: {
     en: "Job Location",
@@ -676,7 +692,7 @@ export const translations: Translations = {
     ru: "Место работы",
     kz: "Жұмыс орны",
     kg: "Жумуш жери",
-    qq: "Jumıs ornı",
+    kk: "Jumıs ornı",
   },
   jobLocationPlaceholder: {
     en: "Enter the address where the job needs to be done",
@@ -684,7 +700,7 @@ export const translations: Translations = {
     ru: "Введите адрес, где нужно выполнить работу",
     kz: "Жұмыс орындалатын мекенжайды енгізіңіз",
     kg: "Жумуш аткарылуучу даректи киргизиңиз",
-    qq: "Jumıs orındalıwshı manzildi kiritiń",
+    kk: "Jumıs orındalıwshı manzildi kiritiń",
   },
   pleaseCompleteAllFields: {
     en: "Please complete all fields",
@@ -692,7 +708,7 @@ export const translations: Translations = {
     ru: "Пожалуйста, заполните все поля",
     kz: "Барлық өрістерді толтырыңыз",
     kg: "Бардык талааларды толтуруңуз",
-    qq: "Barlıq óristerdi toltırıń",
+    kk: "Barlıq óristerdi toltırıń",
   },
   loginRequired: {
     en: "You need to be logged in to submit a job request",
@@ -700,7 +716,7 @@ export const translations: Translations = {
     ru: "Вам необходимо войти в систему, чтобы отправить заявку на работу",
     kz: "Жұмысқа тапсырыс беру үшін жүйеге кіру керек",
     kg: "Жумушка заказ берүү үчүн системага кирүү керек",
-    qq: "Jumısqa buyırtma beriw ushın sistemağa kiriw kerek",
+    kk: "Jumısqa buyırtma beriw ushın sistemağa kiriw kerek",
   },
   orderSubmittedSuccessfully: {
     en: "Your order has been submitted successfully",
@@ -708,7 +724,7 @@ export const translations: Translations = {
     ru: "Ваш заказ успешно отправлен",
     kz: "Сіздің тапсырысыңыз сәтті жіберілді",
     kg: "Сиздин заказыңыз ийгиликтүү жөнөтүлдү",
-    qq: "Sizdiń buyırtmańız sátti jiberildi",
+    kk: "Sizdiń buyırtmańız sátti jiberildi",
   },
 
   // Settings
@@ -718,7 +734,7 @@ export const translations: Translations = {
     ru: "Настройки профиля",
     kz: "Профиль баптаулары",
     kg: "Профилдин жөндөөлөрү",
-    qq: "Profil sazlawları",
+    kk: "Profil sazlawları",
   },
   languageSettings: {
     en: "Language Settings",
@@ -726,7 +742,7 @@ export const translations: Translations = {
     ru: "Настройки языка",
     kz: "Тіл баптаулары",
     kg: "Тил жөндөөлөрү",
-    qq: "Til sazlawları",
+    kk: "Til sazlawları",
   },
   selectLanguage: {
     en: "Select Language",
@@ -734,7 +750,7 @@ export const translations: Translations = {
     ru: "Выберите язык",
     kz: "Тілді таңдаңыз",
     kg: "Тилди тандаңыз",
-    qq: "Tildi tańlań",
+    kk: "Tildi tańlań",
   },
   editProfile: {
     en: "Edit Profile",
@@ -742,7 +758,7 @@ export const translations: Translations = {
     ru: "Редактировать профиль",
     kz: "Профильді өңдеу",
     kg: "Профилди оңдоо",
-    qq: "Profildi óńdew",
+    kk: "Profildi óńdew",
   },
   saveChanges: {
     en: "Save Changes",
@@ -750,7 +766,7 @@ export const translations: Translations = {
     ru: "Сохранить изменения",
     kz: "Өзгерістерді сақтау",
     kg: "Өзгөртүүлөрдү сактоо",
-    qq: "Ózgerislerni saqlash",
+    kk: "Ózgerislerni saqlash",
   },
   profileUpdated: {
     en: "Profile updated successfully",
@@ -758,7 +774,7 @@ export const translations: Translations = {
     ru: "Профиль успешно обновлен",
     kz: "Профиль сәтті жаңартылды",
     kg: "Профиль ийгиликтүү жаңыртылды",
-    qq: "Profil sátti jańartıldı",
+    kk: "Profil sátti jańartıldı",
   },
   deleteAccount: {
     en: "Delete Account",
@@ -766,7 +782,7 @@ export const translations: Translations = {
     ru: "Удалить аккаунт",
     kz: "Аккаунтты жою",
     kg: "Аккаунтту жок кылуу",
-    qq: "Akkounttı joq qılıw",
+    kk: "Akkounttı joq qılıw",
   },
   deleteAccountTitle: {
     en: "Delete Account",
@@ -774,7 +790,7 @@ export const translations: Translations = {
     ru: "Удалить аккаунт",
     kz: "Аккаунтты жою",
     kg: "Аккаунтту жок кылуу",
-    qq: "Akkounttı joq qılıw",
+    kk: "Akkounttı joq qılıw",
   },
   deleteAccountDescription: {
     en: "Are you sure you want to delete your account? This action cannot be undone.",
@@ -782,7 +798,7 @@ export const translations: Translations = {
     ru: "Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.",
     kz: "Аккаунтыңызды жойғыңыз келетініне сенімдісіз бе? Бұл әрекетті кері қайтару мүмкін емес.",
     kg: "Аккаунтуңузду жок кылгыңыз келээрине ишенесизби? Бул аракетти кайтаруу мүмкүн эмес.",
-    qq: "Akkountıńızdı joq qılǵıńız kelgenine ishenimsiz be? Bul ámeldi qaytarıw múmkin emes.",
+    kk: "Akkountıńızdı joq qılǵıńız kelgenine ishenimsiz be? Bul ámeldi qaytarıw múmkin emes.",
   },
   profileUpdateFailed: {
     en: "Failed to update profile. Please try again.",
@@ -790,7 +806,7 @@ export const translations: Translations = {
     ru: "Не удалось обновить профиль. Пожалуйста, попробуйте еще раз.",
     kz: "Профильді жаңарту сәтсіз аяқталды. Қайтадан көріңіз.",
     kg: "Профилди жаңыртуу ийгиликсиз аяктады. Кайрадан аракет кылыңыз.",
-    qq: "Profildi jańartıw sátsiz ayaqtaldı. Qaytadan urınıp kóriń.",
+    kk: "Profildi jańartıw sátsiz ayaqtaldı. Qaytadan urınıp kóriń.",
   },
   deleteAccountFailed: {
     en: "Failed to delete account. Please try again.",
@@ -798,7 +814,7 @@ export const translations: Translations = {
     ru: "Не удалось удалить аккаунт. Пожалуйста, попробуйте еще раз.",
     kz: "Аккаунтты жою сәтсіз аяқталды. Қайтадан көріңіз.",
     kg: "Аккаунтту жок кылуу ийгиликсиз аяктады. Кайрадан аракет кылыңыз.",
-    qq: "Akkounttı joq qılıw sátsiz ayaqtaldı. Qaytadan urınıp kóriń.",
+    kk: "Akkounttı joq qılıw sátsiz ayaqtaldı. Qaytadan urınıp kóriń.",
   },
 
   // Availability
@@ -808,7 +824,7 @@ export const translations: Translations = {
     ru: "Доступность",
     kz: "Қолжетімділік",
     kg: "Жеткиликтүүлүк",
-    qq: "Qoljetimdillik",
+    kk: "Qoljetimdillik",
   },
   availabilityStatus: {
     en: "Availability Status",
@@ -816,7 +832,7 @@ export const translations: Translations = {
     ru: "Статус доступности",
     kz: "Қолжетімділік жағдайы",
     kg: "Жеткиликтүүлүк абалы",
-    qq: "Qoljetimdillik jaǵdayı",
+    kk: "Qoljetimdillik jaǵdayı",
   },
   available: {
     en: "Available",
@@ -824,7 +840,7 @@ export const translations: Translations = {
     ru: "Доступен",
     kz: "Қолжетімді",
     kg: "Жеткиликтүү",
-    qq: "Qoljetimdi",
+    kk: "Qoljetimdi",
   },
   busy: {
     en: "Busy",
@@ -832,7 +848,7 @@ export const translations: Translations = {
     ru: "Занят",
     kz: "Бос емес",
     kg: "Бош эмес",
-    qq: "Band",
+    kk: "Band",
   },
   setAvailable: {
     en: "Set as Available",
@@ -840,7 +856,7 @@ export const translations: Translations = {
     ru: "Отметить как доступен",
     kz: "Қолжетімді деп белгілеу",
     kg: "Жеткиликтүү деп белгилөө",
-    qq: "Qoljetimdi dep belgilaw",
+    kk: "Qoljetimdi dep belgilaw",
   },
   setBusy: {
     en: "Set as Busy",
@@ -848,7 +864,7 @@ export const translations: Translations = {
     ru: "Отметить как занят",
     kz: "Бос емес деп белгілеу",
     kg: "Бош эмес деп белгилөө",
-    qq: "Band dep belgilaw",
+    kk: "Band dep belgilaw",
   },
 
   // Logout confirmation
@@ -858,7 +874,7 @@ export const translations: Translations = {
     ru: "Подтвердите выход",
     kz: "Шығуды растаңыз",
     kg: "Чыгууну ырастаңыз",
-    qq: "Shıǵıwnı rastań",
+    kk: "Shıǵıwnı rastań",
   },
   logoutConfirmDescription: {
     en: "Are you sure you want to logout from your account?",
@@ -866,7 +882,7 @@ export const translations: Translations = {
     ru: "Вы уверены, что хотите выйти из своего аккаунта?",
     kz: "Аккаунтыңыздан шығуды қалайсыз ба?",
     kg: "Аккаунтуңуздан чыккыңыз келээрине ишенесизби?",
-    qq: "Akkountıńızdan shıqqıńız kelgenine ishenimsiz be?",
+    kk: "Akkountıńızdan shıqqıńız kelgenine ishenimsiz be?",
   },
 
   // Portfolio
@@ -876,7 +892,7 @@ export const translations: Translations = {
     ru: "Ваше портфолио",
     kz: "Сіздің портфолионыз",
     kg: "Сиздин портфолионуз",
-    qq: "Sizdiń portfolionız",
+    kk: "Sizdiń portfolionız",
   },
   uploadMedia: {
     en: "Upload Photos/Videos",
@@ -884,7 +900,7 @@ export const translations: Translations = {
     ru: "Загрузить фото/видео",
     kz: "Фото/Видео жүктеу",
     kg: "Фото/Видео жүктөө",
-    qq: "Foto/Video júklaw",
+    kk: "Foto/Video júklaw",
   },
   uploadMediaDescription: {
     en: "Upload photos and videos of your work to attract more clients",
@@ -892,7 +908,7 @@ export const translations: Translations = {
     ru: "Загрузите фотографии и видео своей работы, чтобы привлечь больше клиентов",
     kz: "Көбірек клиенттерді тарту үшін жұмысыңыздың фотолары мен бейнелерін жүктеңіз",
     kg: "Көбүрөөк кардарларды тартуу үчүн жумушуңуздун фотолорун жана видеолорун жүктөңүз",
-    qq: "Kóbirek mijozlardı tartıw ushın jumısıńızdıń fotolarını hám videolarını júkleń",
+    kk: "Kóbirek mijozlardı tartıw ushın jumısıńızdıń fotolarını hám videolarını júkleń",
   },
 }
 
@@ -919,7 +935,7 @@ export const languageOptions = [
   { value: "ru", label: "Русский" },
   { value: "kz", label: "Қазақша" },
   { value: "kg", label: "Кыргызча" },
-  { value: "qq", label: "Qaraqalpaqsha" },
+  { value: "kk", label: "Qaraqalpaqsha" },
 ]
 
 // Get the stored language or default to Uzbek
@@ -936,3 +952,4 @@ export const storeLanguage = (language: string): void => {
     localStorage.setItem("fixoo_language", language)
   }
 }
+

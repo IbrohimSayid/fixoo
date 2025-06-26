@@ -18,7 +18,7 @@ import { getTranslation, getStoredLanguage } from "@/lib/i18n"
 import LanguageSwitcher from "@/components/language-switcher"
 import { Eye, EyeOff } from "lucide-react"
 import FadeIn from "@/components/fade-in"
-import CrescentLoader from "@/components/crescent-loader"
+import HammerLoader from "@/components/hammer-loader"
 import toast from 'react-hot-toast'
 
 export default function SignUpPage() {
@@ -172,12 +172,7 @@ export default function SignUpPage() {
 
       <div className="flex-1 flex items-center justify-center p-4">
         {isLoading && (
-          <div className="fixed inset-0 bg-white flex items-center justify-center z-50">
-            <div className="text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <CrescentLoader size={60} className="mx-auto mb-4" />
-              <p className="text-primary font-medium">{getTranslation("loading", language)}...</p>
-            </div>
-          </div>
+          <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
         )}
         <FadeIn>
           <div className="w-full max-w-md space-y-8">

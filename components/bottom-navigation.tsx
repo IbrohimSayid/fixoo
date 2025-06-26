@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { PlusCircle, Search, ClipboardList, Settings } from "lucide-react"
+import { PlusCircle, Search, ClipboardList, Settings, Home } from "lucide-react"
 import { getTranslation } from "@/lib/i18n"
 
 interface BottomNavigationProps {
@@ -18,16 +18,16 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
 
   const navItems = [
     {
-      href: "/new-orders",
-      icon: PlusCircle,
-      labelKey: "newOrders",
+      href: "/home",
+      icon: Home,
+      labelKey: "home",
       shortLabel: {
-        uz: "Yangi",
-        ru: "Новые",
-        en: "New",
-        kz: "Жаңа",
-        kg: "Жаңы",
-        qq: "Jańa"
+        uz: "Bosh sahifa",
+        ru: "Главная",
+        en: "Home",
+        kz: "Басты бет",
+        kg: "Башкы бет",
+        kk: "Bas bet"
       }
     },
     {
@@ -40,7 +40,7 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
         en: "Search",
         kz: "Іздеу",
         kg: "Издөө",
-        qq: "İzlew"
+        kk: "İzlew"
       }
     },
     {
@@ -53,7 +53,7 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
         en: "Orders",
         kz: "Тапсырыстар",
         kg: "Заказдар",
-        qq: "Buyırtmalar"
+        kk: "Buyırtmalar"
       }
     },
     {
@@ -66,14 +66,14 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
         en: "Settings",
         kz: "Баптаулар",
         kg: "Жөндөөлөр",
-        qq: "Sazlawlar"
+        kk: "Sazlawlar"
       }
     }
   ]
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-primary border-t border-primary-dark md:hidden z-40">
-      <div className="flex justify-around items-center h-16">
+      <div className="grid grid-cols-4 items-center h-16">
         {navItems.map((item) => {
           const Icon = item.icon
           return (

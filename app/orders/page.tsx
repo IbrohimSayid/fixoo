@@ -5,18 +5,25 @@ import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { checkUserAuthentication, getUserData, logout } from "@/lib/auth"
 import { getTranslation, getStoredLanguage } from "@/lib/i18n"
 import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
-import { getSpecialistOrders } from "@/lib/storage"
+import { getSpecialistOrders, getNewSpecialistOrders, updateOrderStatus } from "@/lib/storage"
 import { formatDistanceToNow } from "date-fns"
+import { Clock, CheckCircle, XCircle } from "lucide-react"
+import toast from 'react-hot-toast'
+import HammerLoader from "@/components/hammer-loader"
 
 export default function OrdersPage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [language, setLanguage] = useState("uz")
-  const [orders, setOrders] = useState<any[]>([])
+  const [allOrders, setAllOrders] = useState<any[]>([])
+  const [newOrders, setNewOrders] = useState<any[]>([])
+  const [activeTab, setActiveTab] = useState("new")
 
   useEffect(() => {
     const isAuthenticated = checkUserAuthentication()
@@ -39,9 +46,15 @@ export default function OrdersPage() {
     setLanguage(storedLanguage)
 
     // Load orders for this specialist
-    const specialistOrders = getSpecialistOrders(userData.id)
-    setOrders(specialistOrders)
+    loadOrders(userData.id)
   }, [router])
+
+  const loadOrders = (specialistId: string) => {
+    const allSpecialistOrders = getSpecialistOrders(specialistId)
+    const newSpecialistOrders = getNewSpecialistOrders(specialistId)
+    setAllOrders(allSpecialistOrders)
+    setNewOrders(newSpecialistOrders)
+  }
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage)
@@ -50,6 +63,32 @@ export default function OrdersPage() {
   const handleLogout = () => {
     logout()
     router.push("/login")
+  }
+
+  const handleAcceptOrder = (orderId: string) => {
+    const success = updateOrderStatus(orderId, "accepted")
+
+    if (success) {
+      toast.success(
+        language === 'uz' ? "Buyurtma qabul qilindi! Mijoz bilan bog'lanishingiz mumkin." :
+        language === 'ru' ? "Заказ принят! Вы можете связаться с клиентом." :
+        "Order accepted! You can contact the client."
+      )
+      loadOrders(user.id)
+    }
+  }
+
+  const handleRejectOrder = (orderId: string) => {
+    const success = updateOrderStatus(orderId, "rejected")
+
+    if (success) {
+      toast.success(
+        language === 'uz' ? "Buyurtma rad etildi." :
+        language === 'ru' ? "Заказ отклонен." :
+        "Order rejected."
+      )
+      loadOrders(user.id)
+    }
   }
 
   const getStatusBadge = (status: string) => {
@@ -77,11 +116,7 @@ export default function OrdersPage() {
   }
 
   if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-primary text-white">
-        {getTranslation("loading", language)}...
-      </div>
-    )
+    return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 
   return (
@@ -91,47 +126,119 @@ export default function OrdersPage() {
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-6">{getTranslation("ordersList", language)}</h1>
 
-        <Card>
-          <CardHeader className="bg-primary/5 pb-4">
-            <CardTitle>{getTranslation("allOrders", language)}</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0 overflow-x-auto">
-            {orders.length > 0 ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{getTranslation("clientName", language)}</TableHead>
-                    <TableHead className="hidden md:table-cell">{getTranslation("description", language)}</TableHead>
-                    <TableHead className="hidden md:table-cell">{getTranslation("date", language)}</TableHead>
-                    <TableHead>{getTranslation("status", language)}</TableHead>
-                    <TableHead>{getTranslation("contact", language)}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {orders.map((order) => (
-                    <TableRow key={order.id}>
-                      <TableCell className="font-medium">{order.clientName}</TableCell>
-                      <TableCell className="hidden md:table-cell">{order.description}</TableCell>
-                      <TableCell className="hidden md:table-cell">{formatDate(order.date)}</TableCell>
-                      <TableCell>{getStatusBadge(order.status)}</TableCell>
-                      <TableCell>
-                        {order.status === "accepted" ? (
-                          <span className="text-primary">{order.clientPhone}</span>
-                        ) : (
-                          <span className="text-gray-400">-</span>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="new" className="relative">
+              {getTranslation("newOrders", language)}
+              {newOrders.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {newOrders.length}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="history">
+              {getTranslation("ordersHistory", language)}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="new" className="mt-6">
+            {newOrders.length > 0 ? (
+              <div className="space-y-4">
+                {newOrders.map((order) => (
+                  <Card key={order.id} className="overflow-hidden">
+                    <CardHeader className="bg-primary/5 pb-4">
+                      <CardTitle className="flex justify-between items-center">
+                        <span>{order.clientName}</span>
+                        <div className="flex items-center text-sm font-normal">
+                          <Clock className="h-4 w-4 mr-1" />
+                          <span>{formatDate(order.date)}</span>
+                        </div>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-4">
+                      <div className="space-y-2 mb-4">
+                        <p>
+                          <strong>{getTranslation("description", language)}:</strong> {order.description}
+                        </p>
+                        <p>
+                          <strong>{getTranslation("jobLocation", language)}:</strong> {order.location}
+                        </p>
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center gap-1"
+                          onClick={() => handleRejectOrder(order.id)}
+                        >
+                          <XCircle className="h-4 w-4" />
+                          {getTranslation("reject", language)}
+                        </Button>
+                        <Button
+                          variant="default"
+                          size="sm"
+                          className="flex items-center gap-1"
+                          onClick={() => handleAcceptOrder(order.id)}
+                        >
+                          <CheckCircle className="h-4 w-4" />
+                          {getTranslation("accept", language)}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             ) : (
-              <div className="text-center py-8">
+              <div className="text-center py-12 bg-white rounded-lg shadow">
                 <p className="text-gray-500">{getTranslation("noNewOrders", language)}</p>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </TabsContent>
+
+          <TabsContent value="history" className="mt-6">
+            <Card>
+              <CardHeader className="bg-primary/5 pb-4">
+                <CardTitle>{getTranslation("allOrders", language)}</CardTitle>
+              </CardHeader>
+              <CardContent className="p-0 overflow-x-auto">
+                {allOrders.length > 0 ? (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>{getTranslation("clientName", language)}</TableHead>
+                        <TableHead className="hidden md:table-cell">{getTranslation("description", language)}</TableHead>
+                        <TableHead className="hidden md:table-cell">{getTranslation("date", language)}</TableHead>
+                        <TableHead>{getTranslation("status", language)}</TableHead>
+                        <TableHead>{getTranslation("contact", language)}</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {allOrders.map((order) => (
+                        <TableRow key={order.id}>
+                          <TableCell className="font-medium">{order.clientName}</TableCell>
+                          <TableCell className="hidden md:table-cell">{order.description}</TableCell>
+                          <TableCell className="hidden md:table-cell">{formatDate(order.date)}</TableCell>
+                          <TableCell>{getStatusBadge(order.status)}</TableCell>
+                          <TableCell>
+                            {order.status === "accepted" ? (
+                              <span className="text-primary">{order.clientPhone}</span>
+                            ) : (
+                              <span className="text-gray-400">-</span>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-gray-500">{getTranslation("noNewOrders", language)}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </main>
 
       <BottomNavigation language={language} />

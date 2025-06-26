@@ -12,6 +12,7 @@ import { regions, getDistricts, getRegionLabel, getDistrictLabel } from "@/lib/l
 import { professions, getProfessionLabel } from "@/lib/profession-data"
 import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
+import HammerLoader from "@/components/hammer-loader"
 
 export default function FindSpecialistsPage() {
   const router = useRouter()
@@ -106,11 +107,7 @@ export default function FindSpecialistsPage() {
   }
 
   if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-primary text-white">
-        {getTranslation("loading", language)}...
-      </div>
-    )
+    return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 
   return (

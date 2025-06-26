@@ -28,7 +28,7 @@ export default function LanguageSwitcher({ onLanguageChange, currentLanguage }: 
             height={15}
             className="object-cover"
           />
-          <span>{currentOption?.label || getTranslation(currentLanguage, currentLanguage)}</span>
+          <span className="text-gray-900 dark:text-gray-100">{currentOption?.label || getTranslation(currentLanguage, currentLanguage)}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
