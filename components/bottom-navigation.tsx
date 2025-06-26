@@ -4,6 +4,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { PlusCircle, Search, ClipboardList, Settings, Home } from "lucide-react"
 import { getTranslation } from "@/lib/i18n"
+import { useEffect, useState } from "react"
+import { getNewSpecialistOrders } from "@/lib/storage"
+import { getUserData } from "@/lib/auth"
 
 interface BottomNavigationProps {
   language: string
@@ -11,10 +14,28 @@ interface BottomNavigationProps {
 
 export default function BottomNavigation({ language }: BottomNavigationProps) {
   const pathname = usePathname()
+  const [newOrdersCount, setNewOrdersCount] = useState(0)
 
   const isActive = (path: string) => {
     return pathname === path
   }
+
+  useEffect(() => {
+    const updateNotifications = () => {
+      const user = getUserData()
+      if (user && user.type === "specialist") {
+        const newOrders = getNewSpecialistOrders(user.id)
+        setNewOrdersCount(newOrders.length)
+      }
+    }
+
+    updateNotifications()
+    
+    // Har 5 soniyada yangilanish
+    const interval = setInterval(updateNotifications, 5000)
+    
+    return () => clearInterval(interval)
+  }, [])
 
   const navItems = [
     {
@@ -54,7 +75,8 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
         kz: "Тапсырыстар",
         kg: "Заказдар",
         kk: "Buyırtmalar"
-      }
+      },
+      hasNotification: true
     },
     {
       href: "/settings",
@@ -80,7 +102,7 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
         <Link
               key={item.href}
               href={item.href}
-          className={`flex flex-col items-center justify-center w-full h-full ${
+          className={`flex flex-col items-center justify-center w-full h-full relative ${
                 isActive(item.href) ? "text-white" : "text-white/70"
           }`}
         >
@@ -88,6 +110,11 @@ export default function BottomNavigation({ language }: BottomNavigationProps) {
               <span className="text-xs mt-1">
                 {item.shortLabel[language as keyof typeof item.shortLabel] || getTranslation(item.labelKey, language)}
               </span>
+              {item.hasNotification && newOrdersCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {newOrdersCount > 9 ? '9+' : newOrdersCount}
+                </span>
+              )}
         </Link>
           )
         })}

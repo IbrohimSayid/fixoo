@@ -6,9 +6,10 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import LanguageSwitcher from "@/components/language-switcher"
 import { getTranslation } from "@/lib/i18n"
 import { useMobile } from "@/hooks/use-mobile"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ConfirmModal from "@/components/confirm-modal"
 import toast from 'react-hot-toast'
+import { getNewSpecialistOrders } from "@/lib/storage"
 
 type HeaderProps = {
   user: any
@@ -20,6 +21,23 @@ type HeaderProps = {
 export default function Header({ user, onLogout, language, onLanguageChange }: HeaderProps) {
   const isMobile = useMobile()
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+  const [newOrdersCount, setNewOrdersCount] = useState(0)
+
+  useEffect(() => {
+    const updateNotifications = () => {
+      if (user && user.type === "specialist") {
+        const newOrders = getNewSpecialistOrders(user.id)
+        setNewOrdersCount(newOrders.length)
+      }
+    }
+
+    updateNotifications()
+    
+    // Har 5 soniyada yangilanish
+    const interval = setInterval(updateNotifications, 5000)
+    
+    return () => clearInterval(interval)
+  }, [user])
 
   const handleLogoutClick = () => {
     setIsLogoutModalOpen(true)
@@ -67,9 +85,14 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
                           <span>{getTranslation("findSpecialists", language)}</span>
                         </Link>
 
-                        <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-2">
+                        <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-2 relative">
                           <ClipboardList className="h-4 w-4" />
                           <span>{getTranslation("ordersList", language)}</span>
+                          {newOrdersCount > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                              {newOrdersCount > 9 ? '9+' : newOrdersCount}
+                            </span>
+                          )}
                         </Link>
                       </>
                     )}
@@ -121,9 +144,14 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
                     <span>{getTranslation("findSpecialists", language)}</span>
                   </Link>
 
-                  <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-1">
+                  <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-1 relative">
                     <ClipboardList className="h-4 w-4" />
                     <span>{getTranslation("ordersList", language)}</span>
+                    {newOrdersCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {newOrdersCount > 9 ? '9+' : newOrdersCount}
+                      </span>
+                    )}
                   </Link>
                 </>
               )}

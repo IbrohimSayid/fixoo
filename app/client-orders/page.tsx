@@ -12,6 +12,7 @@ import ClientBottomNavigation from "@/components/client-bottom-navigation"
 import { getClientOrders } from "@/lib/storage"
 import { formatDistanceToNow } from "date-fns"
 import HammerLoader from "@/components/hammer-loader"
+import toast from 'react-hot-toast'
 
 export default function ClientOrdersPage() {
   const router = useRouter()
@@ -19,6 +20,7 @@ export default function ClientOrdersPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [language, setLanguage] = useState("uz")
   const [orders, setOrders] = useState<any[]>([])
+  const [notifications, setNotifications] = useState<any[]>([])
 
   useEffect(() => {
     const isAuthenticated = checkUserAuthentication()
@@ -44,8 +46,37 @@ export default function ClientOrdersPage() {
     const clientOrders = getClientOrders(userData.id)
     setOrders(clientOrders)
 
+    // Notification'larni yuklash
+    const loadNotifications = () => {
+      const userNotifications = JSON.parse(localStorage.getItem(`fixoo_notifications_${userData.id}`) || '[]')
+      setNotifications(userNotifications)
+      
+      // Yangi notification'lar uchun toast ko'rsatish
+      const unreadNotifications = userNotifications.filter((n: any) => !n.read)
+      unreadNotifications.forEach((notification: any) => {
+        toast.success(notification.message)
+        // Notification'ni o'qilgan deb belgilash
+        notification.read = true
+      })
+      
+      if (unreadNotifications.length > 0) {
+        localStorage.setItem(`fixoo_notifications_${userData.id}`, JSON.stringify(userNotifications))
+      }
+    }
+
+    loadNotifications()
+
+    // Auto-refresh har 10 soniyada
+    const interval = setInterval(() => {
+      loadNotifications()
+      const updatedOrders = getClientOrders(userData.id)
+      setOrders(updatedOrders)
+    }, 10000)
+
     // Loading tugadi
     setIsLoading(false)
+
+    return () => clearInterval(interval)
   }, [router])
 
   const handleLanguageChange = (newLanguage: string) => {

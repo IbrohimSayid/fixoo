@@ -25,6 +25,7 @@ export default function OrdersPage() {
   const [allOrders, setAllOrders] = useState<any[]>([])
   const [newOrders, setNewOrders] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState("new")
+  const [lastNotificationCheck, setLastNotificationCheck] = useState(Date.now())
 
   useEffect(() => {
     const isAuthenticated = checkUserAuthentication()
@@ -51,11 +52,30 @@ export default function OrdersPage() {
 
     // Loading tugadi
     setIsLoading(false)
+
+    // Auto-refresh har 10 soniyada
+    const interval = setInterval(() => {
+      loadOrders(userData.id)
+    }, 10000)
+
+    return () => clearInterval(interval)
   }, [router])
 
   const loadOrders = (specialistId: string) => {
     const allSpecialistOrders = getSpecialistOrders(specialistId)
     const newSpecialistOrders = getNewSpecialistOrders(specialistId)
+    
+    // Yangi buyurtmalar haqida bildirishnoma
+    if (newSpecialistOrders.length > newOrders.length && Date.now() - lastNotificationCheck > 10000) {
+      const newOrdersCount = newSpecialistOrders.length - newOrders.length
+      toast.success(
+        language === 'uz' ? `${newOrdersCount} ta yangi buyurtma keldi!` :
+        language === 'ru' ? `Поступило ${newOrdersCount} новых заказов!` :
+        `${newOrdersCount} new orders received!`
+      )
+      setLastNotificationCheck(Date.now())
+    }
+    
     setAllOrders(allSpecialistOrders)
     setNewOrders(newSpecialistOrders)
   }
@@ -78,6 +98,25 @@ export default function OrdersPage() {
         language === 'ru' ? "Заказ принят! Вы можете связаться с клиентом." :
         "Order accepted! You can contact the client."
       )
+
+      // Mijozga notification yuborish (localStorage orqali)
+      const clientNotification = {
+        id: Math.random().toString(36).substring(2, 15),
+        type: 'order_accepted',
+        message: language === 'uz' ? `${user.firstName} ${user.lastName} usta buyurtmangizni qabul qildi!` :
+                 language === 'ru' ? `Специалист ${user.firstName} ${user.lastName} принял ваш заказ!` :
+                 `Specialist ${user.firstName} ${user.lastName} accepted your order!`,
+        orderId: orderId,
+        timestamp: Date.now()
+      }
+
+      // Mijozga notification saqlash
+      const order = allOrders.find(o => o.id === orderId) || newOrders.find(o => o.id === orderId)
+      if (order) {
+        const existingNotifications = JSON.parse(localStorage.getItem(`fixoo_notifications_${order.clientId}`) || '[]')
+        localStorage.setItem(`fixoo_notifications_${order.clientId}`, JSON.stringify([...existingNotifications, clientNotification]))
+      }
+
       loadOrders(user.id)
     }
   }

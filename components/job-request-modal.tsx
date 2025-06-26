@@ -77,6 +77,16 @@ export default function JobRequestModal({ isOpen, onClose, specialist, language 
       language === 'ru' ? "Ваш заказ успешно отправлен! Скоро получите ответ." :
       "Your order has been sent successfully! You'll receive a response soon."
     )
+
+    // Ustaga yangi buyurtma haqida notification
+    setTimeout(() => {
+      toast(
+        language === 'uz' ? `${specialist.firstName} ${specialist.lastName} ustasiga yangi buyurtma yuborildi` :
+        language === 'ru' ? `Новый заказ отправлен специалисту ${specialist.firstName} ${specialist.lastName}` :
+        `New order sent to specialist ${specialist.firstName} ${specialist.lastName}`,
+        { icon: 'ℹ️' }
+      )
+    }, 1000)
   }
 
   return (
