@@ -26,6 +26,7 @@ import toast from 'react-hot-toast'
 export default function SettingsPage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [language, setLanguage] = useState("uz")
   const [selectedRegion, setSelectedRegion] = useState("")
   const [districts, setDistricts] = useState<any[]>([])
@@ -69,6 +70,9 @@ export default function SettingsPage() {
     // Get stored language
     const storedLanguage = getStoredLanguage()
     setLanguage(storedLanguage)
+
+    // Loading tugadi
+    setIsLoading(false)
   }, [router])
 
   useEffect(() => {
@@ -140,7 +144,7 @@ export default function SettingsPage() {
     }
   }
 
-  if (!user) {
+  if (isLoading) {
     return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 

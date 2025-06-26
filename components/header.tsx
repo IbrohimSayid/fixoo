@@ -75,10 +75,17 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
                     )}
 
                     {user.type === "client" && (
-                      <Link href="/client-orders" className="text-white hover:text-white/80 flex items-center gap-2">
-                        <ClipboardList className="h-4 w-4" />
-                        <span>{getTranslation("ordersList", language)}</span>
-                      </Link>
+                      <>
+                        <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-2">
+                          <Home className="h-4 w-4" />
+                          <span>{getTranslation("home", language)}</span>
+                        </Link>
+
+                        <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-2">
+                          <Search className="h-4 w-4" />
+                          <span>{getTranslation("findSpecialists", language)}</span>
+                        </Link>
+                      </>
                     )}
 
                     <Link href="/settings" className="text-white hover:text-white/80 flex items-center gap-2">
@@ -122,10 +129,17 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
               )}
 
               {user.type === "client" && (
-                <Link href="/client-orders" className="text-white hover:text-white/80 flex items-center gap-1">
-                  <ClipboardList className="h-4 w-4" />
-                  <span>{getTranslation("ordersList", language)}</span>
-                </Link>
+                <>
+                  <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-1">
+                    <Home className="h-4 w-4" />
+                    <span>{getTranslation("home", language)}</span>
+                  </Link>
+
+                  <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-1">
+                    <Search className="h-4 w-4" />
+                    <span>{getTranslation("findSpecialists", language)}</span>
+                  </Link>
+                </>
               )}
 
               <Link href="/settings" className="text-white hover:text-white/80 flex items-center gap-1">

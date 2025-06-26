@@ -20,6 +20,7 @@ import HammerLoader from "@/components/hammer-loader"
 export default function OrdersPage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [language, setLanguage] = useState("uz")
   const [allOrders, setAllOrders] = useState<any[]>([])
   const [newOrders, setNewOrders] = useState<any[]>([])
@@ -47,6 +48,9 @@ export default function OrdersPage() {
 
     // Load orders for this specialist
     loadOrders(userData.id)
+
+    // Loading tugadi
+    setIsLoading(false)
   }, [router])
 
   const loadOrders = (specialistId: string) => {
@@ -115,7 +119,7 @@ export default function OrdersPage() {
     }
   }
 
-  if (!user) {
+  if (isLoading) {
     return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 

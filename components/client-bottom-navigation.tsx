@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ClipboardList, Settings } from "lucide-react"
+import { ClipboardList, Settings, Home, Search } from "lucide-react"
 import { getTranslation } from "@/lib/i18n"
 
 interface ClientBottomNavigationProps {
@@ -18,15 +18,25 @@ export default function ClientBottomNavigation({ language }: ClientBottomNavigat
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-primary border-t border-primary-dark md:hidden z-40">
-      <div className="flex justify-around items-center h-16">
+      <div className="grid grid-cols-3 items-center h-16">
         <Link
-          href="/client-orders"
+          href="/home"
           className={`flex flex-col items-center justify-center w-full h-full ${
-            isActive("/client-orders") ? "text-white" : "text-white/70"
+            isActive("/home") ? "text-white" : "text-white/70"
           }`}
         >
-          <ClipboardList className="h-6 w-6" />
-          <span className="text-xs mt-1">{getTranslation("ordersList", language)}</span>
+          <Home className="h-6 w-6" />
+          <span className="text-xs mt-1">{getTranslation("home", language)}</span>
+        </Link>
+
+        <Link
+          href="/find-specialists"
+          className={`flex flex-col items-center justify-center w-full h-full ${
+            isActive("/find-specialists") ? "text-white" : "text-white/70"
+          }`}
+        >
+          <Search className="h-6 w-6" />
+          <span className="text-xs mt-1">{getTranslation("findSpecialists", language)}</span>
         </Link>
 
         <Link

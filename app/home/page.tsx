@@ -42,6 +42,7 @@ type Specialist = {
 export default function HomePage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [specialists, setSpecialists] = useState<Specialist[]>([])
   const [filteredSpecialists, setFilteredSpecialists] = useState<Specialist[]>([])
   const [selectedRegion, setSelectedRegion] = useState("")
@@ -92,6 +93,9 @@ export default function HomePage() {
         setAvatarImage(savedAvatar)
       }
     }
+
+    // Loading tugadi
+    setIsLoading(false)
   }, [router])
 
   useEffect(() => {
@@ -209,7 +213,7 @@ export default function HomePage() {
     setIsJobRequestModalOpen(true)
   }
 
-  if (!user) {
+  if (isLoading) {
     return <HammerLoader fullScreen={true} showText={true} text={getTranslation("loading", language) + "..."} />
   }
 
@@ -220,127 +224,10 @@ export default function HomePage() {
       <main className="container mx-auto px-4 py-8">
         {user.type === "client" ? (
           <div className="space-y-6">
-            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-sm">
-              <h2 className="text-xl sm:text-2xl font-bold mb-4">{getTranslation("findSpecialists", language)}</h2>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <div>
-                  <Select onValueChange={(value) => handleFilterChange("profession", value)} value={filters.profession}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={getTranslation("profession", language)} />
-                    </SelectTrigger>
-                    <SelectContent side="top" className="max-h-[200px] overflow-y-auto">
-                      <SelectItem value="all">{getTranslation("allProfessions", language)}</SelectItem>
-                      {professions.map((profession) => (
-                        <SelectItem key={profession.value} value={profession.value}>
-                          {profession.label[language as keyof typeof profession.label] || profession.value}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Select onValueChange={(value) => handleFilterChange("region", value)} value={filters.region}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={getTranslation("region", language)} />
-                    </SelectTrigger>
-                    <SelectContent side="top" className="max-h-[200px] overflow-y-auto">
-                      <SelectItem value="all">{getTranslation("allRegions", language)}</SelectItem>
-                      {regions.map((region) => (
-                        <SelectItem key={region.value} value={region.value}>
-                          {region.label[language as keyof typeof region.label] || region.value}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Select
-                    onValueChange={(value) => handleFilterChange("district", value)}
-                    value={filters.district}
-                    disabled={!selectedRegion || selectedRegion === "all"}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={getTranslation("district", language)} />
-                    </SelectTrigger>
-                    <SelectContent side="top" className="max-h-[200px] overflow-y-auto">
-                      <SelectItem value="all">{getTranslation("allDistricts", language)}</SelectItem>
-                      {districts.map((district) => (
-                        <SelectItem key={district.value} value={district.value}>
-                          {district.label[language as keyof typeof district.label] || district.value}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Input
-                    placeholder={getTranslation("searchByName", language)}
-                    value={filters.search}
-                    onChange={(e) => handleFilterChange("search", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredSpecialists.length > 0 ? (
-                  filteredSpecialists.map((specialist) => (
-                    <Card key={specialist.id} className="overflow-hidden">
-                      <CardContent className="p-4 sm:p-6">
-                        <div className="flex items-start justify-between mb-4">
-                          <div>
-                            <h3 className="text-lg font-semibold">
-                              {specialist.firstName} {specialist.lastName}
-                            </h3>
-                            <p className="text-sm text-gray-500">
-                              {getProfessionLabel(specialist.profession, language)}
-                            </p>
-                            <div className="flex items-center mt-1">
-                              <Badge className={specialist.isAvailable !== false ? "bg-green-500" : "bg-red-500"}>
-                                {specialist.isAvailable !== false
-                                  ? getTranslation("specialistAvailable", language)
-                                  : getTranslation("specialistBusy", language)}
-                              </Badge>
-                            </div>
-                          </div>
-                          <Avatar className="h-12 w-12">
-                            <AvatarFallback className="bg-primary text-white">
-                              {specialist.firstName.charAt(0)}
-                              {specialist.lastName.charAt(0)}
-                            </AvatarFallback>
-                          </Avatar>
-                        </div>
-                        <div className="space-y-2 mb-4">
-                          <p className="text-sm flex items-center">
-                            <MapPin className="h-4 w-4 mr-1 text-gray-400" />
-                            {getRegionLabel(specialist.region, language)},{" "}
-                            {getDistrictLabel(specialist.region, specialist.district, language)}
-                          </p>
-                          <p className="text-sm flex items-center">
-                            <Briefcase className="h-4 w-4 mr-1 text-gray-400" />
-                            {specialist.address}
-                          </p>
-                        </div>
-                        <Button
-                          className="w-full"
-                          variant={specialist.isAvailable !== false ? "default" : "outline"}
-                          disabled={specialist.isAvailable === false}
-                          onClick={() => handleContactSpecialist(specialist)}
-                        >
-                          {getTranslation("contactSpecialist", language)}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-8">
-                    <p className="text-gray-500">{getTranslation("noSpecialistsFound", language)}</p>
-                  </div>
-                )}
-              </div>
+            {/* Welcome Section */}
+            <div className="bg-white p-6 rounded-lg shadow-sm text-center">
+              <h2 className="text-2xl font-bold text-primary mb-2">Fixoo</h2>
+              <p className="text-lg text-gray-600">Qulaylik bilan</p>
             </div>
           </div>
         ) : (

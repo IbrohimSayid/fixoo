@@ -37,38 +37,38 @@ export default function HammerLoader({
           />
         </div>
 
-        {/* Mix (Nail) - Yanada kichikroq va o'ngda */}
+        {/* Mix (Nail) - Semizroq, oriqroq va o'ng tomonga ko'chirilgan */}
         <div 
           className="nail bg-white absolute bottom-0"
           style={{
-            width: size * 0.03,
-            height: size * 0.8,
-            borderRadius: '2px',
-            left: '60%',
+            width: size * 0.05,
+            height: size * 0.7,
+            borderRadius: '3px',
+            left: '75%',
             transform: 'translateX(-50%)',
             animation: 'nailDrive 2s ease-in-out infinite'
           }}
         >
-          {/* Mix boshi */}
+          {/* Mix boshi - semizroq */}
           <div 
             className="bg-white absolute top-0 left-1/2 transform -translate-x-1/2"
             style={{
-              width: size * 0.08,
-              height: size * 0.04,
-              borderRadius: '2px',
-              marginTop: `-${size * 0.02}px`
+              width: size * 0.12,
+              height: size * 0.06,
+              borderRadius: '3px',
+              marginTop: `-${size * 0.03}px`
             }}
           ></div>
         </div>
 
-        {/* Urish effekti - Mix boshida (o'ngda) */}
+        {/* Urish effekti - Mix boshida (o'ng tomonda) */}
         <div 
           className="impact-effect bg-white/30 rounded-full absolute"
           style={{
-            width: size * 0.25,
-            height: size * 0.08,
-            bottom: `${size * 0.8}px`,
-            left: '60%',
+            width: size * 0.3,
+            height: size * 0.1,
+            bottom: `${size * 0.7}px`,
+            left: '75%',
             transform: 'translateX(-50%)',
             animation: 'impactFlash 2s ease-in-out infinite'
           }}
