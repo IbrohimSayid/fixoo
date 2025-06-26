@@ -110,7 +110,91 @@ export const getUserData = () => {
 // Get all specialists
 export const getAllSpecialists = () => {
   const users = JSON.parse(localStorage.getItem("fixoo_users") || "[]")
-  return users.filter((user: any) => user.type === "specialist")
+  const specialists = users.filter((user: any) => user.type === "specialist")
+  
+  // Agar hech qanday usta ro'yxatdan o'tmagan bo'lsa, test ma'lumotlarini qo'shamiz
+  if (specialists.length === 0) {
+    const testSpecialists = [
+      {
+        id: "test_spec_1",
+        firstName: "Akmal",
+        lastName: "Usmonov", 
+        phone: "+998901234567",
+        profession: "plumber",
+        region: "toshkent",
+        district: "yunusobod",
+        address: "Yunusobod tumani, 5-mavze",
+        type: "specialist",
+        isAvailable: true,
+        rating: 4.5,
+        reviewCount: 23,
+        tokenExpiry: getTokenExpiry()
+      },
+      {
+        id: "test_spec_2", 
+        firstName: "Sardor",
+        lastName: "Karimov",
+        phone: "+998907654321",
+        profession: "electrician",
+        region: "toshkent", 
+        district: "mirobod",
+        address: "Mirobod tumani, 3-mavze",
+        type: "specialist",
+        isAvailable: false,
+        rating: 3.8,
+        reviewCount: 15,
+        tokenExpiry: getTokenExpiry()
+      },
+      {
+        id: "test_spec_3",
+        firstName: "Bobur", 
+        lastName: "Rahmonov",
+        phone: "+998909876543",
+        profession: "carpenter",
+        region: "samarqand",
+        district: "samarqand_shahri",
+        address: "Samarqand shahri, Registon ko'chasi",
+        type: "specialist", 
+        isAvailable: true,
+        rating: 0,
+        reviewCount: 0,
+        tokenExpiry: getTokenExpiry()
+      },
+      {
+        id: "test_spec_4",
+        firstName: "Jasur",
+        lastName: "Aliyev", 
+        phone: "+998905555555",
+        profession: "painter",
+        region: "fargona",
+        district: "fargona_shahri", 
+        address: "Farg'ona shahri, Mustaqillik ko'chasi",
+        type: "specialist",
+        isAvailable: true,
+        rating: 4.9,
+        reviewCount: 45,
+        tokenExpiry: getTokenExpiry()
+      }
+    ]
+    
+    // Test ustalarini localStorage'ga qo'shamiz
+    const allUsers = [...users, ...testSpecialists]
+    localStorage.setItem("fixoo_users", JSON.stringify(allUsers))
+    
+    // Test ustalar uchun portfolio qo'shamiz
+    testSpecialists.forEach(specialist => {
+      const portfolio = [
+        { id: '1', name: 'ish1.jpg', type: 'image', fileInfo: { name: 'ish1.jpg', type: 'image/jpeg' }},
+        { id: '2', name: 'ish2.jpg', type: 'image', fileInfo: { name: 'ish2.jpg', type: 'image/jpeg' }},
+        { id: '3', name: 'ish3.mp4', type: 'video', fileInfo: { name: 'ish3.mp4', type: 'video/mp4' }}
+      ]
+      localStorage.setItem(`fixoo_media_${specialist.id}`, JSON.stringify(portfolio))
+    })
+    
+    return testSpecialists
+  }
+  
+  return specialists
 }
 
 // Logout user

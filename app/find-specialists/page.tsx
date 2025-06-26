@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { checkUserAuthentication, getUserData, getAllSpecialists, logout } from "@/lib/auth"
+import { getUserMedia } from "@/lib/storage"
 import { getClientOrders } from "@/lib/storage"
 import { formatDistanceToNow } from "date-fns"
 import { getTranslation, getStoredLanguage } from "@/lib/i18n"
@@ -18,6 +19,7 @@ import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
 import ClientBottomNavigation from "@/components/client-bottom-navigation"
 import HammerLoader from "@/components/hammer-loader"
+import JobRequestModal from "@/components/job-request-modal"
 
 export default function FindSpecialistsPage() {
   const router = useRouter()
@@ -37,6 +39,8 @@ export default function FindSpecialistsPage() {
   const [showResults, setShowResults] = useState(false)
   const [activeTab, setActiveTab] = useState("search")
   const [myOrders, setMyOrders] = useState<any[]>([])
+  const [selectedSpecialist, setSelectedSpecialist] = useState<any>(null)
+  const [isJobRequestModalOpen, setIsJobRequestModalOpen] = useState(false)
 
   useEffect(() => {
     const isAuthenticated = checkUserAuthentication()
@@ -116,6 +120,11 @@ export default function FindSpecialistsPage() {
     }
     setFilteredSpecialists(result)
     setShowResults(true)
+  }
+
+  const handleContactSpecialist = (specialist: any) => {
+    setSelectedSpecialist(specialist)
+    setIsJobRequestModalOpen(true)
   }
 
   const getStatusBadge = (status: string) => {
@@ -241,37 +250,129 @@ export default function FindSpecialistsPage() {
             {showResults && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredSpecialists.length > 0 ? (
-                  filteredSpecialists.map((specialist) => (
-                    <Card key={specialist.id} className="overflow-hidden">
-                      <CardContent className="p-4 sm:p-6">
-                        <div className="flex items-start justify-between mb-4">
-                          <div>
-                            <h3 className="text-lg font-semibold">
-                              {specialist.firstName} {specialist.lastName}
-                            </h3>
-                            <p className="text-sm text-gray-500">
-                              {getProfessionLabel(specialist.profession, language)}
-                            </p>
-                            <div className="flex items-center mt-1">
-                              <Badge className={specialist.isAvailable !== false ? "bg-green-500" : "bg-red-500"}>
-                                {specialist.isAvailable !== false
-                                  ? getTranslation("specialistAvailable", language)
-                                  : getTranslation("specialistBusy", language)}
-                              </Badge>
+                  filteredSpecialists.map((specialist) => {
+                    const rating = specialist.rating || 0;
+                    const reviewCount = specialist.reviewCount || 0;
+                    const portfolio = getUserMedia(specialist.id) || [];
+                    
+                    return (
+                      <Card key={specialist.id} className="overflow-hidden">
+                        <CardContent className="p-4 sm:p-6">
+                          <div className="flex items-start gap-4 mb-4">
+                            {/* Avatar */}
+                            <div className="flex-shrink-0">
+                              <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-lg font-semibold">
+                                {specialist.firstName.charAt(0)}{specialist.lastName.charAt(0)}
+                              </div>
+                            </div>
+                            
+                            {/* Usta ma'lumotlari */}
+                            <div className="flex-1">
+                              <h3 className="text-lg font-semibold mb-1">
+                                {specialist.firstName} {specialist.lastName}
+                              </h3>
+                              <p className="text-sm text-gray-600 mb-2">
+                                {getProfessionLabel(specialist.profession, language)}
+                              </p>
+                              
+                              {/* Band/Bo'sh holati */}
+                              <div className="flex items-center mb-2">
+                                <Badge className={specialist.isAvailable !== false ? "bg-green-500" : "bg-red-500"}>
+                                  {specialist.isAvailable !== false
+                                    ? getTranslation("specialistAvailable", language)
+                                    : getTranslation("specialistBusy", language)}
+                                </Badge>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="space-y-2 mb-4">
-                          <p className="text-sm flex items-center">
-                            {getRegionLabel(specialist.region, language)}, {getDistrictLabel(specialist.region, specialist.district, language)}
-                          </p>
-                          <p className="text-sm flex items-center">
-                            {specialist.address}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
+                          
+                          {/* Faoliyat hududi */}
+                          <div className="space-y-2 mb-4">
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">{getTranslation("location", language)}:</span> {getRegionLabel(specialist.region, language)}, {getDistrictLabel(specialist.region, specialist.district, language)}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">{getTranslation("address", language)}:</span> {specialist.address}
+                            </p>
+                          </div>
+                          
+                          {/* Baxolash tizimi */}
+                          <div className="mb-4">
+                            {rating > 0 && reviewCount > 0 ? (
+                              <div className="flex items-center gap-2">
+                                <div className="flex items-center">
+                                  {[1, 2, 3, 4, 5].map((star) => (
+                                    <svg
+                                      key={star}
+                                      className={`w-4 h-4 ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                  ))}
+                                </div>
+                                <span className="text-sm text-gray-600">
+                                  ({rating.toFixed(1)} - {reviewCount} {getTranslation("reviews", language)})
+                                </span>
+                              </div>
+                            ) : (
+                              <p className="text-sm text-gray-500 italic">
+                                {getTranslation("noRatingsYet", language)}
+                              </p>
+                            )}
+                          </div>
+                          
+                          {/* Portfolio - ishlar */}
+                          {portfolio.length > 0 && (
+                            <div className="mb-4">
+                              <p className="text-sm font-medium text-gray-700 mb-2">
+                                {getTranslation("portfolio", language)}:
+                              </p>
+                              <div className="grid grid-cols-3 gap-2">
+                                {portfolio.slice(0, 3).map((media: any, index: number) => (
+                                  <div key={index} className="relative group">
+                                    {media.type === "image" ? (
+                                      <div className="w-full h-16 bg-gray-200 rounded flex items-center justify-center">
+                                        <span className="text-xs text-gray-500">Rasm</span>
+                                      </div>
+                                    ) : (
+                                      <div className="w-full h-16 bg-gray-200 rounded flex items-center justify-center">
+                                        <span className="text-xs text-gray-500">Video</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                                {portfolio.length > 3 && (
+                                  <div className="w-full h-16 bg-gray-100 rounded flex items-center justify-center">
+                                    <span className="text-xs text-gray-600">+{portfolio.length - 3}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Bog'lanish tugmasi */}
+                          <div className="mt-4">
+                            {specialist.isAvailable !== false ? (
+                              <button
+                                className="w-full bg-primary text-white py-2 px-4 rounded hover:bg-primary/90 transition"
+                                onClick={() => handleContactSpecialist(specialist)}
+                              >
+                                {getTranslation("contactSpecialist", language)}
+                              </button>
+                            ) : (
+                              <div className="w-full text-center py-2 px-4 bg-gray-100 border border-gray-300 rounded">
+                                <p className="text-sm text-gray-600">
+                                  {getTranslation("specialistBusyMessage", language)}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )
+                  })
                 ) : (
                   <div className="col-span-full text-center py-8">
                     <p className="text-gray-500">{getTranslation("noSpecialistsFound", language)}</p>
@@ -331,6 +432,15 @@ export default function FindSpecialistsPage() {
         <BottomNavigation language={language} />
       ) : (
         <ClientBottomNavigation language={language} />
+      )}
+
+      {selectedSpecialist && (
+        <JobRequestModal
+          isOpen={isJobRequestModalOpen}
+          onClose={() => setIsJobRequestModalOpen(false)}
+          specialist={selectedSpecialist}
+          language={language}
+        />
       )}
     </div>
   )
