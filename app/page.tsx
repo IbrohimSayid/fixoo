@@ -5,17 +5,22 @@ import { useRouter } from "next/navigation"
 import Loader from "@/components/loader"
 import { checkUserAuthentication } from "@/lib/auth"
 import { useTelegram } from "@/hooks/use-telegram"
+import TelegramErrorBoundary from "@/components/telegram-error-boundary"
 
 export default function Home() {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
-  const { telegramApp, user, isReady } = useTelegram()
+  const { telegramApp, user, isReady, error } = useTelegram()
 
   useEffect(() => {
     // Telegram Mini App-dan kelgan foydalanuvchi ma'lumotlarini tekshirish
-    if (isReady && user) {
+    if (isReady && user && !error) {
       console.log("Telegram user:", user)
       // Bu yerda Telegram foydalanuvchisi ma'lumotlarini saqlash yoki tekshirish mumkin
+    }
+    
+    if (error) {
+      console.warn("Telegram WebApp not available, running in browser mode")
     }
 
     // Show loader for at least 3.5 seconds to allow for the animation
@@ -36,6 +41,8 @@ export default function Home() {
   }, [router, isReady, user])
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-primary">{loading && <Loader />}</main>
+    <TelegramErrorBoundary>
+      <main className="flex min-h-screen flex-col items-center justify-center bg-primary">{loading && <Loader />}</main>
+    </TelegramErrorBoundary>
   )
 }

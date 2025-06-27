@@ -17,7 +17,7 @@ import { professions } from "@/lib/profession-data"
 import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
 import ConfirmModal from "@/components/confirm-modal"
-import { Trash2 } from "lucide-react"
+import { Trash2, User, Globe, MessageCircle, ChevronRight } from "lucide-react"
 import HammerLoader from "@/components/hammer-loader"
 // Import the storage utility
 import { saveUserProfile, deleteUserAccount } from "@/lib/storage"
@@ -156,10 +156,22 @@ export default function SettingsPage() {
         <h1 className="text-2xl font-bold mb-6">{getTranslation("settings", language)}</h1>
 
         <Tabs defaultValue="profile">
-          <TabsList className="mb-4">
-            <TabsTrigger value="profile">{getTranslation("profileSettings", language)}</TabsTrigger>
-            <TabsTrigger value="language">{getTranslation("languageSettings", language)}</TabsTrigger>
-            <TabsTrigger value="support">{getTranslation("support", language)}</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-6">
+            <TabsTrigger value="profile" className="text-xs sm:text-sm">
+              <User className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{getTranslation("profileSettings", language)}</span>
+              <span className="sm:hidden">Profil</span>
+            </TabsTrigger>
+            <TabsTrigger value="language" className="text-xs sm:text-sm">
+              <Globe className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{getTranslation("languageSettings", language)}</span>
+              <span className="sm:hidden">Til</span>
+            </TabsTrigger>
+            <TabsTrigger value="support" className="text-xs sm:text-sm">
+              <MessageCircle className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{getTranslation("support", language)}</span>
+              <span className="sm:hidden">Yordam</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
@@ -294,39 +306,56 @@ export default function SettingsPage() {
           </TabsContent>
 
           <TabsContent value="support">
-            <Card>
-              <CardHeader className="bg-primary/5 pb-4">
-                <CardTitle>{getTranslation("support", language)}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <div className="space-y-6 text-center">
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-primary">
-                      {getTranslation("supportTitle", language)}
-                    </h3>
-                    <p className="text-muted-foreground">
-                      {getTranslation("supportDescription", language)}
-                    </p>
-                    <p className="text-muted-foreground">
-                      {getTranslation("supportReady", language)}
-                    </p>
+            <div className="space-y-4">
+              {/* Support Info Card */}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <MessageCircle className="w-12 h-12 mx-auto text-blue-500" />
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-semibold text-primary">
+                        {getTranslation("supportTitle", language)}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        {getTranslation("supportDescription", language)}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {getTranslation("supportReady", language)}
+                      </p>
+                    </div>
                   </div>
-                  
-                  <div className="space-y-4 py-4">
-                    <p className="text-sm text-muted-foreground">
+                </CardContent>
+              </Card>
+
+              {/* Support Bot Button */}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <p className="text-sm text-gray-600">
                       {getTranslation("supportContact", language)}
                     </p>
-                    <a 
-                      href="https://t.me/fixoomessagebot" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200"
+                    <Button 
+                      asChild
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-6"
                     >
-                      {getTranslation("supportBotName", language)}
-                    </a>
+                      <a 
+                        href="https://t.me/fixoomessagebot" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2"
+                      >
+                        <MessageCircle className="w-5 h-5" />
+                        {getTranslation("supportBotName", language)}
+                      </a>
+                    </Button>
                   </div>
-                  
-                  <div className="space-y-2 border-t pt-4">
+                </CardContent>
+              </Card>
+
+              {/* Footer Message */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="text-center space-y-2">
                     <p className="text-sm text-muted-foreground">
                       {getTranslation("supportTeam", language)}
                     </p>
@@ -334,9 +363,9 @@ export default function SettingsPage() {
                       {getTranslation("supportImportant", language)}
                     </p>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </main>

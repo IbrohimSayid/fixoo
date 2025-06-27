@@ -13,7 +13,7 @@ import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
 import { getSpecialistOrders, getNewSpecialistOrders, updateOrderStatus } from "@/lib/storage"
 import { formatDistanceToNow } from "date-fns"
-import { Clock, CheckCircle, XCircle } from "lucide-react"
+import { Clock, CheckCircle, XCircle, ShoppingBag, History, User, MapPin, Phone, ChevronRight } from "lucide-react"
 import toast from 'react-hot-toast'
 import HammerLoader from "@/components/hammer-loader"
 
@@ -170,17 +170,21 @@ export default function OrdersPage() {
         <h1 className="text-2xl font-bold mb-6">{getTranslation("ordersList", language)}</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="new" className="relative">
-              {getTranslation("newOrders", language)}
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="new" className="relative text-xs sm:text-sm">
+              <ShoppingBag className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{getTranslation("newOrders", language)}</span>
+              <span className="sm:hidden">Yangi</span>
               {newOrders.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {newOrders.length}
                 </span>
               )}
             </TabsTrigger>
-            <TabsTrigger value="history">
-              {getTranslation("ordersHistory", language)}
+            <TabsTrigger value="history" className="text-xs sm:text-sm">
+              <History className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{getTranslation("ordersHistory", language)}</span>
+              <span className="sm:hidden">Tarix</span>
             </TabsTrigger>
           </TabsList>
 
@@ -189,43 +193,66 @@ export default function OrdersPage() {
               <div className="space-y-4">
                 {newOrders.map((order) => (
                   <Card key={order.id} className="overflow-hidden">
-                    <CardHeader className="bg-primary/5 pb-4">
-                      <CardTitle className="flex justify-between items-center">
-                        <span>{order.clientName}</span>
-                        <div className="flex items-center text-sm font-normal">
-                          <Clock className="h-4 w-4 mr-1" />
-                          <span>{formatDate(order.date)}</span>
+                    <CardContent className="p-0">
+                      <div className="p-4">
+                        {/* Header info */}
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                              <User className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium text-gray-900">{order.clientName}</h3>
+                              <div className="flex items-center text-xs text-gray-500">
+                                <Clock className="w-3 h-3 mr-1" />
+                                <span>{formatDate(order.date)}</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4">
-                      <div className="space-y-2 mb-4">
-                        <p>
-                          <strong>{getTranslation("description", language)}:</strong> {order.description}
-                        </p>
-                        <p>
-                          <strong>{getTranslation("jobLocation", language)}:</strong> {order.location}
-                        </p>
-                      </div>
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="flex items-center gap-1"
-                          onClick={() => handleRejectOrder(order.id)}
-                        >
-                          <XCircle className="h-4 w-4" />
-                          {getTranslation("reject", language)}
-                        </Button>
-                        <Button
-                          variant="default"
-                          size="sm"
-                          className="flex items-center gap-1"
-                          onClick={() => handleAcceptOrder(order.id)}
-                        >
-                          <CheckCircle className="h-4 w-4" />
-                          {getTranslation("accept", language)}
-                        </Button>
+
+                        {/* Order details */}
+                        <div className="space-y-2 mb-4">
+                          <div className="flex items-start space-x-2">
+                            <div className="w-4 h-4 mt-0.5 text-gray-400">
+                              <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                <path d="M9 12h6v2H9zm0-4h6v2H9zm0-4h6v2H9zM3 20V4h18v16H3z"/>
+                              </svg>
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm text-gray-600 leading-relaxed">{order.description}</p>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <MapPin className="w-4 h-4 text-gray-400" />
+                            <p className="text-sm text-gray-600">{order.location}</p>
+                          </div>
+                        </div>
+
+                        {/* Action buttons */}
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => handleRejectOrder(order.id)}
+                          >
+                            <XCircle className="h-4 w-4" />
+                            <span className="hidden sm:inline">{getTranslation("reject", language)}</span>
+                            <span className="sm:hidden">Rad</span>
+                          </Button>
+                          <Button
+                            variant="default"
+                            size="sm"
+                            className="flex items-center gap-1"
+                            onClick={() => handleAcceptOrder(order.id)}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                            <span className="hidden sm:inline">{getTranslation("accept", language)}</span>
+                            <span className="sm:hidden">Qabul</span>
+                          </Button>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -239,47 +266,57 @@ export default function OrdersPage() {
           </TabsContent>
 
           <TabsContent value="history" className="mt-6">
-            <Card>
-              <CardHeader className="bg-primary/5 pb-4">
-                <CardTitle>{getTranslation("allOrders", language)}</CardTitle>
-              </CardHeader>
-              <CardContent className="p-0 overflow-x-auto">
-                {allOrders.length > 0 ? (
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>{getTranslation("clientName", language)}</TableHead>
-                        <TableHead className="hidden md:table-cell">{getTranslation("description", language)}</TableHead>
-                        <TableHead className="hidden md:table-cell">{getTranslation("date", language)}</TableHead>
-                        <TableHead>{getTranslation("status", language)}</TableHead>
-                        <TableHead>{getTranslation("contact", language)}</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {allOrders.map((order) => (
-                        <TableRow key={order.id}>
-                          <TableCell className="font-medium">{order.clientName}</TableCell>
-                          <TableCell className="hidden md:table-cell">{order.description}</TableCell>
-                          <TableCell className="hidden md:table-cell">{formatDate(order.date)}</TableCell>
-                          <TableCell>{getStatusBadge(order.status)}</TableCell>
-                          <TableCell>
-                            {order.status === "accepted" ? (
-                              <span className="text-primary">{order.clientPhone}</span>
-                            ) : (
-                              <span className="text-gray-400">-</span>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">{getTranslation("noNewOrders", language)}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            {allOrders.length > 0 ? (
+              <div className="space-y-4">
+                {allOrders.map((order) => (
+                  <Card key={order.id} className="overflow-hidden">
+                    <CardContent className="p-0">
+                      <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors duration-200">
+                        <div className="flex items-center space-x-3 flex-1">
+                          <div className="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center">
+                            <User className="w-5 h-5 text-white" />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between">
+                              <h3 className="font-medium text-gray-900 truncate">
+                                {order.clientName}
+                              </h3>
+                              {getStatusBadge(order.status)}
+                            </div>
+                            
+                            <p className="text-sm text-gray-600 truncate">
+                              {order.description}
+                            </p>
+                            
+                            <div className="flex items-center justify-between mt-1">
+                              <div className="flex items-center text-xs text-gray-500">
+                                <Clock className="w-3 h-3 mr-1" />
+                                <span>{formatDate(order.date)}</span>
+                              </div>
+                              
+                              {order.status === "accepted" && (
+                                <div className="flex items-center text-xs text-primary">
+                                  <Phone className="w-3 h-3 mr-1" />
+                                  <span>{order.clientPhone}</span>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <ChevronRight className="w-5 h-5 text-gray-400 ml-4" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 bg-white rounded-lg shadow">
+                <History className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                <p className="text-gray-500">{getTranslation("noNewOrders", language)}</p>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </main>

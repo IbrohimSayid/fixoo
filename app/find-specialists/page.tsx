@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-  import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Search, History, ChevronRight, Phone, MapPin, Star, User } from "lucide-react"
 import { checkUserAuthentication, getUserData, getAllSpecialists, logout } from "@/lib/auth"
 import { getUserMedia } from "@/lib/storage"
 import { getClientOrders } from "@/lib/storage"
@@ -163,12 +164,16 @@ export default function FindSpecialistsPage() {
         <h1 className="text-2xl font-bold mb-6">{getTranslation("findSpecialists", language)}</h1>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="search">
-              {getTranslation("findSpecialists", language)}
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="search" className="text-xs sm:text-sm">
+              <Search className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{getTranslation("findSpecialists", language)}</span>
+              <span className="sm:hidden">Qidirish</span>
             </TabsTrigger>
-            <TabsTrigger value="history">
-              {getTranslation("ordersHistory", language)}
+            <TabsTrigger value="history" className="text-xs sm:text-sm">
+              <History className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">{getTranslation("ordersHistory", language)}</span>
+              <span className="sm:hidden">Tarix</span>
             </TabsTrigger>
           </TabsList>
 
@@ -248,7 +253,7 @@ export default function FindSpecialistsPage() {
 
             {/* Natijalar */}
             {showResults && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="space-y-4">
                 {filteredSpecialists.length > 0 ? (
                   filteredSpecialists.map((specialist) => {
                     const rating = specialist.rating || 0;
@@ -257,117 +262,67 @@ export default function FindSpecialistsPage() {
                     
                     return (
                       <Card key={specialist.id} className="overflow-hidden">
-                        <CardContent className="p-4 sm:p-6">
-                          <div className="flex items-start gap-4 mb-4">
-                            {/* Avatar */}
-                            <div className="flex-shrink-0">
-                              <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-lg font-semibold">
-                                {specialist.firstName.charAt(0)}{specialist.lastName.charAt(0)}
+                        <CardContent className="p-0">
+                          <div className="flex items-center justify-between p-4 hover:bg-gray-50 transition-colors duration-200">
+                            <div className="flex items-center space-x-3 flex-1">
+                              {/* Avatar */}
+                              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                <User className="w-6 h-6 text-white" />
                               </div>
-                            </div>
-                            
-                            {/* Usta ma'lumotlari */}
-                            <div className="flex-1">
-                              <h3 className="text-lg font-semibold mb-1">
-                                {specialist.firstName} {specialist.lastName}
-                              </h3>
-                              <p className="text-sm text-gray-600 mb-2">
-                                {getProfessionLabel(specialist.profession, language)}
-                              </p>
                               
-                              {/* Band/Bo'sh holati */}
-                              <div className="flex items-center mb-2">
-                                <Badge className={specialist.isAvailable !== false ? "bg-green-500" : "bg-red-500"}>
-                                  {specialist.isAvailable !== false
-                                    ? getTranslation("specialistAvailable", language)
-                                    : getTranslation("specialistBusy", language)}
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Faoliyat hududi */}
-                          <div className="space-y-2 mb-4">
-                            <p className="text-sm text-gray-600">
-                              <span className="font-medium">{getTranslation("location", language)}:</span> {getRegionLabel(specialist.region, language)}, {getDistrictLabel(specialist.region, specialist.district, language)}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              <span className="font-medium">{getTranslation("address", language)}:</span> {specialist.address}
-                            </p>
-                          </div>
-                          
-                          {/* Baxolash tizimi */}
-                          <div className="mb-4">
-                            {rating > 0 && reviewCount > 0 ? (
-                              <div className="flex items-center gap-2">
-                                <div className="flex items-center">
-                                  {[1, 2, 3, 4, 5].map((star) => (
-                                    <svg
-                                      key={star}
-                                      className={`w-4 h-4 ${star <= rating ? 'text-yellow-400' : 'text-gray-300'}`}
-                                      fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
-                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                  ))}
+                              {/* Usta ma'lumotlari */}
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center justify-between">
+                                  <h3 className="font-medium text-gray-900 truncate">
+                                    {specialist.firstName} {specialist.lastName}
+                                  </h3>
+                                  <Badge className={`ml-2 ${specialist.isAvailable !== false ? "bg-green-500" : "bg-red-500"}`}>
+                                    {specialist.isAvailable !== false ? "Band emas" : "Band"}
+                                  </Badge>
                                 </div>
-                                <span className="text-sm text-gray-600">
-                                  ({rating.toFixed(1)} - {reviewCount} {getTranslation("reviews", language)})
-                                </span>
-                              </div>
-                            ) : (
-                              <p className="text-sm text-gray-500 italic">
-                                {getTranslation("noRatingsYet", language)}
-                              </p>
-                            )}
-                          </div>
-                          
-                          {/* Portfolio - ishlar */}
-                          {portfolio.length > 0 && (
-                            <div className="mb-4">
-                              <p className="text-sm font-medium text-gray-700 mb-2">
-                                {getTranslation("portfolio", language)}:
-                              </p>
-                              <div className="grid grid-cols-3 gap-2">
-                                {portfolio.slice(0, 3).map((media: any, index: number) => (
-                                  <div key={index} className="relative group">
-                                    {media.type === "image" ? (
-                                      <div className="w-full h-16 bg-gray-200 rounded flex items-center justify-center">
-                                        <span className="text-xs text-gray-500">Rasm</span>
-                                      </div>
-                                    ) : (
-                                      <div className="w-full h-16 bg-gray-200 rounded flex items-center justify-center">
-                                        <span className="text-xs text-gray-500">Video</span>
-                                      </div>
-                                    )}
+                                
+                                <p className="text-sm text-gray-600 truncate">
+                                  {getProfessionLabel(specialist.profession, language)}
+                                </p>
+                                
+                                <div className="flex items-center mt-1 text-xs text-gray-500">
+                                  <MapPin className="w-3 h-3 mr-1" />
+                                  <span className="truncate">
+                                    {getRegionLabel(specialist.region, language)}, {getDistrictLabel(specialist.region, specialist.district, language)}
+                                  </span>
+                                </div>
+                                
+                                {/* Rating */}
+                                {rating > 0 && reviewCount > 0 ? (
+                                  <div className="flex items-center mt-1">
+                                    <Star className="w-3 h-3 text-yellow-400 mr-1" />
+                                    <span className="text-xs text-gray-600">
+                                      {rating.toFixed(1)} ({reviewCount})
+                                    </span>
                                   </div>
-                                ))}
-                                {portfolio.length > 3 && (
-                                  <div className="w-full h-16 bg-gray-100 rounded flex items-center justify-center">
-                                    <span className="text-xs text-gray-600">+{portfolio.length - 3}</span>
-                                  </div>
+                                ) : (
+                                  <span className="text-xs text-gray-400 mt-1 block">
+                                    Hali baxolanmagan
+                                  </span>
                                 )}
                               </div>
                             </div>
-                          )}
-
-                          {/* Bog'lanish tugmasi */}
-                          <div className="mt-4">
-                            {specialist.isAvailable !== false ? (
-                              <button
-                                className="w-full bg-primary text-white py-2 px-4 rounded hover:bg-primary/90 transition"
-                                onClick={() => handleContactSpecialist(specialist)}
-                              >
-                                {getTranslation("contactSpecialist", language)}
-                              </button>
-                            ) : (
-                              <div className="w-full text-center py-2 px-4 bg-gray-100 border border-gray-300 rounded">
-                                <p className="text-sm text-gray-600">
-                                  {getTranslation("specialistBusyMessage", language)}
-                                </p>
-                              </div>
-                            )}
+                            
+                            {/* Contact button */}
+                            <div className="ml-4">
+                              {specialist.isAvailable !== false ? (
+                                <button
+                                  className="flex items-center justify-center w-10 h-10 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+                                  onClick={() => handleContactSpecialist(specialist)}
+                                >
+                                  <Phone className="w-4 h-4" />
+                                </button>
+                              ) : (
+                                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                                  <Phone className="w-4 h-4 text-gray-400" />
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </CardContent>
                       </Card>

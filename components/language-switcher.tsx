@@ -20,32 +20,36 @@ export default function LanguageSwitcher({ onLanguageChange, currentLanguage }: 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
+        <Button variant="outline" size="sm" className="h-8 px-2 gap-1">
           <Image
             src={`/flags/${currentLanguage}.png`}
             alt={currentLanguage}
-            width={20}
-            height={15}
+            width={16}
+            height={12}
             className="object-cover"
+            style={{ width: '16px', height: '12px' }}
           />
-          <span className="text-gray-900 dark:text-gray-100">{currentOption?.label || getTranslation(currentLanguage, currentLanguage)}</span>
+          <span className="text-xs font-medium hidden sm:inline text-gray-900">
+            {currentOption?.label.split(' ')[0] || currentLanguage.toUpperCase()}
+          </span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-40">
         {languageOptions.map((option) => (
           <DropdownMenuItem
             key={option.value}
             onClick={() => handleLanguageChange(option.value)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 py-2"
           >
             <Image
               src={`/flags/${option.value}.png`}
               alt={option.value}
-              width={20}
-              height={15}
+              width={16}
+              height={12}
               className="object-cover"
+              style={{ width: '16px', height: '12px' }}
             />
-            {option.label}
+            <span className="text-sm">{option.label}</span>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

@@ -74,23 +74,63 @@ export function useTelegram() {
   const [telegramApp, setTelegramApp] = useState<TelegramWebApp | null>(null)
   const [user, setUser] = useState<any>(null)
   const [isReady, setIsReady] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Telegram) {
-      const tgApp = window.Telegram.WebApp
-      setTelegramApp(tgApp)
+    let attempts = 0
+    const maxAttempts = 50 // 5 soniya kutish (50 * 100ms)
 
-      // Telegram Mini App-ni kengaytirish
-      tgApp.expand()
+    // DOM yuklangandan keyin tekshirish
+    const initTelegram = () => {
+      try {
+        if (typeof window !== "undefined" && window.Telegram?.WebApp) {
+          const tgApp = window.Telegram.WebApp
+          setTelegramApp(tgApp)
 
-      // Foydalanuvchi ma'lumotlarini olish
-      if (tgApp.initDataUnsafe?.user) {
-        setUser(tgApp.initDataUnsafe.user)
+          // Xavfsiz usulda expand qilish
+          if (typeof tgApp.expand === 'function') {
+            tgApp.expand()
+          }
+
+          // Foydalanuvchi ma'lumotlarini xavfsiz olish
+          if (tgApp.initDataUnsafe?.user) {
+            setUser(tgApp.initDataUnsafe.user)
+          }
+
+          // Mini App tayyor
+          if (typeof tgApp.ready === 'function') {
+            tgApp.ready()
+          }
+          
+          setIsReady(true)
+        } else {
+          attempts++
+          if (attempts < maxAttempts) {
+            // Telegram Web App hali yuklanmagan, yana kutamiz
+            setTimeout(initTelegram, 100)
+          } else {
+            // Script yuklanmadi, browser mode
+            console.warn('Telegram WebApp script not loaded, running in browser mode')
+            setError('Telegram WebApp not available')
+            setIsReady(true)
+          }
+        }
+      } catch (err) {
+        console.warn('Telegram WebApp initialization error:', err)
+        setError('Telegram WebApp not available')
+        setIsReady(true) // Normal browser muhitida ham ishlashi uchun
       }
+    }
 
-      // Mini App tayyor
-      tgApp.ready()
-      setIsReady(true)
+    // DOM tayyor bo'lgandan keyin boshlash
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTelegram)
+    } else {
+      initTelegram()
+    }
+
+    return () => {
+      document.removeEventListener('DOMContentLoaded', initTelegram)
     }
   }, [])
 
@@ -98,5 +138,6 @@ export function useTelegram() {
     telegramApp,
     user,
     isReady,
+    error,
   }
 }

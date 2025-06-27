@@ -62,13 +62,13 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
           </Link>
 
           {isMobile ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
               <LanguageSwitcher onLanguageChange={onLanguageChange} currentLanguage={language} />
 
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-white">
-                    <Menu className="h-5 w-5" />
+                  <Button variant="ghost" size="icon" className="text-white h-8 w-8">
+                    <Menu className="h-4 w-4" />
                   </Button>
                 </SheetTrigger>
                 <SheetContent className="bg-primary text-white">
@@ -129,26 +129,26 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
               </Sheet>
             </div>
           ) : (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <LanguageSwitcher onLanguageChange={onLanguageChange} currentLanguage={language} />
 
               {user.type === "specialist" && (
                 <>
-                  <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-1">
+                  <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-1 text-sm">
                     <Home className="h-4 w-4" />
                     <span>{getTranslation("home", language)}</span>
                   </Link>
 
-                  <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-1">
+                  <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-1 text-sm">
                     <Search className="h-4 w-4" />
                     <span>{getTranslation("findSpecialists", language)}</span>
                   </Link>
 
-                  <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-1 relative">
+                  <Link href="/orders" className="text-white hover:text-white/80 flex items-center gap-1 relative text-sm">
                     <ClipboardList className="h-4 w-4" />
                     <span>{getTranslation("ordersList", language)}</span>
                     {newOrdersCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
                         {newOrdersCount > 9 ? '9+' : newOrdersCount}
                       </span>
                     )}
@@ -158,26 +158,26 @@ export default function Header({ user, onLogout, language, onLanguageChange }: H
 
               {user.type === "client" && (
                 <>
-                  <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-1">
+                  <Link href="/home" className="text-white hover:text-white/80 flex items-center gap-1 text-sm">
                     <Home className="h-4 w-4" />
                     <span>{getTranslation("home", language)}</span>
                   </Link>
 
-                  <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-1">
+                  <Link href="/find-specialists" className="text-white hover:text-white/80 flex items-center gap-1 text-sm">
                     <Search className="h-4 w-4" />
                     <span>{getTranslation("findSpecialists", language)}</span>
                   </Link>
                 </>
               )}
 
-              <Link href="/settings" className="text-white hover:text-white/80 flex items-center gap-1">
+              <Link href="/settings" className="text-white hover:text-white/80 flex items-center gap-1 text-sm">
                 <Settings className="h-4 w-4" />
                 <span>{getTranslation("settings", language)}</span>
               </Link>
 
-              <Button variant="destructive" className="text-white flex items-center gap-2" onClick={handleLogoutClick}>
+              <Button variant="destructive" size="sm" className="text-white flex items-center gap-1 h-8 px-3" onClick={handleLogoutClick}>
                 <LogOut className="h-4 w-4" />
-                {getTranslation("logout", language)}
+                <span className="text-xs">{getTranslation("logout", language)}</span>
               </Button>
             </div>
           )}
