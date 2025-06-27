@@ -942,6 +942,72 @@ export const translations: Translations = {
     kg: "Көбүрөөк кардарларды тартуу үчүн жумушуңуздун фотолорун жана видеолорун жүктөңүз",
     kk: "Kóbirek mijozlardı tartıw ushın jumısıńızdıń fotolarını hám videolarını júkleń",
   },
+
+  // Support
+  support: {
+    en: "Support",
+    uz: "Qo'llab-quvvatlash",
+    ru: "Поддержка",
+    kz: "Қолдау көрсету",
+    kg: "Колдоо көрсөтүү",
+    kk: "Qollap-quwatlash",
+  },
+  supportTitle: {
+    en: "Do you need help?",
+    uz: "Sizga yordam kerakmi?",
+    ru: "Нужна ли вам помощь?",
+    kz: "Сізге көмек керек пе?",
+    kg: "Сизге жардам керекпи?",
+    kk: "Sizge járdem kerekpe?",
+  },
+  supportDescription: {
+    en: "Do you have any questions, suggestions or complaints?",
+    uz: "Savol, taklif yoki shikoyatlaringiz bormi?",
+    ru: "У вас есть вопросы, предложения или жалобы?",
+    kz: "Сұрақтарыңыз, ұсыныстарыңыз немесе шағымдарыңыз бар ма?",
+    kg: "Суроолоруңуз, сунуштарыңыз же даттануулариңыз барбы?",
+    kk: "Suraqlarıńız, usınıslarıńız yaki shıǵımdalarıńız barmı?",
+  },
+  supportReady: {
+    en: "We are always ready to listen!",
+    uz: "Biz doimo eshitishga tayyormiz!",
+    ru: "Мы всегда готовы выслушать!",
+    kz: "Біз әрқашан тыңдауға дайынбыз!",
+    kg: "Биз дайыма угууга даярбыз!",
+    kk: "Biz hárwaqıt tıńlawǵa dáyır!",
+  },
+  supportContact: {
+    en: "Contact us via the following Telegram bot:",
+    uz: "Quyidagi Telegram bot orqali biz bilan bog'laning:",
+    ru: "Свяжитесь с нами через следующий Telegram бот:",
+    kz: "Мына Telegram бот арқылы бізбен байланысыңыз:",
+    kg: "Төмөнкү Telegram бот аркылуу биз менен байланышыңыз:",
+    kk: "Tómendegi Telegram bot arqılı biz benen baylanısıń:",
+  },
+  supportBotName: {
+    en: "Fixoo Support Bot",
+    uz: "Fixoo Qo'llab-quvvatlash boti",
+    ru: "Бот поддержки Fixoo",
+    kz: "Fixoo қолдау көрсету боты",
+    kg: "Fixoo колдоо көрсөтүү боту",
+    kk: "Fixoo qollap-quwatlash boti",
+  },
+  supportTeam: {
+    en: "The Fixoo team strives to provide you with the fastest and most efficient help possible.",
+    uz: "Fixoo jamoasi sizga imkon qadar tez va samarali yordam berishga harakat qiladi.",
+    ru: "Команда Fixoo стремится предоставить вам максимально быструю и эффективную помощь.",
+    kz: "Fixoo командасы сізге мүмкін болғанынша жылдам және тиімді көмек көрсетуге тырысады.",
+    kg: "Fixoo командасы сизге мүмкүн болушунча тез жана натыйжалуу жардам берүүгө аракет кылат.",
+    kk: "Fixoo jamoası sizge múmkin bolǵansha tez hám járdemli kómek beriwge tırısadı.",
+  },
+  supportImportant: {
+    en: "Your opinion is important to us!",
+    uz: "Fikringiz biz uchun muhim!",
+    ru: "Ваше мнение важно для нас!",
+    kz: "Сіздің пікіріңіз біз үшін маңызды!",
+    kg: "Сиздин пикириңиз биз үчүн маанилүү!",
+    kk: "Sizdiń pikırińiz biz ushın mánizli!",
+  },
 }
 
 // Get translation for a key in the current language

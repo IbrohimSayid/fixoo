@@ -159,6 +159,7 @@ export default function SettingsPage() {
           <TabsList className="mb-4">
             <TabsTrigger value="profile">{getTranslation("profileSettings", language)}</TabsTrigger>
             <TabsTrigger value="language">{getTranslation("languageSettings", language)}</TabsTrigger>
+            <TabsTrigger value="support">{getTranslation("support", language)}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile">
@@ -286,6 +287,52 @@ export default function SettingsPage() {
                         ))}
                       </SelectContent>
                     </Select>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="support">
+            <Card>
+              <CardHeader className="bg-primary/5 pb-4">
+                <CardTitle>{getTranslation("support", language)}</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6">
+                <div className="space-y-6 text-center">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold text-primary">
+                      {getTranslation("supportTitle", language)}
+                    </h3>
+                    <p className="text-muted-foreground">
+                      {getTranslation("supportDescription", language)}
+                    </p>
+                    <p className="text-muted-foreground">
+                      {getTranslation("supportReady", language)}
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-4 py-4">
+                    <p className="text-sm text-muted-foreground">
+                      {getTranslation("supportContact", language)}
+                    </p>
+                    <a 
+                      href="https://t.me/fixoomessagebot" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200"
+                    >
+                      {getTranslation("supportBotName", language)}
+                    </a>
+                  </div>
+                  
+                  <div className="space-y-2 border-t pt-4">
+                    <p className="text-sm text-muted-foreground">
+                      {getTranslation("supportTeam", language)}
+                    </p>
+                    <p className="text-sm font-medium text-primary">
+                      {getTranslation("supportImportant", language)}
+                    </p>
                   </div>
                 </div>
               </CardContent>
