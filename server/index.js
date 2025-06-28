@@ -35,11 +35,16 @@ app.use('/api/', limiter);
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean)
+    ? [
+        'https://fixoouzadmin.netlify.app',
+        'https://fixoo-frontend.netlify.app', 
+        'https://your-frontend.netlify.app',
+        ...(process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean)
+      ]
     : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'], // Development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept']
 };
 
 app.use(cors(corsOptions));
@@ -65,6 +70,26 @@ app.get('/health', (req, res) => {
     version: '1.0.0',
     environment: process.env.NODE_ENV || 'development',
     uptime: process.uptime()
+  });
+});
+
+// Debug CORS endpoint
+app.get('/debug/cors', (req, res) => {
+  res.json({
+    success: true,
+    corsConfig: {
+      environment: process.env.NODE_ENV || 'development',
+      allowedOrigins: process.env.NODE_ENV === 'production' 
+        ? [
+            'https://fixoouzadmin.netlify.app',
+            'https://fixoo-frontend.netlify.app', 
+            'https://your-frontend.netlify.app',
+            ...(process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean)
+          ]
+        : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'],
+      requestOrigin: req.headers.origin,
+      allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept']
+    }
   });
 });
 
