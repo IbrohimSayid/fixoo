@@ -46,8 +46,11 @@ npm install
 
 2. Environment variables sozlash:
 ```bash
-# .env.local fayl yarating
+# .env.local fayl yarating (development uchun)
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
+
+# Production uchun
+NEXT_PUBLIC_API_URL=https://fixoo-server-f1rh.onrender.com/api
 ```
 
 3. Development serverini ishga tushirish:
@@ -78,9 +81,11 @@ npm start
 ## API Integration
 
 Admin panel backend API bilan ishlaydi:
-- Base URL: `http://localhost:5000/api`
+- Development: `http://localhost:5000/api`
+- Production: `https://fixoo-server-f1rh.onrender.com/api`
 - Authentication: JWT tokens
 - Real-time updates
+- CORS enabled with credentials
 
 ### API Endpoints
 - `GET /users/stats/overview` - Foydalanuvchilar statistikasi

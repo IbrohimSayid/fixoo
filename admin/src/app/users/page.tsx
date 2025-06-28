@@ -286,7 +286,7 @@ export default function UsersPage() {
                           }`}>
                             {user.avatar ? (
                               <img
-                                src={`http://localhost:5000${user.avatar}`}
+                                src={`https://fixoo-server-f1rh.onrender.com${user.avatar}`}
                                 alt={`${user.firstName} ${user.lastName}`}
                                 className="h-full w-full object-cover"
                               />

@@ -1,7 +1,7 @@
 import { getAuthToken } from './auth';
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fixoo-server-f1rh.onrender.com/api';
 
 // Helper function to make API calls with auth
 const apiCall = async (endpoint: string, options: RequestInit = {}) => {
@@ -9,6 +9,7 @@ const apiCall = async (endpoint: string, options: RequestInit = {}) => {
   
   const config: RequestInit = {
     ...options,
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),
@@ -28,6 +29,7 @@ export const authAPI = {
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
       body: JSON.stringify({ firstName, lastName, password }),
     }).then(res => res.json()),
   
