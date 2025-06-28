@@ -4,6 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
+  NEXT_PUBLIC_API_URL = "https://fixoo-server-f1rh.onrender.com/api"
 
 # Netlify Next.js plugin
 [[plugins]]
