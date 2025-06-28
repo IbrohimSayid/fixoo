@@ -32,28 +32,9 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// CORS configuration
+// CORS configuration - Soddalashtirilgan
 const corsOptions = {
-  origin: function (origin, callback) {
-    const allowedOrigins = process.env.NODE_ENV === 'production' 
-      ? [
-          'https://fixoouzadmin.netlify.app',
-          'https://fixoo-frontend.netlify.app', 
-          'https://your-frontend.netlify.app',
-          ...(process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean)
-        ]
-      : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'];
-    
-    // Allow requests with no origin (like mobile apps)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log('Blocked by CORS:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true, // Barcha originlarga ruxsat berish
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
