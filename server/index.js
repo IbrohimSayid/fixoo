@@ -35,7 +35,7 @@ app.use('/api/', limiter);
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.com', 'https://admin.your-frontend-domain.com'] // Production domains
+    ? (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean)
     : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001', 'http://127.0.0.1:3001'], // Development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -56,13 +56,15 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-// Health check endpoint
+// Health check endpoint for Render.com
 app.get('/health', (req, res) => {
-  res.json({
+  res.status(200).json({
     success: true,
     message: 'Fixoo Server ishlayapti',
     timestamp: new Date().toISOString(),
-    version: '1.0.0'
+    version: '1.0.0',
+    environment: process.env.NODE_ENV || 'development',
+    uptime: process.uptime()
   });
 });
 

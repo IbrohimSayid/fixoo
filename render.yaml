@@ -1,0 +1,46 @@
+services:
+  # Backend API Server
+  - type: web
+    name: fixoo-api
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        value: "https://your-frontend.netlify.app,https://your-admin.netlify.app"
+    
+    # Auto scaling
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+    
+    # Disk for uploads
+    disk:
+      name: uploads
+      mountPath: /app/server/uploads
+      sizeGB: 1
+
+# Static site deployments (if needed)
+staticSites:
+  # Frontend (alternative to Netlify)
+  - name: fixoo-frontend
+    buildCommand: cd front-end && npm install && npm run build
+    publishPath: front-end/out
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://fixoo-api.onrender.com/api"
+  
+  # Admin Panel (alternative to Netlify)  
+  - name: fixoo-admin
+    buildCommand: cd admin && npm install && npm run build
+    publishPath: admin/out
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: "https://fixoo-api.onrender.com/api" 
