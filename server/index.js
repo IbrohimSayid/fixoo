@@ -32,9 +32,12 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// CORS configuration - Soddalashtirilgan
+// CORS configuration
 const corsOptions = {
-  origin: true, // Barcha originlarga ruxsat berish
+  origin: [
+    "https://fixoouzadmin.netlify.app",
+    "https://fixoo-frontend.netlify.app"
+  ], // Faqat Netlify domenlariga ruxsat
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
