@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 
 // API Base URL
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://your-api-domain.com/api' 
+  ? 'https://fixoo-server-f1rh.onrender.com/api' 
   : 'http://localhost:5000/api'
 
 // Auth token olish
