@@ -100,33 +100,33 @@ export default function RootLayout({
                 <div className="flex">
                   {/* Logo */}
                   <div className="flex-shrink-0 flex items-center">
-                    <div className="flex items-center">
-                      <div className="bg-blue-600 rounded-lg p-2">
-                        <Shield className="h-6 w-6 text-white" />
-                      </div>
+              <div className="flex items-center">
+                <div className="bg-blue-600 rounded-lg p-2">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
                       <span className="ml-3 text-xl font-bold text-gray-900">Fixoo Admin</span>
-                    </div>
-                  </div>
+              </div>
+            </div>
 
                   {/* Desktop navigation */}
                   <div className="hidden md:ml-10 md:flex md:space-x-1">
-                    {navigation.map((item) => {
-                      const isActive = pathname === item.href;
-                      return (
-                        <a
-                          key={item.name}
-                          href={item.href}
+              {navigation.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <a
+                    key={item.name}
+                    href={item.href}
                           className={`group inline-flex items-center px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
-                            isActive
+                      isActive
                               ? 'bg-blue-50 text-blue-700'
                               : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                          }`}
-                        >
+                    }`}
+                  >
                           <item.icon className={`mr-2 h-4 w-4 ${isActive ? 'text-blue-700' : 'text-gray-400 group-hover:text-gray-500'}`} />
                           {item.name}
-                        </a>
-                      );
-                    })}
+                  </a>
+                );
+              })}
                   </div>
                 </div>
 
@@ -143,45 +143,45 @@ export default function RootLayout({
                         </div>
                         <div className="text-left">
                           <p className="text-sm font-semibold text-gray-900">
-                            {admin.firstName} {admin.lastName}
-                          </p>
+                    {admin.firstName} {admin.lastName}
+                  </p>
                           <p className="text-xs text-gray-500">
-                            {admin.isSuperAdmin ? 'Bosh Admin' : 'Admin'}
-                          </p>
-                        </div>
+                    {admin.isSuperAdmin ? 'Bosh Admin' : 'Admin'}
+                  </p>
+                </div>
                         <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
-                      </div>
+              </div>
                     </button>
-
+              
                     {/* Dropdown menu */}
                     {profileDropdownOpen && (
                       <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                         <div className="py-1">
-                          <button
-                            onClick={handleLogout}
+              <button
+                onClick={handleLogout}
                             className="group flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
-                          >
+              >
                             <LogOut className="mr-3 h-4 w-4 text-gray-400 group-hover:text-red-600" />
                             Chiqish
-                          </button>
+              </button>
                         </div>
                       </div>
                     )}
-                  </div>
-                </div>
+            </div>
+          </div>
 
-                {/* Mobile menu button */}
+          {/* Mobile menu button */}
                 <div className="flex items-center md:hidden">
-                  <button
+                <button
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                     className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-                  >
+                >
                     {mobileMenuOpen ? (
                       <X className="block h-6 w-6" />
                     ) : (
                       <Menu className="block h-6 w-6" />
                     )}
-                  </button>
+                </button>
                 </div>
               </div>
             </div>
@@ -231,15 +231,15 @@ export default function RootLayout({
                     >
                       Chiqish
                     </button>
-                  </div>
-                </div>
               </div>
+            </div>
+          </div>
             )}
           </nav>
 
           {/* Main content */}
           <div className="pt-16">
-            {children}
+                {children}
           </div>
         </div>
       </body>

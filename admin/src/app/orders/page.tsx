@@ -1,248 +1,428 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { 
-  ShoppingBag, 
-  Clock, 
-  CheckCircle, 
-  XCircle,
-  AlertCircle,
-  Calendar,
-  User,
-  MapPin,
-  Search,
-  Filter
-} from 'lucide-react';
-import { ordersAPI } from '@/lib/api';
-import { Order } from '@/lib/types';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Eye, Search, Filter, Package, Clock, CheckCircle, User, MapPin } from 'lucide-react';
+
+interface Order {
+  id: string;
+  title: string;
+  description: string;
+  status: 'pending' | 'accepted' | 'in_progress' | 'completed' | 'cancelled';
+  urgency: 'urgent' | 'normal' | 'flexible';
+  profession: string;
+  address: string;
+  region: string;
+  district?: string;
+  price?: number;
+  estimatedTime?: string;
+  createdAt: string;
+  acceptedAt?: string;
+  completedAt?: string;
+  client?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    rating?: number;
+  };
+  specialist?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    profession: string;
+    rating?: number;
+  };
+  clientNote?: string;
+  specialistNote?: string;
+}
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [urgencyFilter, setUrgencyFilter] = useState('all');
+  const [stats, setStats] = useState({
+    total: 0,
+    pending: 0,
+    accepted: 0,
+    inProgress: 0,
+    completed: 0,
+    cancelled: 0,
+    today: 0
+  });
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    
-    if (typeof window !== 'undefined') {
-      loadOrders();
-      
-      // Har 30 sekundda buyurtmalarni yangilash
-      interval = setInterval(() => {
-        loadOrders();
-      }, 30000);
-    }
-    
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
+    fetchOrders();
   }, []);
 
-  const loadOrders = async () => {
+  useEffect(() => {
+    filterOrders();
+  }, [orders, searchTerm, statusFilter, urgencyFilter]);
+
+  const fetchOrders = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      const response = await ordersAPI.getAll();
+      const response = await fetch('https://fixoo-server-f1rh.onrender.com/api/orders', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('fixoo_admin_token')}`,
+        },
+      });
+
+      const data = await response.json();
       
-      // Response structure'ni tekshirish
-      console.log('Orders API response:', response);
-      
-      if (response.success && response.data) {
-        // Agar response.data.orders mavjud bo'lsa
-        if (response.data.orders) {
-          setOrders(response.data.orders);
-        }
-        // Agar response.data to'g'ridan-to'g'ri orders array bo'lsa
-        else if (Array.isArray(response.data)) {
-          setOrders(response.data);
-        }
-        // Fallback
-        else {
-          setOrders([]);
-        }
-      } else {
-        console.error('Invalid response structure:', response);
-        setOrders([]);
+      if (data.success) {
+        setOrders(data.data.orders);
+        calculateStats(data.data.orders);
       }
-    } catch (err: any) {
-      console.error('Buyurtmalarni yuklashda xatolik:', err);
-      setError('Buyurtmalarni yuklashda xatolik yuz berdi');
-      setOrders([]);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'accepted': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'in_progress': return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'completed': return 'bg-green-100 text-green-800 border-green-200';
-      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
+  const calculateStats = (ordersList: Order[]) => {
+    const today = new Date().toISOString().split('T')[0];
+    
+    setStats({
+      total: ordersList.length,
+      pending: ordersList.filter(o => o.status === 'pending').length,
+      accepted: ordersList.filter(o => o.status === 'accepted').length,
+      inProgress: ordersList.filter(o => o.status === 'in_progress').length,
+      completed: ordersList.filter(o => o.status === 'completed').length,
+      cancelled: ordersList.filter(o => o.status === 'cancelled').length,
+      today: ordersList.filter(o => o.createdAt.split('T')[0] === today).length,
+    });
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'pending': return Clock;
-      case 'accepted': return AlertCircle;
-      case 'in_progress': return ShoppingBag;
-      case 'completed': return CheckCircle;
-      case 'cancelled': return XCircle;
-      default: return Clock;
+  const filterOrders = () => {
+    let filtered = orders;
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(order =>
+        order.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.client?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.client?.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.specialist?.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.specialist?.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter(order => order.status === statusFilter);
+    }
+
+    // Urgency filter
+    if (urgencyFilter !== 'all') {
+      filtered = filtered.filter(order => order.urgency === urgencyFilter);
+    }
+
+    setFilteredOrders(filtered);
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'pending': return 'Kutilayotgan';
-      case 'accepted': return 'Qabul qilingan';
-      case 'in_progress': return 'Jarayonda';
-      case 'completed': return 'Bajarilgan';
-      case 'cancelled': return 'Bekor qilingan';
-      default: return status;
-    }
+  const getStatusBadge = (status: string) => {
+    const statusMap = {
+      pending: { label: 'Kutilmoqda', className: 'bg-yellow-100 text-yellow-800' },
+      accepted: { label: 'Qabul qilingan', className: 'bg-blue-100 text-blue-800' },
+      in_progress: { label: 'Jarayonda', className: 'bg-purple-100 text-purple-800' },
+      completed: { label: 'Bajarilgan', className: 'bg-green-100 text-green-800' },
+      cancelled: { label: 'Bekor qilingan', className: 'bg-red-100 text-red-800' },
+    };
+
+    const statusInfo = statusMap[status as keyof typeof statusMap] || { label: status, className: 'bg-gray-100 text-gray-800' };
+    
+    return (
+      <Badge className={statusInfo.className}>
+        {statusInfo.label}
+      </Badge>
+    );
   };
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         order.clientId.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const getUrgencyBadge = (urgency: string) => {
+    const urgencyMap = {
+      urgent: { label: 'Shoshilinch', className: 'bg-red-100 text-red-800' },
+      normal: { label: 'Oddiy', className: 'bg-gray-100 text-gray-800' },
+      flexible: { label: 'Muddatsiz', className: 'bg-green-100 text-green-800' },
+    };
+
+    const urgencyInfo = urgencyMap[urgency as keyof typeof urgencyMap] || { label: urgency, className: 'bg-gray-100 text-gray-800' };
+    
+    return (
+      <Badge variant="outline" className={urgencyInfo.className}>
+        {urgencyInfo.label}
+      </Badge>
+    );
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('uz-UZ', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const formatPrice = (price?: number) => {
+    if (!price) return 'Belgilanmagan';
+    return new Intl.NumberFormat('uz-UZ').format(price) + ' so\'m';
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Buyurtmalar yuklanmoqda...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <XCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <p className="text-red-600">{error}</p>
-          <button 
-            onClick={loadOrders}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Qayta yuklash
-          </button>
+      <div className="p-6">
+        <div className="animate-pulse space-y-4">
+          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="h-24 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+          <div className="h-96 bg-gray-200 rounded"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <h1 className="text-2xl font-bold text-gray-900">Buyurtmalar</h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-500">
-                Jami: {orders.length} ta buyurtma
-              </span>
-            </div>
-          </div>
-        </div>
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Buyurtmalar boshqaruvi</h1>
+        <p className="text-gray-600 mt-2">Barcha buyurtmalarni ko'ring va boshqaring</p>
       </div>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search and Filter */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Buyurtmalarni qidirish..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Jami buyurtmalar</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.total}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Kutilmoqda</CardTitle>
+            <Clock className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Bajarilgan</CardTitle>
+            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Bugungi buyurtmalar</CardTitle>
+            <Package className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">{stats.today}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Filter className="h-5 w-5" />
+            Filtrlar
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Qidirish</label>
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  placeholder="Buyurtma yoki mijoz ismi..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Filter className="h-5 w-5 text-gray-400" />
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="all">Barcha holatlar</option>
-                <option value="pending">Kutilayotgan</option>
-                <option value="accepted">Qabul qilingan</option>
-                <option value="in_progress">Jarayonda</option>
-                <option value="completed">Bajarilgan</option>
-                <option value="cancelled">Bekor qilingan</option>
-              </select>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">Holat</label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Holatni tanlang" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Barchasi</SelectItem>
+                  <SelectItem value="pending">Kutilmoqda</SelectItem>
+                  <SelectItem value="accepted">Qabul qilingan</SelectItem>
+                  <SelectItem value="in_progress">Jarayonda</SelectItem>
+                  <SelectItem value="completed">Bajarilgan</SelectItem>
+                  <SelectItem value="cancelled">Bekor qilingan</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <label className="text-sm font-medium mb-2 block">Shoshilganlik</label>
+              <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Shoshilganlikni tanlang" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Barchasi</SelectItem>
+                  <SelectItem value="urgent">Shoshilinch</SelectItem>
+                  <SelectItem value="normal">Oddiy</SelectItem>
+                  <SelectItem value="flexible">Muddatsiz</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Orders List */}
-        <div className="space-y-4">
-          {filteredOrders.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <ShoppingBag className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-500">Buyurtmalar topilmadi</p>
-            </div>
-          ) : (
-            filteredOrders.map((order) => {
-              const StatusIcon = getStatusIcon(order.status);
-              return (
-                <div key={order.id} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900">{order.title}</h3>
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                          <StatusIcon className="h-3 w-3 mr-1" />
-                          {getStatusText(order.status)}
-                        </span>
+      {/* Orders Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Buyurtmalar ro'yxati</CardTitle>
+          <CardDescription>
+            {filteredOrders.length} ta buyurtma topildi
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>ID</TableHead>
+                  <TableHead>Buyurtma</TableHead>
+                  <TableHead>Mijoz</TableHead>
+                  <TableHead>Usta</TableHead>
+                  <TableHead>Holat</TableHead>
+                  <TableHead>Shoshilganlik</TableHead>
+                  <TableHead>Sana</TableHead>
+                  <TableHead>Amallar</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredOrders.map((order) => (
+                  <TableRow key={order.id}>
+                    <TableCell className="font-medium">
+                      {order.id.substring(0, 8)}...
+                    </TableCell>
+                    <TableCell>
+                      <div className="max-w-xs">
+                        <div className="font-medium truncate">{order.title}</div>
+                        <div className="text-sm text-gray-500 truncate">{order.description}</div>
+                        <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
+                          <MapPin className="h-3 w-3" />
+                          {order.address}
+                        </div>
                       </div>
-                      <p className="text-gray-600 mb-3">{order.description}</p>
-                      <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <User className="h-4 w-4" />
-                          <span>Mijoz: {order.clientId}</span>
+                    </TableCell>
+                    <TableCell>
+                      {order.client ? (
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                            <User className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <div className="font-medium">
+                              {order.client.firstName} {order.client.lastName}
+                            </div>
+                            {order.client.rating && (
+                              <div className="text-xs text-gray-500">
+                                ⭐ {order.client.rating}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" />
-                          <span>{order.region}{order.district ? `, ${order.district}` : ''}</span>
+                      ) : (
+                        <span className="text-gray-400">Ma'lumot yo'q</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {order.specialist ? (
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center">
+                            <User className="h-4 w-4" />
+                          </div>
+                          <div>
+                            <div className="font-medium">
+                              {order.specialist.firstName} {order.specialist.lastName}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {order.specialist.profession}
+                            </div>
+                            {order.specialist.rating && (
+                              <div className="text-xs text-gray-500">
+                                ⭐ {order.specialist.rating}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{new Date(order.createdAt).toLocaleDateString('uz-UZ')}</span>
-                        </div>
+                      ) : (
+                        <span className="text-gray-400">Tayinlanmagan</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {getStatusBadge(order.status)}
+                    </TableCell>
+                    <TableCell>
+                      {getUrgencyBadge(order.urgency)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        {formatDate(order.createdAt)}
                       </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-2xl font-bold text-gray-900">{order.price ? `${order.price.toLocaleString()} so'm` : 'Kelishilgan'}</p>
-                      <p className="text-sm text-gray-500">Narx</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1"
+                      >
+                        <Eye className="h-4 w-4" />
+                        Ko'rish
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+
+            {filteredOrders.length === 0 && (
+              <div className="text-center py-8">
+                <Package className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500">Buyurtmalar topilmadi</p>
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 } 

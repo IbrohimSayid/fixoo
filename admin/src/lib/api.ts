@@ -1,7 +1,7 @@
 import { getAuthToken } from './auth';
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fixoo-server-f1rh.onrender.com/api';
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fixoo-server-f1rh.onrender.com';
 
 // Helper function to make API calls with auth
 const apiCall = async (endpoint: string, options: RequestInit = {}) => {
@@ -17,14 +17,14 @@ const apiCall = async (endpoint: string, options: RequestInit = {}) => {
     },
   };
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+  const response = await fetch(`${API_URL}/api${endpoint}`, config);
   return response.json();
 };
 
 // API functions
 export const authAPI = {
   adminLogin: (firstName: string, lastName: string, password: string) => 
-    fetch(`${API_BASE_URL}/auth/admin/login`, {
+    fetch(`${API_URL}/api/auth/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
