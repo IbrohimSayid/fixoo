@@ -18,7 +18,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+}));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -32,12 +34,26 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
+// CORS ni barcha so'rovlardan oldin qo'yish
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 // CORS configuration
 const corsOptions = {
   origin: [
     "https://fixoouzadmin.netlify.app",
-    "https://fixoo-frontend.netlify.app"
-  ], // Faqat Netlify domenlariga ruxsat
+    "https://fixoo-frontend.netlify.app",
+    "https://fixoouz.netlify.app"  // front-end domeni ham qo'shildi
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
