@@ -109,14 +109,12 @@ export const userAPI = {
         password: userData.password,
       });
     } else {
+      // Mijozlar uchun faqat zarur maydonlarni yuborish
       return userAPI.registerClient({
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
         phone: userData.phone,
-        address: userData.address,
-        region: userData.region,
-        district: userData.district,
         password: userData.password,
       });
     }

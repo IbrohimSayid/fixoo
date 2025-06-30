@@ -50,7 +50,7 @@ export default function SettingsPage() {
     }
 
     const userData = getUserData()
-    if (userData?.type !== "specialist") {
+    if (!userData) {
       router.push("/home")
       return
     }
