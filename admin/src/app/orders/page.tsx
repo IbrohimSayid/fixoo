@@ -188,7 +188,7 @@ export default function OrdersPage() {
             {[1, 2, 3, 4].map(i => (
               <div key={i} className="h-24 bg-gray-200 rounded"></div>
             ))}
-          </div>
+        </div>
           <div className="h-96 bg-gray-200 rounded"></div>
         </div>
       </div>
@@ -201,7 +201,7 @@ export default function OrdersPage() {
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Buyurtmalar boshqaruvi</h1>
         <p className="text-gray-600 mt-2">Barcha buyurtmalarni ko'ring va boshqaring</p>
-      </div>
+            </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -262,8 +262,8 @@ export default function OrdersPage() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   placeholder="Buyurtma yoki mijoz ismi..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
@@ -340,14 +340,14 @@ export default function OrdersPage() {
                         <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
                           <MapPin className="h-3 w-3" />
                           {order.address}
-                        </div>
+            </div>
                       </div>
                     </TableCell>
                     <TableCell>
                       {order.client ? (
                         <div className="flex items-center gap-2">
                           <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                            <User className="h-4 w-4" />
+                          <User className="h-4 w-4" />
                           </div>
                           <div>
                             <div className="font-medium">
@@ -382,7 +382,7 @@ export default function OrdersPage() {
                                 ⭐ {order.specialist.rating}
                               </div>
                             )}
-                          </div>
+                        </div>
                         </div>
                       ) : (
                         <span className="text-gray-400">Tayinlanmagan</span>
@@ -418,9 +418,9 @@ export default function OrdersPage() {
               <div className="text-center py-8">
                 <Package className="h-12 w-12 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-500">Buyurtmalar topilmadi</p>
-              </div>
-            )}
-          </div>
+                </div>
+          )}
+        </div>
         </CardContent>
       </Card>
     </div>

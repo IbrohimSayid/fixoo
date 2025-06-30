@@ -17,6 +17,7 @@ import { Eye, EyeOff } from "lucide-react"
 import FadeIn from "@/components/fade-in"
 // Yangi loader komponentini import qilish
 import HammerLoader from "@/components/hammer-loader"
+import PhoneInput from "@/components/phone-input"
 import toast from 'react-hot-toast'
 
 export default function LoginPage() {
@@ -173,12 +174,13 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-4">
         <FadeIn>
           {isLoading && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-              <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-                <div className="w-16 h-16 rounded-full animate-spin border-4 border-solid border-primary border-t-transparent mx-auto mb-4"></div>
-                <p className="text-gray-700">{getTranslation("loading", language)}...</p>
-              </div>
-            </div>
+            <HammerLoader 
+              fullScreen={true} 
+              showText={true} 
+              text={language === 'uz' ? "Tizimga kirilmoqda..." :
+                    language === 'ru' ? "Вход в систему..." :
+                    "Logging in..."}
+            />
           )}
           <div className="w-full max-w-sm space-y-8">
             <div className="text-center">
@@ -208,14 +210,12 @@ export default function LoginPage() {
                   <CardContent>
                     <form onSubmit={handleSpecialistSubmit} className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="specialistPhone">{getTranslation("phoneNumber", language)}</Label>
-                        <Input
-                          id="specialistPhone"
-                          name="phone"
-                          placeholder="+998 XX XXX XX XX"
-                          required
+                        <PhoneInput
+                          label={getTranslation("phoneNumber", language)}
                           value={specialistData.phone}
-                          onChange={handleSpecialistChange}
+                          onChange={(value) => setSpecialistData(prev => ({ ...prev, phone: value }))}
+                          language={language}
+                          required
                         />
                       </div>
 
@@ -253,9 +253,10 @@ export default function LoginPage() {
                       <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                           <div className="flex items-center justify-center gap-2">
-                            {/* Yangi loader komponentini ishlatish */}
-                            <div className="w-5 h-5 rounded-full animate-spin border-y-2 border-solid border-purple-500 border-t-transparent shadow-md"></div>
-                            <span>{getTranslation("loading", language)}...</span>
+                            <div className="hammer-animation">🔨</div>
+                            <span>{language === 'uz' ? "Tizimga kirilmoqda..." :
+                                   language === 'ru' ? "Вход в систему..." :
+                                   "Logging in..."}</span>
                           </div>
                         ) : (
                           getTranslation("login", language)
@@ -283,14 +284,12 @@ export default function LoginPage() {
                   <CardContent>
                     <form onSubmit={handleClientSubmit} className="space-y-4">
                       <div className="space-y-2">
-                        <Label htmlFor="clientPhone">{getTranslation("phoneNumber", language)}</Label>
-                        <Input
-                          id="clientPhone"
-                          name="phone"
-                          placeholder="+998 XX XXX XX XX"
-                          required
+                        <PhoneInput
+                          label={getTranslation("phoneNumber", language)}
                           value={clientData.phone}
-                          onChange={handleClientChange}
+                          onChange={(value) => setClientData(prev => ({ ...prev, phone: value }))}
+                          language={language}
+                          required
                         />
                       </div>
 
@@ -328,9 +327,10 @@ export default function LoginPage() {
                       <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                           <div className="flex items-center justify-center gap-2">
-                            {/* Yangi loader komponentini ishlatish */}
-                            <div className="w-5 h-5 rounded-full animate-spin border-y-2 border-solid border-purple-500 border-t-transparent shadow-md"></div>
-                            <span>{getTranslation("loading", language)}...</span>
+                            <div className="hammer-animation">🔨</div>
+                            <span>{language === 'uz' ? "Tizimga kirilmoqda..." :
+                                   language === 'ru' ? "Вход в систему..." :
+                                   "Logging in..."}</span>
                           </div>
                         ) : (
                           getTranslation("login", language)

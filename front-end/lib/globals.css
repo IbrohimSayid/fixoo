@@ -1,0 +1,12 @@
+/* Hammer animation for buttons */
+.hammer-animation {
+  display: inline-block;
+  animation: hammerBounce 0.8s infinite;
+}
+
+@keyframes hammerBounce {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-10deg) scale(1.1); }
+  50% { transform: rotate(5deg) scale(0.9); }
+  75% { transform: rotate(-5deg) scale(1.1); }
+} 

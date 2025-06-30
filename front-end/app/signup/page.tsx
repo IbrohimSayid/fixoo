@@ -19,6 +19,7 @@ import LanguageSwitcher from "@/components/language-switcher"
 import { Eye, EyeOff } from "lucide-react"
 import FadeIn from "@/components/fade-in"
 import HammerLoader from "@/components/hammer-loader"
+import PhoneInput from "@/components/phone-input"
 import toast from 'react-hot-toast'
 
 export default function SignUpPage() {
@@ -196,12 +197,13 @@ export default function SignUpPage() {
 
       <div className="flex-1 flex items-center justify-center p-4">
         {isLoading && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg text-center">
-              <div className="w-16 h-16 rounded-full animate-spin border-4 border-solid border-primary border-t-transparent mx-auto mb-4"></div>
-              <p className="text-gray-700">{getTranslation("loading", language)}...</p>
-            </div>
-          </div>
+          <HammerLoader 
+            fullScreen={true} 
+            showText={true} 
+            text={language === 'uz' ? "Ro'yxatdan o'tkazilmoqda..." :
+                  language === 'ru' ? "Регистрация..." :
+                  "Registering..."}
+          />
         )}
         <FadeIn>
           <div className="w-full max-w-md space-y-8">
@@ -262,14 +264,12 @@ export default function SignUpPage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="phone">{getTranslation("phoneNumber", language)}</Label>
-                          <Input
-                            id="phone"
-                            name="phone"
-                            placeholder="+998 XX XXX XX XX"
-                            required
+                          <PhoneInput
+                            label={getTranslation("phoneNumber", language)}
                             value={specialistData.phone}
-                            onChange={handleSpecialistChange}
+                            onChange={(value) => setSpecialistData(prev => ({ ...prev, phone: value }))}
+                            language={language}
+                            required
                           />
                         </div>
 
@@ -389,8 +389,10 @@ export default function SignUpPage() {
                       <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                           <div className="flex items-center justify-center gap-2">
-                            <div className="w-5 h-5 rounded-full animate-spin border-y-2 border-solid border-purple-500 border-t-transparent shadow-md"></div>
-                            <span>{getTranslation("loading", language)}...</span>
+                            <div className="hammer-animation">🔨</div>
+                            <span>{language === 'uz' ? "Ro'yxatdan o'tkazilmoqda..." :
+                                   language === 'ru' ? "Регистрация..." :
+                                   "Registering..."}</span>
                           </div>
                         ) : (
                           getTranslation("register", language)
@@ -444,14 +446,12 @@ export default function SignUpPage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="clientPhone">{getTranslation("phoneNumber", language)}</Label>
-                          <Input
-                            id="clientPhone"
-                            name="phone"
-                            placeholder="+998 XX XXX XX XX"
-                            required
+                          <PhoneInput
+                            label={getTranslation("phoneNumber", language)}
                             value={clientData.phone}
-                            onChange={handleClientChange}
+                            onChange={(value) => setClientData(prev => ({ ...prev, phone: value }))}
+                            language={language}
+                            required
                           />
                         </div>
                         <div className="space-y-2">
@@ -487,8 +487,10 @@ export default function SignUpPage() {
                       <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading ? (
                           <div className="flex items-center justify-center gap-2">
-                            <div className="w-5 h-5 rounded-full animate-spin border-y-2 border-solid border-purple-500 border-t-transparent shadow-md"></div>
-                            <span>{getTranslation("loading", language)}...</span>
+                            <div className="hammer-animation">🔨</div>
+                            <span>{language === 'uz' ? "Ro'yxatdan o'tkazilmoqda..." :
+                                   language === 'ru' ? "Регистрация..." :
+                                   "Registering..."}</span>
                           </div>
                         ) : (
                           getTranslation("register", language)

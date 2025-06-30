@@ -220,11 +220,11 @@ export default function OrdersPage() {
                 <Clock className="w-4 h-4" />
                 Yangi buyurtmalar
                 {pendingOrders.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {pendingOrders.length}
-                  </span>
-                )}
-              </TabsTrigger>
+                </span>
+              )}
+            </TabsTrigger>
             )}
           </TabsList>
 
@@ -252,8 +252,8 @@ export default function OrdersPage() {
                         </div>
                         <div className="ml-4">
                           {getStatusBadge(order.status)}
+                          </div>
                         </div>
-                      </div>
 
                       {/* Mijoz/Usta ma'lumotlari */}
                       {(order.client || order.specialist) && (
@@ -284,7 +284,7 @@ export default function OrdersPage() {
                         </div>
                       )}
 
-                      {/* Action buttons */}
+                        {/* Action buttons */}
                       {user?.role === 'specialist' && order.status === 'accepted' && (
                         <div className="flex gap-2">
                           <Button
@@ -351,7 +351,7 @@ export default function OrdersPage() {
                             </div>
                           </div>
                           <Badge className="bg-yellow-100 text-yellow-800">Yangi</Badge>
-                        </div>
+                          </div>
 
                         {/* Mijoz ma'lumotlari */}
                         {order.client && (
@@ -359,13 +359,13 @@ export default function OrdersPage() {
                             <div className="flex items-center gap-3">
                               <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                                 <User className="w-5 h-5 text-blue-600" />
-                              </div>
-                              <div>
+                                 </div>
+                                <div>
                                 <p className="font-medium">{order.client.firstName} {order.client.lastName}</p>
                                 <p className="text-sm text-gray-500">{order.client.region}</p>
                               </div>
                             </div>
-                          </div>
+                            </div>
                         )}
 
                         {/* Qo'shimcha ma'lumotlar */}
@@ -384,9 +384,9 @@ export default function OrdersPage() {
                               <div className="flex items-center gap-2">
                                 <Clock className="w-4 h-4 text-gray-400" />
                                 <span className="text-sm">Taxminiy vaqt: {order.estimatedTime}</span>
-                              </div>
-                            )}
-                          </div>
+                                </div>
+                              )}
+                            </div>
                         )}
 
                         {order.clientNote && (
@@ -424,19 +424,19 @@ export default function OrdersPage() {
                                 Qabul qilish
                               </>
                             )}
-                          </Button>
+                              </Button>
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
-                </div>
-              ) : (
+                      ))}
+                  </div>
+                ) : (
                 <div className="text-center py-12 bg-white rounded-lg shadow">
                   <Clock className="w-12 h-12 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500">Hozircha yangi buyurtmalar yo'q</p>
-                </div>
-              )}
-            </TabsContent>
+                  </div>
+                )}
+          </TabsContent>
           )}
         </Tabs>
       </main>

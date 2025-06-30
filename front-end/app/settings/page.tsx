@@ -17,6 +17,7 @@ import { professions } from "@/lib/profession-data"
 import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
 import ConfirmModal from "@/components/confirm-modal"
+import PhoneInput from "@/components/phone-input"
 import { Trash2, User, Globe, MessageCircle, ChevronRight } from "lucide-react"
 import HammerLoader from "@/components/hammer-loader"
 // Import the storage utility
@@ -194,8 +195,12 @@ export default function SettingsPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="phone">{getTranslation("phoneNumber", language)}</Label>
-                      <Input id="phone" name="phone" value={userData.phone} onChange={handleInputChange} />
+                      <PhoneInput
+                        label={getTranslation("phoneNumber", language)}
+                        value={userData.phone}
+                        onChange={(value) => setUserData(prev => ({ ...prev, phone: value }))}
+                        language={language}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="profession">{getTranslation("profession", language)}</Label>

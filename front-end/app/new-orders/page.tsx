@@ -45,17 +45,17 @@ export default function NewOrderPage() {
       // Check authentication
       if (!checkUserAuthentication()) {
         router.push('/login')
-        return
-      }
+      return
+    }
 
-      const userData = getUserData()
+    const userData = getUserData()
       if (!userData || userData.role !== 'client') {
         toast.error('Faqat mijozlar buyurtma bera oladi')
         router.push('/home')
-        return
-      }
+      return
+    }
 
-      setUser(userData)
+    setUser(userData)
     }
   }, [router])
 
@@ -122,7 +122,7 @@ export default function NewOrderPage() {
   if (!user) {
     return <div className="min-h-screen flex items-center justify-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-    </div>
+      </div>
   }
 
   return (
@@ -329,20 +329,20 @@ export default function NewOrderPage() {
                 />
                 <p className="text-xs text-gray-500">
                   {orderData.clientNote.length}/300 belgi
-                </p>
-              </div>
+                    </p>
+                  </div>
 
               {/* Submit Button */}
               <div className="flex gap-3 pt-4">
-                <Button
+                    <Button
                   type="button"
-                  variant="outline"
+                      variant="outline"
                   onClick={() => router.back()}
                   className="flex-1"
-                >
+                    >
                   Bekor qilish
-                </Button>
-                <Button
+                    </Button>
+                    <Button
                   type="submit"
                   disabled={isLoading}
                   className="flex-1"
@@ -355,12 +355,12 @@ export default function NewOrderPage() {
                   ) : (
                     'Buyurtma berish'
                   )}
-                </Button>
-              </div>
+                    </Button>
+                  </div>
             </form>
-          </CardContent>
-        </Card>
-      </div>
+                </CardContent>
+              </Card>
+          </div>
     </div>
   )
 }
