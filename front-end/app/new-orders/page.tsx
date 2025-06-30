@@ -33,7 +33,7 @@ export default function NewOrderPage() {
     region: "",
     district: "",
     estimatedTime: "",
-    urgency: "normal",
+    urgency: "normal" as "urgent" | "normal" | "flexible",
     clientNote: ""
   })
 
@@ -304,7 +304,7 @@ export default function NewOrderPage() {
                           ? 'border-primary bg-primary/5'
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
-                      onClick={() => setOrderData(prev => ({ ...prev, urgency: urgency.value }))}
+                      onClick={() => setOrderData(prev => ({ ...prev, urgency: urgency.value as "urgent" | "normal" | "flexible" }))}
                     >
                       <div className="text-sm font-medium">{urgency.label}</div>
                       <div className="text-xs text-gray-500">{urgency.desc}</div>

@@ -16,7 +16,7 @@ import BottomNavigation from "@/components/bottom-navigation"
 import { getSpecialistOrders, getNewSpecialistOrders, updateOrderStatus } from "@/lib/storage"
 import { orderAPI } from "@/lib/utils"
 import { formatDistanceToNow } from "date-fns"
-import { Clock, CheckCircle, XCircle, ShoppingBag, History, User, MapPin, Phone, ChevronRight, Trash2, ChevronDown, Calendar, Star } from "lucide-react"
+import { Clock, CheckCircle, XCircle, ShoppingBag, History, User, MapPin, Phone, ChevronRight, Trash2, ChevronDown, Calendar, Star, Package } from "lucide-react"
 import toast from 'react-hot-toast'
 import HammerLoader from "@/components/hammer-loader"
 
@@ -441,7 +441,7 @@ export default function OrdersPage() {
         </Tabs>
       </main>
 
-      <BottomNavigation currentPage="orders" />
+      <BottomNavigation language={language} />
     </div>
   )
 }
