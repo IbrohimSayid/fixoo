@@ -1,13 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Eye, Search, Filter, Package, Clock, CheckCircle, User, MapPin } from 'lucide-react';
 
 interface Order {
@@ -132,35 +125,35 @@ export default function OrdersPage() {
 
   const getStatusBadge = (status: string) => {
     const statusMap = {
-      pending: { label: 'Kutilmoqda', className: 'bg-yellow-100 text-yellow-800' },
-      accepted: { label: 'Qabul qilingan', className: 'bg-blue-100 text-blue-800' },
-      in_progress: { label: 'Jarayonda', className: 'bg-purple-100 text-purple-800' },
-      completed: { label: 'Bajarilgan', className: 'bg-green-100 text-green-800' },
-      cancelled: { label: 'Bekor qilingan', className: 'bg-red-100 text-red-800' },
+      pending: { label: 'Kutilmoqda', className: 'badge-yellow' },
+      accepted: { label: 'Qabul qilingan', className: 'badge-blue' },
+      in_progress: { label: 'Jarayonda', className: 'badge-purple' },
+      completed: { label: 'Bajarilgan', className: 'badge-green' },
+      cancelled: { label: 'Bekor qilingan', className: 'badge-red' },
     };
 
-    const statusInfo = statusMap[status as keyof typeof statusMap] || { label: status, className: 'bg-gray-100 text-gray-800' };
+    const statusInfo = statusMap[status as keyof typeof statusMap] || { label: status, className: 'badge-gray' };
     
     return (
-      <Badge className={statusInfo.className}>
+      <span className={`badge ${statusInfo.className}`}>
         {statusInfo.label}
-      </Badge>
+      </span>
     );
   };
 
   const getUrgencyBadge = (urgency: string) => {
     const urgencyMap = {
-      urgent: { label: 'Shoshilinch', className: 'bg-red-100 text-red-800' },
-      normal: { label: 'Oddiy', className: 'bg-gray-100 text-gray-800' },
-      flexible: { label: 'Muddatsiz', className: 'bg-green-100 text-green-800' },
+      urgent: { label: 'Shoshilinch', className: 'badge-outline-red' },
+      normal: { label: 'Oddiy', className: 'badge-outline-gray' },
+      flexible: { label: 'Muddatsiz', className: 'badge-outline-green' },
     };
 
-    const urgencyInfo = urgencyMap[urgency as keyof typeof urgencyMap] || { label: urgency, className: 'bg-gray-100 text-gray-800' };
+    const urgencyInfo = urgencyMap[urgency as keyof typeof urgencyMap] || { label: urgency, className: 'badge-outline-gray' };
     
     return (
-      <Badge variant="outline" className={urgencyInfo.className}>
+      <span className={`badge ${urgencyInfo.className}`}>
         {urgencyInfo.label}
-      </Badge>
+      </span>
     );
   };
 
@@ -188,7 +181,7 @@ export default function OrdersPage() {
             {[1, 2, 3, 4].map(i => (
               <div key={i} className="h-24 bg-gray-200 rounded"></div>
             ))}
-        </div>
+          </div>
           <div className="h-96 bg-gray-200 rounded"></div>
         </div>
       </div>
@@ -201,153 +194,144 @@ export default function OrdersPage() {
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Buyurtmalar boshqaruvi</h1>
         <p className="text-gray-600 mt-2">Barcha buyurtmalarni ko'ring va boshqaring</p>
-            </div>
+      </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Jami buyurtmalar</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.total}</div>
-          </CardContent>
-        </Card>
+        <div className="stat-card">
+          <div className="stat-title">
+            <span>Jami buyurtmalar</span>
+            <Package className="h-4 w-4 text-gray-400" />
+          </div>
+          <div className="stat-value">{stats.total}</div>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Kutilmoqda</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{stats.pending}</div>
-          </CardContent>
-        </Card>
+        <div className="stat-card">
+          <div className="stat-title">
+            <span>Kutilmoqda</span>
+            <Clock className="h-4 w-4 text-gray-400" />
+          </div>
+          <div className="stat-value text-yellow-600">{stats.pending}</div>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Bajarilgan</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">{stats.completed}</div>
-          </CardContent>
-        </Card>
+        <div className="stat-card">
+          <div className="stat-title">
+            <span>Bajarilgan</span>
+            <CheckCircle className="h-4 w-4 text-gray-400" />
+          </div>
+          <div className="stat-value text-green-600">{stats.completed}</div>
+        </div>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Bugungi buyurtmalar</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{stats.today}</div>
-          </CardContent>
-        </Card>
+        <div className="stat-card">
+          <div className="stat-title">
+            <span>Bugungi buyurtmalar</span>
+            <Package className="h-4 w-4 text-gray-400" />
+          </div>
+          <div className="stat-value text-blue-600">{stats.today}</div>
+        </div>
       </div>
 
       {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title flex items-center gap-2">
             <Filter className="h-5 w-5" />
             Filtrlar
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </h2>
+        </div>
+        <div className="card-content">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="text-sm font-medium mb-2 block">Qidirish</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <Input
+                <input
+                  type="text"
                   placeholder="Buyurtma yoki mijoz ismi..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="input pl-10"
                 />
               </div>
             </div>
 
             <div>
               <label className="text-sm font-medium mb-2 block">Holat</label>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Holatni tanlang" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Barchasi</SelectItem>
-                  <SelectItem value="pending">Kutilmoqda</SelectItem>
-                  <SelectItem value="accepted">Qabul qilingan</SelectItem>
-                  <SelectItem value="in_progress">Jarayonda</SelectItem>
-                  <SelectItem value="completed">Bajarilgan</SelectItem>
-                  <SelectItem value="cancelled">Bekor qilingan</SelectItem>
-                </SelectContent>
-              </Select>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="select"
+              >
+                <option value="all">Barchasi</option>
+                <option value="pending">Kutilmoqda</option>
+                <option value="accepted">Qabul qilingan</option>
+                <option value="in_progress">Jarayonda</option>
+                <option value="completed">Bajarilgan</option>
+                <option value="cancelled">Bekor qilingan</option>
+              </select>
             </div>
 
             <div>
               <label className="text-sm font-medium mb-2 block">Shoshilganlik</label>
-              <Select value={urgencyFilter} onValueChange={setUrgencyFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Shoshilganlikni tanlang" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Barchasi</SelectItem>
-                  <SelectItem value="urgent">Shoshilinch</SelectItem>
-                  <SelectItem value="normal">Oddiy</SelectItem>
-                  <SelectItem value="flexible">Muddatsiz</SelectItem>
-                </SelectContent>
-              </Select>
+              <select
+                value={urgencyFilter}
+                onChange={(e) => setUrgencyFilter(e.target.value)}
+                className="select"
+              >
+                <option value="all">Barchasi</option>
+                <option value="urgent">Shoshilinch</option>
+                <option value="normal">Oddiy</option>
+                <option value="flexible">Muddatsiz</option>
+              </select>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Orders Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Buyurtmalar ro'yxati</CardTitle>
-          <CardDescription>
+      <div className="card">
+        <div className="card-header">
+          <h2 className="card-title">Buyurtmalar ro'yxati</h2>
+          <p className="card-description">
             {filteredOrders.length} ta buyurtma topildi
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </p>
+        </div>
+        <div className="card-content">
           <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Buyurtma</TableHead>
-                  <TableHead>Mijoz</TableHead>
-                  <TableHead>Usta</TableHead>
-                  <TableHead>Holat</TableHead>
-                  <TableHead>Shoshilganlik</TableHead>
-                  <TableHead>Sana</TableHead>
-                  <TableHead>Amallar</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Buyurtma</th>
+                  <th>Mijoz</th>
+                  <th>Usta</th>
+                  <th>Holat</th>
+                  <th>Shoshilganlik</th>
+                  <th>Sana</th>
+                  <th>Amallar</th>
+                </tr>
+              </thead>
+              <tbody>
                 {filteredOrders.map((order) => (
-                  <TableRow key={order.id}>
-                    <TableCell className="font-medium">
+                  <tr key={order.id}>
+                    <td className="font-medium">
                       {order.id.substring(0, 8)}...
-                    </TableCell>
-                    <TableCell>
+                    </td>
+                    <td>
                       <div className="max-w-xs">
                         <div className="font-medium truncate">{order.title}</div>
                         <div className="text-sm text-gray-500 truncate">{order.description}</div>
                         <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
                           <MapPin className="h-3 w-3" />
                           {order.address}
-            </div>
+                        </div>
                       </div>
-                    </TableCell>
-                    <TableCell>
+                    </td>
+                    <td>
                       {order.client ? (
                         <div className="flex items-center gap-2">
                           <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                          <User className="h-4 w-4" />
+                            <User className="h-4 w-4" />
                           </div>
                           <div>
                             <div className="font-medium">
@@ -363,8 +347,8 @@ export default function OrdersPage() {
                       ) : (
                         <span className="text-gray-400">Ma'lumot yo'q</span>
                       )}
-                    </TableCell>
-                    <TableCell>
+                    </td>
+                    <td>
                       {order.specialist ? (
                         <div className="flex items-center gap-2">
                           <div className="w-8 h-8 bg-blue-200 rounded-full flex items-center justify-center">
@@ -382,47 +366,43 @@ export default function OrdersPage() {
                                 ⭐ {order.specialist.rating}
                               </div>
                             )}
-                        </div>
+                          </div>
                         </div>
                       ) : (
                         <span className="text-gray-400">Tayinlanmagan</span>
                       )}
-                    </TableCell>
-                    <TableCell>
+                    </td>
+                    <td>
                       {getStatusBadge(order.status)}
-                    </TableCell>
-                    <TableCell>
+                    </td>
+                    <td>
                       {getUrgencyBadge(order.urgency)}
-                    </TableCell>
-                    <TableCell>
+                    </td>
+                    <td>
                       <div className="text-sm">
                         {formatDate(order.createdAt)}
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex items-center gap-1"
-                      >
+                    </td>
+                    <td>
+                      <button className="button">
                         <Eye className="h-4 w-4" />
                         Ko'rish
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                      </button>
+                    </td>
+                  </tr>
                 ))}
-              </TableBody>
-            </Table>
+              </tbody>
+            </table>
 
             {filteredOrders.length === 0 && (
               <div className="text-center py-8">
                 <Package className="h-12 w-12 text-gray-300 mx-auto mb-4" />
                 <p className="text-gray-500">Buyurtmalar topilmadi</p>
-                </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
-        </CardContent>
-      </Card>
+      </div>
     </div>
   );
 } 
