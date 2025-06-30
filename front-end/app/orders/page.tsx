@@ -349,7 +349,7 @@ export default function OrdersPage() {
                                 {formatDate(order.createdAt)}
                               </div>
                             </div>
-                          </div>
+                            </div>
                           <Badge className="bg-yellow-100 text-yellow-800">Yangi</Badge>
                           </div>
 

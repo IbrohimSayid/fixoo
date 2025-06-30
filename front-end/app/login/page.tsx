@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label"
 import { userAPI } from "@/lib/utils"
 import { getTranslation, getStoredLanguage } from "@/lib/i18n"
 import LanguageSwitcher from "@/components/language-switcher"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, Lock } from "lucide-react"
 import FadeIn from "@/components/fade-in"
 // Yangi loader komponentini import qilish
 import HammerLoader from "@/components/hammer-loader"
@@ -172,16 +172,16 @@ export default function LoginPage() {
       </div>
 
       <div className="flex-1 flex items-center justify-center p-4">
+        {isLoading && (
+          <HammerLoader 
+            fullScreen={true} 
+            showText={true} 
+            text={language === 'uz' ? "Tizimga kirilmoqda..." :
+                  language === 'ru' ? "Вход в систему..." :
+                  "Logging in..."}
+          />
+        )}
         <FadeIn>
-          {isLoading && (
-            <HammerLoader 
-              fullScreen={true} 
-              showText={true} 
-              text={language === 'uz' ? "Tizimga kirilmoqda..." :
-                    language === 'ru' ? "Вход в систему..." :
-                    "Logging in..."}
-            />
-          )}
           <div className="w-full max-w-sm space-y-8">
             <div className="text-center">
               <h1 className="text-4xl font-bold text-white">Fixoo</h1>
@@ -220,7 +220,11 @@ export default function LoginPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="specialistPassword">{getTranslation("password", language)}</Label>
+                        <Label htmlFor="specialistPassword" className="flex items-center gap-2">
+                          <Lock className="w-4 h-4" />
+                          {getTranslation("password", language)}
+                          <span className="text-red-500">*</span>
+                        </Label>
                         <div className="relative">
                           <Input
                             id="specialistPassword"
@@ -251,16 +255,7 @@ export default function LoginPage() {
                       {error && <p className="text-sm text-red-500">{error}</p>}
 
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <div className="hammer-animation">🔨</div>
-                            <span>{language === 'uz' ? "Tizimga kirilmoqda..." :
-                                   language === 'ru' ? "Вход в систему..." :
-                                   "Logging in..."}</span>
-                          </div>
-                        ) : (
-                          getTranslation("login", language)
-                        )}
+                        {getTranslation("login", language)}
                       </Button>
                     </form>
                   </CardContent>
@@ -294,7 +289,11 @@ export default function LoginPage() {
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="clientPassword">{getTranslation("password", language)}</Label>
+                        <Label htmlFor="clientPassword" className="flex items-center gap-2">
+                          <Lock className="w-4 h-4" />
+                          {getTranslation("password", language)}
+                          <span className="text-red-500">*</span>
+                        </Label>
                         <div className="relative">
                           <Input
                             id="clientPassword"
@@ -325,16 +324,7 @@ export default function LoginPage() {
                       {error && <p className="text-sm text-red-500">{error}</p>}
 
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <div className="hammer-animation">🔨</div>
-                            <span>{language === 'uz' ? "Tizimga kirilmoqda..." :
-                                   language === 'ru' ? "Вход в систему..." :
-                                   "Logging in..."}</span>
-                          </div>
-                        ) : (
-                          getTranslation("login", language)
-                        )}
+                        {getTranslation("login", language)}
                       </Button>
                     </form>
                   </CardContent>

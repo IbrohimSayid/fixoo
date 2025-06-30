@@ -3,13 +3,35 @@ import { getAuthToken } from './auth';
 // API base URL
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fixoo-server-f1rh.onrender.com';
 
-// Helper function to make API calls with auth
-const apiCall = async (endpoint: string, options: RequestInit = {}) => {
+// Server uyg'otish funksiyasi
+const wakeUpServer = async () => {
+  try {
+    const response = await fetch(`${API_URL}/health`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+    return response.ok;
+  } catch (error) {
+    console.log('Server uyg\'otishda xatolik:', error);
+    return false;
+  }
+};
+
+// Retry logic bilan API call
+const apiCallWithRetry = async (endpoint: string, options: RequestInit = {}, retries = 3) => {
   const token = getAuthToken();
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    // Har bir so'rov uchun yangi AbortController
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 sekund timeout
   
   const config: RequestInit = {
     ...options,
     credentials: 'include',
+      signal: controller.signal,
     headers: {
       'Content-Type': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),
@@ -17,8 +39,51 @@ const apiCall = async (endpoint: string, options: RequestInit = {}) => {
     },
   };
 
-  const response = await fetch(`${API_URL}/api${endpoint}`, config);
+    try {
+      const response = await fetch(`${API_URL}/api${endpoint}`, config);
+      clearTimeout(timeoutId); // Timeout'ni bekor qilish
+      
+      if (response.ok) {
+        return response.json();
+      }
+      
+      // Agar 503 (service unavailable) yoki timeout bo'lsa, server uyg'otishga harakat qilish
+      if (response.status === 503 || response.status === 502) {
+        console.log(`API so'rov muvaffaqiyatsiz (${response.status}), ${attempt}/${retries} harakat...`);
+        
+        if (attempt < retries) {
+          console.log('Serverni uyg\'otishga harakat qilmoqda...');
+          await wakeUpServer();
+          await new Promise(resolve => setTimeout(resolve, 2000)); // 2 sekund kutish
+          continue;
+        }
+      }
+      
   return response.json();
+    } catch (error: any) {
+      clearTimeout(timeoutId); // Timeout'ni bekor qilish
+      console.log(`API xatosi (${attempt}/${retries}):`, error.message);
+      
+      if (attempt < retries) {
+        // Network error yoki timeout bo'lsa, retry qilish
+        if (error.name === 'TypeError' || error.name === 'AbortError' || error.message.includes('fetch')) {
+          console.log('Serverni uyg\'otishga harakat qilmoqda...');
+          await wakeUpServer();
+          await new Promise(resolve => setTimeout(resolve, 3000)); // 3 sekund kutish
+          continue;
+        }
+      }
+      
+      if (attempt === retries) {
+        throw new Error(`Server bilan aloqa o'rnatilmadi. Iltimos, qayta urinib ko'ring.`);
+      }
+    }
+  }
+};
+
+// Helper function to make API calls with auth (old function updated)
+const apiCall = async (endpoint: string, options: RequestInit = {}) => {
+  return apiCallWithRetry(endpoint, options);
 };
 
 // API functions

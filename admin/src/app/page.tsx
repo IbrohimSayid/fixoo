@@ -28,6 +28,9 @@ import {
 import { ordersAPI, usersAPI } from '@/lib/api';
 import { isAuthenticated, getCurrentAdmin, AdminUser, updateAdminToken } from '@/lib/auth';
 
+// API_URL ni import qilish
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fixoo-server-f1rh.onrender.com';
+
 export default function DashboardPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -111,8 +114,21 @@ export default function DashboardPage() {
       setLoading(true);
       setError(null);
 
-      // Load all data in parallel
-      const [usersResponse, ordersResponse, chartResponse] = await Promise.all([
+      console.log('📊 Dashboard ma\'lumotlarini yuklamoqda...');
+
+      // Server uyg'otish
+      try {
+        const healthCheck = await fetch(`${API_URL}/health`);
+        if (!healthCheck.ok) {
+          console.log('⚠️ Server uyqu holatida, uyg\'otilmoqda...');
+          await new Promise(resolve => setTimeout(resolve, 3000));
+        }
+      } catch (healthError) {
+        console.log('🔄 Server bilan bog\'lanishda muammo, qayta urinilmoqda...');
+      }
+
+      // Load all data in parallel with better error handling
+      const [usersResponse, ordersResponse, chartResponse] = await Promise.allSettled([
         usersAPI.getAll(),
         ordersAPI.getStats(),
         ordersAPI.getChartData(30)
@@ -121,8 +137,8 @@ export default function DashboardPage() {
       console.log('Dashboard API responses:', { usersResponse, ordersResponse, chartResponse });
 
       // Process users data
-      if (usersResponse.success && usersResponse.data) {
-        const users = usersResponse.data.users || [];
+      if (usersResponse.status === 'fulfilled' && usersResponse.value.success && usersResponse.value.data) {
+        const users = usersResponse.value.data.users || [];
         const today = new Date().toISOString().split('T')[0];
         
         setUserStats({
@@ -131,14 +147,23 @@ export default function DashboardPage() {
           totalClients: users.filter((u: any) => u.role === 'client').length,
           todayRegistered: users.filter((u: any) => u.createdAt?.split('T')[0] === today).length
         });
+        console.log('✅ Foydalanuvchilar ma\'lumotlari yuklandi');
+      } else {
+        console.error('❌ Foydalanuvchilar ma\'lumotlarini yuklashda xatolik:', usersResponse);
+        setUserStats({
+          totalUsers: 0,
+          totalSpecialists: 0,
+          totalClients: 0,
+          todayRegistered: 0
+        });
       }
 
       // Process orders data
-      if (ordersResponse.success && ordersResponse.data) {
-        setOrderStats(ordersResponse.data);
+      if (ordersResponse.status === 'fulfilled' && ordersResponse.value.success && ordersResponse.value.data) {
+        setOrderStats(ordersResponse.value.data);
+        console.log('✅ Buyurtmalar statistikasi yuklandi');
       } else {
-        console.error('Orders stats error:', ordersResponse);
-        // Set default values if API fails
+        console.error('❌ Buyurtmalar statistikasini yuklashda xatolik:', ordersResponse);
         setOrderStats({
           totalOrders: 0,
           pendingOrders: 0,
@@ -149,19 +174,25 @@ export default function DashboardPage() {
       }
 
       // Process chart data
-      if (chartResponse.success && chartResponse.data) {
-        setChartData(chartResponse.data);
+      if (chartResponse.status === 'fulfilled' && chartResponse.value.success && chartResponse.value.data) {
+        setChartData(chartResponse.value.data);
+        console.log('✅ Chart ma\'lumotlari yuklandi');
       } else {
-        console.error('Chart data error:', chartResponse);
+        console.error('❌ Chart ma\'lumotlarini yuklashda xatolik:', chartResponse);
         setChartData([]);
       }
 
       // Update last refresh time
       setLastUpdate(new Date());
+      console.log('🎉 Dashboard ma\'lumotlari muvaffaqiyatli yuklandi');
 
     } catch (err: any) {
-      console.error('Dashboard data loading error:', err);
-      setError('Ma\'lumotlarni yuklashda xatolik yuz berdi');
+      console.error('❌ Dashboard data loading error:', err);
+      if (err.message.includes('Server bilan aloqa')) {
+        setError('Server bilan aloqa o\'rnatilmadi. Render.com server uyqu holatidan chiqishi uchun biroz vaqt kerak bo\'lishi mumkin.');
+      } else {
+        setError('Ma\'lumotlarni yuklashda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.');
+      }
     } finally {
       setLoading(false);
     }

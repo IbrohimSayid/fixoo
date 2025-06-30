@@ -165,6 +165,20 @@ process.on('SIGINT', () => {
   process.exit(0);
 });
 
+// Render.com serverini uyqu holatiga o'tishdan saqlash uchun keepalive
+const keepAlive = () => {
+  const url = `http://localhost:${PORT}/health`;
+  
+  setInterval(async () => {
+    try {
+      const response = await fetch(url);
+      console.log(`🔄 Keepalive ping: ${response.status} - ${new Date().toISOString()}`);
+    } catch (error) {
+      console.log('❌ Keepalive ping failed:', error.message);
+    }
+  }, 10 * 60 * 1000); // Har 10 daqiqada
+};
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Fixoo Server ${PORT}-portda ishlamoqda!`);
@@ -173,5 +187,11 @@ app.listen(PORT, () => {
   
   if (process.env.NODE_ENV !== 'production') {
     console.log(`📖 API docs: http://localhost:${PORT}/`);
+  }
+
+  // Faqat production'da keepalive ishga tushirish
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🔄 Keepalive tizimi ishga tushirildi');
+    keepAlive();
   }
 }); 

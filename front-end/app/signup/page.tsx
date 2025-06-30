@@ -16,7 +16,7 @@ import { professions } from "@/lib/profession-data"
 import { userAPI } from "@/lib/utils"
 import { getTranslation, getStoredLanguage } from "@/lib/i18n"
 import LanguageSwitcher from "@/components/language-switcher"
-import { Eye, EyeOff } from "lucide-react"
+import { Eye, EyeOff, User, Lock, Briefcase, MapPin, Globe, Building2 } from "lucide-react"
 import FadeIn from "@/components/fade-in"
 import HammerLoader from "@/components/hammer-loader"
 import PhoneInput from "@/components/phone-input"
@@ -239,7 +239,11 @@ export default function SignUpPage() {
                     <form onSubmit={handleSpecialistSubmit} className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="firstName">{getTranslation("firstName", language)}</Label>
+                          <Label htmlFor="firstName" className="flex items-center gap-2">
+                            <User className="w-4 h-4" />
+                            {getTranslation("firstName", language)}
+                            <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             id="firstName"
                             name="firstName"
@@ -250,7 +254,11 @@ export default function SignUpPage() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="lastName">{getTranslation("lastName", language)}</Label>
+                          <Label htmlFor="lastName" className="flex items-center gap-2">
+                            <User className="w-4 h-4" />
+                            {getTranslation("lastName", language)}
+                            <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             id="lastName"
                             name="lastName"
@@ -274,7 +282,11 @@ export default function SignUpPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="password">{getTranslation("password", language)}</Label>
+                          <Label htmlFor="password" className="flex items-center gap-2">
+                            <Lock className="w-4 h-4" />
+                            {getTranslation("password", language)}
+                            <span className="text-red-500">*</span>
+                          </Label>
                           <div className="relative">
                             <Input
                               id="password"
@@ -305,7 +317,10 @@ export default function SignUpPage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="profession">{getTranslation("profession", language)}</Label>
+                          <Label htmlFor="profession" className="flex items-center gap-2">
+                            <Briefcase className="w-4 h-4" />
+                            {getTranslation("profession", language)}
+                          </Label>
                           <Select
                             name="profession"
                             onValueChange={(value) => setSpecialistData((prev) => ({ ...prev, profession: value }))}
@@ -324,7 +339,11 @@ export default function SignUpPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="address">{getTranslation("address", language)}</Label>
+                          <Label htmlFor="address" className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4" />
+                            {getTranslation("address", language)}
+                            <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             id="address"
                             name="address"
@@ -338,7 +357,10 @@ export default function SignUpPage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="region">{getTranslation("region", language)}</Label>
+                          <Label htmlFor="region" className="flex items-center gap-2">
+                            <Globe className="w-4 h-4" />
+                            {getTranslation("region", language)}
+                          </Label>
                           <Select
                             name="region"
                             onValueChange={(value) => {
@@ -360,7 +382,10 @@ export default function SignUpPage() {
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="district">{getTranslation("district", language)}</Label>
+                          <Label htmlFor="district" className="flex items-center gap-2">
+                            <Building2 className="w-4 h-4" />
+                            {getTranslation("district", language)}
+                          </Label>
                           <Select
                             name="district"
                             onValueChange={(value) => setSpecialistData((prev) => ({ ...prev, district: value }))}
@@ -387,16 +412,7 @@ export default function SignUpPage() {
                       </div>
 
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <div className="hammer-animation">🔨</div>
-                            <span>{language === 'uz' ? "Ro'yxatdan o'tkazilmoqda..." :
-                                   language === 'ru' ? "Регистрация..." :
-                                   "Registering..."}</span>
-                          </div>
-                        ) : (
-                          getTranslation("register", language)
-                        )}
+                        {getTranslation("register", language)}
                       </Button>
                     </form>
                   </CardContent>
@@ -421,7 +437,11 @@ export default function SignUpPage() {
                     <form onSubmit={handleClientSubmit} className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="clientFirstName">{getTranslation("firstName", language)}</Label>
+                          <Label htmlFor="clientFirstName" className="flex items-center gap-2">
+                            <User className="w-4 h-4" />
+                            {getTranslation("firstName", language)}
+                            <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             id="clientFirstName"
                             name="firstName"
@@ -432,7 +452,11 @@ export default function SignUpPage() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="clientLastName">{getTranslation("lastName", language)}</Label>
+                          <Label htmlFor="clientLastName" className="flex items-center gap-2">
+                            <User className="w-4 h-4" />
+                            {getTranslation("lastName", language)}
+                            <span className="text-red-500">*</span>
+                          </Label>
                           <Input
                             id="clientLastName"
                             name="lastName"
@@ -455,7 +479,11 @@ export default function SignUpPage() {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="clientPassword">{getTranslation("password", language)}</Label>
+                          <Label htmlFor="clientPassword" className="flex items-center gap-2">
+                            <Lock className="w-4 h-4" />
+                            {getTranslation("password", language)}
+                            <span className="text-red-500">*</span>
+                          </Label>
                           <div className="relative">
                             <Input
                               id="clientPassword"
@@ -485,16 +513,7 @@ export default function SignUpPage() {
                       </div>
 
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <div className="hammer-animation">🔨</div>
-                            <span>{language === 'uz' ? "Ro'yxatdan o'tkazilmoqda..." :
-                                   language === 'ru' ? "Регистрация..." :
-                                   "Registering..."}</span>
-                          </div>
-                        ) : (
-                          getTranslation("register", language)
-                        )}
+                        {getTranslation("register", language)}
                       </Button>
                     </form>
                   </CardContent>

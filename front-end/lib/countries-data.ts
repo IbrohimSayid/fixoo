@@ -17,7 +17,7 @@ export const countries: Country[] = [
     name: {
       uz: "O'zbekiston",
       ru: "Узбекистан", 
-      en: "Uzbekistan"
+      en: "O'zbekiston"
     },
     phoneCode: "+998",
     phoneFormat: "+998 XX XXX XX XX",
@@ -29,7 +29,7 @@ export const countries: Country[] = [
     name: {
       uz: "Rossiya",
       ru: "Россия",
-      en: "Russia"
+      en: "Rossiya"
     },
     phoneCode: "+7",
     phoneFormat: "+7 XXX XXX XX XX",
@@ -41,7 +41,7 @@ export const countries: Country[] = [
     name: {
       uz: "Qozog'iston",
       ru: "Казахстан",
-      en: "Kazakhstan"
+      en: "Qozog'iston"
     },
     phoneCode: "+7",
     phoneFormat: "+7 XXX XXX XX XX", 
@@ -53,7 +53,7 @@ export const countries: Country[] = [
     name: {
       uz: "Qirg'iziston",
       ru: "Кыргызстан",
-      en: "Kyrgyzstan"
+      en: "Qirg'iziston"
     },
     phoneCode: "+996",
     phoneFormat: "+996 XXX XXX XXX",
@@ -65,7 +65,7 @@ export const countries: Country[] = [
     name: {
       uz: "Tojikiston",
       ru: "Таджикистан",
-      en: "Tajikistan"
+      en: "Tojikiston"
     },
     phoneCode: "+992",
     phoneFormat: "+992 XX XXX XX XX",
@@ -77,7 +77,7 @@ export const countries: Country[] = [
     name: {
       uz: "Turkmaniston",
       ru: "Туркменистан",
-      en: "Turkmenistan"
+      en: "Turkmaniston"
     },
     phoneCode: "+993",
     phoneFormat: "+993 XX XXX XXX",
@@ -89,7 +89,7 @@ export const countries: Country[] = [
     name: {
       uz: "Turkiya",
       ru: "Турция",
-      en: "Turkey"
+      en: "Turkiya"
     },
     phoneCode: "+90",
     phoneFormat: "+90 XXX XXX XX XX",
@@ -103,18 +103,32 @@ export function formatPhoneNumber(phone: string, country: Country): string {
   // Faqat raqamlarni qoldirish
   const cleanPhone = phone.replace(/\D/g, '');
   
+  // Agar input bo'sh bo'lsa, bo'sh qaytarish
+  if (cleanPhone === '') {
+    return '';
+  }
+  
   // Country code'ni olib tashlash
   const phoneCodeDigits = country.phoneCode.replace(/\D/g, '');
   let phoneWithoutCode = cleanPhone;
   
-  if (cleanPhone.startsWith(phoneCodeDigits)) {
+  // Agar country code bilan boshlanmasa, uni qo'shish
+  if (!cleanPhone.startsWith(phoneCodeDigits)) {
+    phoneWithoutCode = cleanPhone;
+  } else {
     phoneWithoutCode = cleanPhone.slice(phoneCodeDigits.length);
   }
   
-  // Formatga moslab chiqarish
+  // Country code'ni har doim qo'shish
   let formatted = country.phoneCode;
   let digitIndex = 0;
   
+  // Agar faqat country code bo'lsa, uni qaytarish
+  if (phoneWithoutCode === '') {
+    return formatted;
+  }
+  
+  // Formatga moslab chiqarish
   for (let i = country.phoneCode.length; i < country.phoneFormat.length; i++) {
     const char = country.phoneFormat[i];
     if (char === 'X') {
@@ -125,7 +139,9 @@ export function formatPhoneNumber(phone: string, country: Country): string {
         break;
       }
     } else {
-      formatted += char;
+      if (digitIndex < phoneWithoutCode.length) {
+        formatted += char;
+      }
     }
   }
   
@@ -134,6 +150,16 @@ export function formatPhoneNumber(phone: string, country: Country): string {
 
 // Telefon raqamni validatsiya qilish
 export function validatePhoneNumber(phone: string, country: Country): boolean {
+  // Agar telefon bo'sh bo'lsa, valid deb hisoblaymiz
+  if (!phone || phone.trim() === '') {
+    return true;
+  }
+  
+  // Agar faqat country code bo'lsa, valid deb hisoblaymiz
+  if (phone.trim() === country.phoneCode) {
+    return true;
+  }
+  
   const cleanPhone = phone.replace(/\D/g, '');
   const phoneCodeDigits = country.phoneCode.replace(/\D/g, '');
   
