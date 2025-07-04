@@ -178,7 +178,7 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-primary/5 pb-16 md:pb-0">
       <Header user={user} onLogout={handleLogout} language={language} onLanguageChange={handleLanguageChange} />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="main-content container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-6">{getTranslation("settings", language)}</h1>
 
         <Tabs defaultValue="profile">

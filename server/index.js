@@ -25,7 +25,7 @@ app.use(helmet({
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 1000, // Limit ni oshirdim
   message: {
     success: false,
     message: 'Juda ko\'p so\'rovlar yuborildi, keyinroq qayta urinib ko\'ring'
@@ -34,47 +34,53 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-// CORS ni barcha so'rovlardan oldin qo'yish
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204);
-  }
-  next();
-});
-
-// CORS configuration
+// CORS configuration - Bitta joyda barcha sozlamalar
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? [
-        "https://fixoouzadmin.netlify.app",
-        "https://fixoo-frontend.netlify.app",
-        "https://fixoouz.netlify.app"
-      ]
-    : [
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001", 
-        "http://127.0.0.1:3001",
-        "https://fixoouzadmin.netlify.app",
-        "https://fixoo-frontend.netlify.app",
-        "https://fixoouz.netlify.app"
-      ],
+  origin: function (origin, callback) {
+    // Origin yo'q bo'lsa (masalan, mobile app yoki Postman) ruxsat berish
+    if (!origin) return callback(null, true);
+    
+    const allowedOrigins = process.env.NODE_ENV === 'production' 
+      ? [
+          "https://fixoouzadmin.netlify.app",
+          "https://fixoo-frontend.netlify.app",
+          "https://fixoouz.netlify.app"
+        ]
+      : [
+          "http://localhost:3000",
+          "http://127.0.0.1:3000",
+          "http://localhost:3001", 
+          "http://127.0.0.1:3001",
+          "https://fixoouzadmin.netlify.app",
+          "https://fixoo-frontend.netlify.app",
+          "https://fixoouz.netlify.app"
+        ];
+        
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('CORS ruxsat berilmagan origin:', origin);
+      callback(null, true); // Development uchun barcha originlarga ruxsat
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept', 'Cache-Control'],
+  exposedHeaders: ['Content-Length', 'X-Total-Count'],
   preflightContinue: false,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
 
-// Handle preflight requests
-app.options('*', cors(corsOptions));
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control');
+  res.status(200).end();
+});
 
 // Body parser middleware
 app.use(express.json({ limit: '10mb' }));
