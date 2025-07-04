@@ -19,7 +19,9 @@ import {
   Home,
   ChevronRight,
   Filter,
-  ChevronLeft
+  ChevronLeft,
+  Trash2,
+  Edit
 } from 'lucide-react';
 import { usersAPI } from '@/lib/api';
 import { User } from '@/lib/types';
@@ -32,25 +34,11 @@ export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showPasswords, setShowPasswords] = useState<{[key: string]: boolean}>({});
   const [currentPage, setCurrentPage] = useState(1);
-  const USERS_PER_PAGE = 3;
+  const [actionLoading, setActionLoading] = useState<{[key: string]: boolean}>({});
+  const USERS_PER_PAGE = 5;
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    
-    if (typeof window !== 'undefined') {
-      loadUsers();
-      
-      // Har 30 sekundda foydalanuvchilarni yangilash
-      interval = setInterval(() => {
-        loadUsers();
-      }, 30000);
-    }
-    
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
+    loadUsers();
   }, []);
 
   const loadUsers = async () => {
@@ -60,7 +48,6 @@ export default function UsersPage() {
       const response = await usersAPI.getAll();
       console.log('Users API response:', response);
       
-      // API javobidan to'g'ri ma'lumotlarni olish
       if (response.success && response.data) {
         if (response.data.users && Array.isArray(response.data.users)) {
           setUsers(response.data.users);
@@ -92,11 +79,44 @@ export default function UsersPage() {
 
   const handleBlockUser = async (userId: string, isBlocked: boolean) => {
     try {
+      setActionLoading(prev => ({ ...prev, [`block-${userId}`]: true }));
+      
+      // API call to block/unblock user
+      await usersAPI.blockUser(userId, !isBlocked);
+      
+      // Update UI after successful API call
       setUsers(users.map(user => 
         user.id === userId ? { ...user, isActive: !isBlocked } : user
       ));
+      
+      console.log(`User ${userId} ${isBlocked ? 'blocked' : 'unblocked'}`);
     } catch (error) {
       console.error('User blocking error:', error);
+      alert('Foydalanuvchi holatini o\'zgartirishda xatolik yuz berdi');
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`block-${userId}`]: false }));
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm('Bu foydalanuvchini o\'chirishni xohlaysizmi? Bu amal bekor qilib bo\'lmaydi.')) {
+      return;
+    }
+
+    try {
+      setActionLoading(prev => ({ ...prev, [`delete-${userId}`]: true }));
+      
+      // API call to delete user
+      await usersAPI.deleteUser(userId);
+      
+      // Remove from UI after successful API call
+      setUsers(users.filter(user => user.id !== userId));
+      console.log(`User ${userId} deleted`);
+    } catch (error) {
+      console.error('User deletion error:', error);
+      alert('Foydalanuvchini o\'chirishda xatolik yuz berdi');
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`delete-${userId}`]: false }));
     }
   };
 
@@ -172,7 +192,7 @@ export default function UsersPage() {
         </div>
       </div>
 
-      {/* Main Content - Settings List Style */}
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           
@@ -333,10 +353,12 @@ export default function UsersPage() {
                                 </>
                               )}
                               
-                              <div className="flex items-center col-span-full">
-                                <Home className="h-4 w-4 mr-2 text-gray-400" />
-                                {user.address || '-'}
-                              </div>
+                              {user.address && (
+                                <div className="flex items-center col-span-full">
+                                  <Home className="h-4 w-4 mr-2 text-gray-400" />
+                                  {user.address}
+                                </div>
+                              )}
                               
                               <div className="flex items-center col-span-full">
                                 <div className="flex items-center">
@@ -355,7 +377,38 @@ export default function UsersPage() {
                             </div>
                             
                             <div className="mt-2 text-xs text-gray-500">
-                              Ro'yxatdan o'tgan: {new Date(user.createdAt).toLocaleDateString('uz-UZ'                )}
+                              Ro'yxatdan o'tgan: {new Date(user.createdAt).toLocaleDateString('uz-UZ')}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="ml-4 flex space-x-2">
+                          <button
+                            onClick={() => handleBlockUser(user.id, user.isActive)}
+                            disabled={actionLoading[`block-${user.id}`]}
+                            className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                              user.isActive 
+                                ? 'bg-red-100 text-red-700 hover:bg-red-200' 
+                                : 'bg-green-100 text-green-700 hover:bg-green-200'
+                            } ${actionLoading[`block-${user.id}`] ? 'opacity-50 cursor-not-allowed' : ''}`}
+                          >
+                            {actionLoading[`block-${user.id}`] ? '...' : (user.isActive ? 'Bloklash' : 'Ochish')}
+                          </button>
+                          
+                          <button
+                            onClick={() => handleDeleteUser(user.id)}
+                            disabled={actionLoading[`delete-${user.id}`]}
+                            className={`px-3 py-1 rounded text-xs font-medium bg-red-100 text-red-700 hover:bg-red-200 transition-colors ${
+                              actionLoading[`delete-${user.id}`] ? 'opacity-50 cursor-not-allowed' : ''
+                            }`}
+                          >
+                            {actionLoading[`delete-${user.id}`] ? '...' : 'O\'chirish'}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
 
               {/* Pagination */}
@@ -416,26 +469,6 @@ export default function UsersPage() {
                   </div>
                 </div>
               )}
-            </div>
-          </div>
-                        
-                        <div className="ml-4">
-                          <button
-                            onClick={() => handleBlockUser(user.id, user.isActive)}
-                            className={`px-3 py-1 rounded text-xs font-medium ${
-                              user.isActive 
-                                ? 'bg-red-100 text-red-700 hover:bg-red-200' 
-                                : 'bg-green-100 text-green-700 hover:bg-green-200'
-                            }`}
-                          >
-                            {user.isActive ? 'Bloklash' : 'Ochish'}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
             </div>
           </div>
         </div>

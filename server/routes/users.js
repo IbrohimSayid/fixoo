@@ -748,6 +748,85 @@ router.delete('/remove-avatar', authenticateToken, async (req, res) => {
   }
 });
 
+// Foydalanuvchini bloklash/ochish (admin uchun)
+router.put('/:id/block', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isBlocked } = req.body;
 
+    if (typeof isBlocked !== 'boolean') {
+      return res.status(400).json({
+        success: false,
+        message: 'isBlocked boolean qiymat bo\'lishi kerak'
+      });
+    }
+
+    const updatedUser = User.blockUser(id, isBlocked);
+
+    res.json({
+      success: true,
+      message: `Foydalanuvchi ${isBlocked ? 'bloklandi' : 'blokdan chiqarildi'}`,
+      data: updatedUser
+    });
+
+  } catch (error) {
+    console.error('Block user error:', error);
+    
+    if (error.message === 'User not found') {
+      return res.status(404).json({
+        success: false,
+        message: 'Foydalanuvchi topilmadi'
+      });
+    }
+    
+    if (error.message === 'Cannot block admin users') {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin foydalanuvchilarni bloklash mumkin emas'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server xatosi'
+    });
+  }
+});
+
+// Foydalanuvchini o'chirish (admin uchun)
+router.delete('/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+
+    User.deleteUser(id);
+
+    res.json({
+      success: true,
+      message: 'Foydalanuvchi muvaffaqiyatli o\'chirildi'
+    });
+
+  } catch (error) {
+    console.error('Delete user error:', error);
+    
+    if (error.message === 'User not found') {
+      return res.status(404).json({
+        success: false,
+        message: 'Foydalanuvchi topilmadi'
+      });
+    }
+    
+    if (error.message === 'Cannot delete admin users') {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin foydalanuvchilarni o\'chirish mumkin emas'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server xatosi'
+    });
+  }
+});
 
 module.exports = router; 

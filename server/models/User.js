@@ -408,6 +408,60 @@ class User {
       throw error;
     }
   }
+
+  // Foydalanuvchini bloklash/ochish (admin uchun)
+  blockUser(userId, isBlocked) {
+    try {
+      const userIndex = this.users.findIndex(u => u.id === userId);
+      if (userIndex === -1) {
+        throw new Error('User not found');
+      }
+
+      // Adminlarni bloklash mumkin emas
+      if (this.users[userIndex].role === 'admin') {
+        throw new Error('Cannot block admin users');
+      }
+
+      this.users[userIndex].isActive = !isBlocked;
+      this.users[userIndex].updatedAt = new Date().toISOString();
+      
+      if (isBlocked) {
+        this.users[userIndex].blockedAt = new Date().toISOString();
+      } else {
+        delete this.users[userIndex].blockedAt;
+      }
+
+      this.saveUsers();
+
+      const { password, ...userWithoutPassword } = this.users[userIndex];
+      return userWithoutPassword;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Foydalanuvchini butunlay o'chirish (admin uchun)
+  deleteUser(userId) {
+    try {
+      const userIndex = this.users.findIndex(u => u.id === userId);
+      if (userIndex === -1) {
+        throw new Error('User not found');
+      }
+
+      // Adminlarni o'chirish mumkin emas
+      if (this.users[userIndex].role === 'admin') {
+        throw new Error('Cannot delete admin users');
+      }
+
+      // Foydalanuvchini massivdan olib tashlash
+      this.users.splice(userIndex, 1);
+      this.saveUsers();
+
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 module.exports = new User(); 

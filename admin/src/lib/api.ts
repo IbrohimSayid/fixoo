@@ -40,21 +40,23 @@ const apiCallWithRetry = async (endpoint: string, options: RequestInit = {}, ret
   };
 
     try {
-      const response = await fetch(`${API_URL}/api${endpoint}`, config);
+      const response = await fetch(`${API_URL}${endpoint}`, config);
       clearTimeout(timeoutId); // Timeout'ni bekor qilish
       
       if (response.ok) {
         return response.json();
       }
       
-      // Agar 503 (service unavailable) yoki timeout bo'lsa, server uyg'otishga harakat qilish
-      if (response.status === 503 || response.status === 502) {
+      // Rate limiting (429) yoki server xatolarida
+      if (response.status === 429 || response.status === 503 || response.status === 502) {
         console.log(`API so'rov muvaffaqiyatsiz (${response.status}), ${attempt}/${retries} harakat...`);
         
         if (attempt < retries) {
           console.log('Serverni uyg\'otishga harakat qilmoqda...');
           await wakeUpServer();
-          await new Promise(resolve => setTimeout(resolve, 2000)); // 2 sekund kutish
+          // Rate limiting uchun ko'proq kutish
+          const waitTime = response.status === 429 ? 5000 : 2000;
+          await new Promise(resolve => setTimeout(resolve, waitTime));
           continue;
         }
       }
@@ -120,6 +122,13 @@ export const usersAPI = {
   updateAdminProfile: (id: string, updateData: any) => apiCall(`/users/admins/${id}`, {
     method: 'PUT',
     body: JSON.stringify(updateData),
+  }),
+  blockUser: (id: string, isBlocked: boolean) => apiCall(`/users/${id}/block`, {
+    method: 'PUT',
+    body: JSON.stringify({ isBlocked }),
+  }),
+  deleteUser: (id: string) => apiCall(`/users/${id}`, {
+    method: 'DELETE',
   }),
 };
 

@@ -49,11 +49,21 @@ app.use((req, res, next) => {
 
 // CORS configuration
 const corsOptions = {
-  origin: [
-    "https://fixoouzadmin.netlify.app",
-    "https://fixoo-frontend.netlify.app",
-    "https://fixoouz.netlify.app"  // front-end domeni ham qo'shildi
-  ],
+  origin: process.env.NODE_ENV === 'production' 
+    ? [
+        "https://fixoouzadmin.netlify.app",
+        "https://fixoo-frontend.netlify.app",
+        "https://fixoouz.netlify.app"
+      ]
+    : [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001", 
+        "http://127.0.0.1:3001",
+        "https://fixoouzadmin.netlify.app",
+        "https://fixoo-frontend.netlify.app",
+        "https://fixoouz.netlify.app"
+      ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],

@@ -33,7 +33,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://fixoo-server-f1rh.on
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Faqat birinchi yuklash uchun
+  const [backgroundLoading, setBackgroundLoading] = useState(false); // Background refresh uchun
   const [error, setError] = useState<string | null>(null);
   const [admin, setAdmin] = useState<AdminUser | null>(null);
   
@@ -81,7 +82,7 @@ export default function DashboardPage() {
     
     // Real-time auto refresh har 30 sekundda
     const interval = setInterval(() => {
-      loadDashboardData();
+      loadDashboardData(true); // background refresh
     }, 30000); // 30 sekund
     
     return () => clearInterval(interval);
@@ -109,9 +110,13 @@ export default function DashboardPage() {
     }
   };
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = async (background: boolean = false) => {
     try {
-      setLoading(true);
+      if (background) {
+        setBackgroundLoading(true);
+      } else {
+        setLoading(true);
+      }
       setError(null);
 
       console.log('📊 Dashboard ma\'lumotlarini yuklamoqda...');
@@ -194,7 +199,11 @@ export default function DashboardPage() {
         setError('Ma\'lumotlarni yuklashda xatolik yuz berdi. Iltimos, qayta urinib ko\'ring.');
       }
     } finally {
-      setLoading(false);
+      if (background) {
+        setBackgroundLoading(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
@@ -395,7 +404,7 @@ export default function DashboardPage() {
               {error}
             </div>
           <button 
-            onClick={loadDashboardData}
+            onClick={() => loadDashboardData()}
               className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-xl hover:from-blue-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 font-medium"
           >
             Qayta yuklash
@@ -447,7 +456,14 @@ export default function DashboardPage() {
                 <div className="text-xs text-gray-500">
                   Yangilangan: {lastUpdate.toLocaleTimeString('uz-UZ')}
                 </div>
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                {backgroundLoading ? (
+                  <div className="flex items-center space-x-1">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-blue-600">Yangilanmoqda...</span>
+                  </div>
+                ) : (
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                )}
               </div>
             </div>
           </div>
@@ -808,14 +824,14 @@ export default function DashboardPage() {
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900">Buyurtmalar Analytics Dashboard</h3>
                     <p className="text-sm text-gray-600 flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                      <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
                       Kunlik tahlil va trend ko'rsatkichlari
                     </p>
                   </div>
                 </div>
                 <div className="bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-xl border border-green-200">
                   <span className="text-sm font-semibold text-gray-700 flex items-center">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-ping"></div>
+                    <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-ping"></span>
                     Live Data
                   </span>
                 </div>
@@ -884,7 +900,7 @@ export default function DashboardPage() {
                     <div>
                       <h3 className="text-xl font-bold text-gray-900">Buyurtmalar Analytics</h3>
                       <p className="text-sm text-gray-600 flex items-center">
-                        <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                        <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
                         Real-time ma'lumotlar
                       </p>
                     </div>
