@@ -64,7 +64,7 @@ router.post('/register/specialist', async (req, res) => {
     const token = jwt.sign(
       { userId: newUser.id, role: newUser.role },
       process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
+      { expiresIn: '30d' }
     );
 
     res.status(201).json({
@@ -155,7 +155,7 @@ router.post('/register/client', async (req, res) => {
     const token = jwt.sign(
       { userId: newUser.id, role: newUser.role },
       process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: '24h' }
+      { expiresIn: '30d' }
     );
 
     res.status(201).json({

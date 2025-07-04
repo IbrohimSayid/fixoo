@@ -102,11 +102,16 @@ export default function SignUpPage() {
       console.log('Registration response:', result)
 
       if (result.success) {
-        // Token'ni saqlash
+        // Faqat token'ni saqlash (30 kun)
         if (result.data?.token) {
           localStorage.setItem('token', result.data.token)
-          localStorage.setItem('user', JSON.stringify(result.data.user))
-          console.log('Token and user saved to localStorage')
+          
+          // Token expiry vaqtini 30 kun qilib belgilash
+          const expiryDate = new Date();
+          expiryDate.setDate(expiryDate.getDate() + 30);
+          localStorage.setItem('token_expiry', expiryDate.toISOString());
+          
+          console.log('Token saved to localStorage for 30 days')
         }
         
         toast.success(
@@ -152,11 +157,16 @@ export default function SignUpPage() {
       console.log('Registration response:', result)
 
       if (result.success) {
-        // Token'ni saqlash
+        // Faqat token'ni saqlash (30 kun)
         if (result.data?.token) {
           localStorage.setItem('token', result.data.token)
-          localStorage.setItem('user', JSON.stringify(result.data.user))
-          console.log('Token and user saved to localStorage')
+          
+          // Token expiry vaqtini 30 kun qilib belgilash
+          const expiryDate = new Date();
+          expiryDate.setDate(expiryDate.getDate() + 30);
+          localStorage.setItem('token_expiry', expiryDate.toISOString());
+          
+          console.log('Token saved to localStorage for 30 days')
         }
         
         toast.success(

@@ -29,6 +29,11 @@ class Order {
     }
   }
 
+  // Fayldan ma'lumotlarni qayta yuklash
+  reloadOrders() {
+    this.orders = this.loadOrders();
+  }
+
   // Faylga buyurtmalarni saqlash
   saveOrders() {
     try {
@@ -83,11 +88,17 @@ class Order {
 
   // ID bo'yicha buyurtma topish
   findById(id) {
+    // Har safar yangi ma'lumotlarni yuklash
+    this.reloadOrders();
+    
     return this.orders.find(order => order.id === id);
   }
 
   // Barcha buyurtmalarni olish
   findAll(filters = {}) {
+    // Har safar yangi ma'lumotlarni yuklash
+    this.reloadOrders();
+    
     let filteredOrders = [...this.orders];
 
     if (filters.clientId) {

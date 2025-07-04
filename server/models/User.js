@@ -31,6 +31,11 @@ class User {
     }
   }
 
+  // Fayldan ma'lumotlarni qayta yuklash
+  reloadUsers() {
+    this.users = this.loadUsers();
+  }
+
   // Faylga foydalanuvchilarni saqlash
   saveUsers() {
     try {
@@ -121,7 +126,7 @@ class User {
       const token = jwt.sign(
         { userId: user.id, role: user.role },
         process.env.JWT_SECRET || 'your-secret-key',
-        { expiresIn: '24h' }
+        { expiresIn: '30d' } // 30 kun
       );
 
       const { password: pwd, ...userWithoutPassword } = user;
@@ -134,6 +139,9 @@ class User {
 
   // ID bo'yicha foydalanuvchi topish
   findById(id, includePassword = false) {
+    // Har safar yangi ma'lumotlarni yuklash
+    this.reloadUsers();
+    
     const user = this.users.find(u => u.id === id && u.isActive);
     if (user) {
       if (includePassword) {
@@ -147,6 +155,9 @@ class User {
 
   // Barcha foydalanuvchilarni olish
   findAll(filters = {}) {
+    // Har safar yangi ma'lumotlarni yuklash
+    this.reloadUsers();
+    
     let filteredUsers = this.users.filter(u => u.isActive);
 
     if (filters.role) {
@@ -275,7 +286,7 @@ class User {
       const token = jwt.sign(
         { userId: admin.id, role: admin.role, isSuperAdmin: admin.isSuperAdmin },
         process.env.JWT_SECRET || 'your-secret-key',
-        { expiresIn: '24h' }
+        { expiresIn: '30d' } // 30 kun
       );
 
       const { password: pwd, ...adminWithoutPassword } = admin;
@@ -288,6 +299,9 @@ class User {
 
   // Adminlarni olish
   getAdmins() {
+    // Har safar yangi ma'lumotlarni yuklash
+    this.reloadUsers();
+    
     return this.users
       .filter(u => u.role === 'admin' && u.isActive)
       .map(admin => {

@@ -35,24 +35,35 @@ export default function UsersPage() {
   const [showPasswords, setShowPasswords] = useState<{[key: string]: boolean}>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [actionLoading, setActionLoading] = useState<{[key: string]: boolean}>({});
+  const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
   const USERS_PER_PAGE = 5;
 
   useEffect(() => {
     loadUsers();
+    // Har 10 sekundda avtomatik yangilash
+    const interval = setInterval(() => {
+      loadUsers();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const loadUsers = async () => {
     try {
       setLoading(true);
       setError(null);
+      
+      // Keshni tozalash uchun vaqt parametrini qo'shish
       const response = await usersAPI.getAll();
       console.log('Users API response:', response);
       
       if (response.success && response.data) {
         if (response.data.users && Array.isArray(response.data.users)) {
           setUsers(response.data.users);
+          setLastRefresh(new Date());
         } else if (Array.isArray(response.data)) {
           setUsers(response.data);
+          setLastRefresh(new Date());
         } else {
           console.error('Unexpected users data format:', response.data);
           setUsers([]);
@@ -84,10 +95,8 @@ export default function UsersPage() {
       // API call to block/unblock user
       await usersAPI.blockUser(userId, !isBlocked);
       
-      // Update UI after successful API call
-      setUsers(users.map(user => 
-        user.id === userId ? { ...user, isActive: !isBlocked } : user
-      ));
+      // Ma'lumotlarni yangilash
+      await loadUsers();
       
       console.log(`User ${userId} ${isBlocked ? 'blocked' : 'unblocked'}`);
     } catch (error) {
@@ -109,8 +118,9 @@ export default function UsersPage() {
       // API call to delete user
       await usersAPI.deleteUser(userId);
       
-      // Remove from UI after successful API call
-      setUsers(users.filter(user => user.id !== userId));
+      // Ma'lumotlarni yangilash
+      await loadUsers();
+      
       console.log(`User ${userId} deleted`);
     } catch (error) {
       console.error('User deletion error:', error);
@@ -184,8 +194,20 @@ export default function UsersPage() {
           <div className="flex items-center justify-between h-16">
             <h1 className="text-2xl font-bold text-gray-900">Foydalanuvchilar Boshqaruvi</h1>
             <div className="flex items-center space-x-4">
+              <button 
+                onClick={loadUsers}
+                className="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700 flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Yangilash
+              </button>
               <span className="text-sm text-gray-500">
                 Jami: {users.length} | Ustalar: {specialists.length} | Mijozlar: {clients.length}
+              </span>
+              <span className="text-xs text-gray-400">
+                Oxirgi yangilanish: {lastRefresh.toLocaleTimeString('uz-UZ')}
               </span>
             </div>
           </div>

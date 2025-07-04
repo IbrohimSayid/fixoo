@@ -23,11 +23,13 @@ import HammerLoader from "@/components/hammer-loader"
 // Import the storage utility
 import { saveUserProfile, deleteUserAccount } from "@/lib/storage"
 import toast from 'react-hot-toast'
+import { getCurrentUser, isTokenValid, userAPI } from "@/lib/utils"
 
 export default function SettingsPage() {
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
   const [language, setLanguage] = useState("uz")
   const [selectedRegion, setSelectedRegion] = useState("")
   const [districts, setDistricts] = useState<any[]>([])
@@ -43,37 +45,47 @@ export default function SettingsPage() {
   })
 
   useEffect(() => {
-    const isAuthenticated = checkUserAuthentication()
+    const loadUserData = async () => {
+      // Token tekshirish
+      if (!isTokenValid()) {
+        router.push("/login")
+        return
+      }
 
-    if (!isAuthenticated) {
-      router.push("/login")
-      return
+      try {
+        // User ma'lumotlarini backend'dan olish
+        const userData = await getCurrentUser()
+        
+        if (!userData) {
+          router.push("/login")
+          return
+        }
+
+        setUser(userData)
+        setUserData({
+          firstName: userData.firstName || "",
+          lastName: userData.lastName || "",
+          phone: userData.phone || "",
+          profession: userData.profession || "",
+          address: userData.address || "",
+          region: userData.region || "",
+          district: userData.district || "",
+        })
+        setSelectedRegion(userData.region || "")
+
+        // Get stored language
+        const storedLanguage = getStoredLanguage()
+        setLanguage(storedLanguage)
+
+      } catch (error) {
+        console.error('Error loading user data:', error)
+        router.push("/login")
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    const userData = getUserData()
-    if (!userData) {
-      router.push("/home")
-      return
-    }
-
-    setUser(userData)
-    setUserData({
-      firstName: userData.firstName || "",
-      lastName: userData.lastName || "",
-      phone: userData.phone || "",
-      profession: userData.profession || "",
-      address: userData.address || "",
-      region: userData.region || "",
-      district: userData.district || "",
-    })
-    setSelectedRegion(userData.region || "")
-
-    // Get stored language
-    const storedLanguage = getStoredLanguage()
-    setLanguage(storedLanguage)
-
-    // Loading tugadi
-    setIsLoading(false)
+    loadUserData()
   }, [router])
 
   useEffect(() => {
@@ -91,7 +103,6 @@ export default function SettingsPage() {
 
   const handleLogout = () => {
     logout()
-    router.push("/login")
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,21 +120,35 @@ export default function SettingsPage() {
   }
 
   // Update the handleSaveProfile function
-  const handleSaveProfile = () => {
-    // Save the updated user data to localStorage
-    const success = saveUserProfile({
-      ...user,
-      ...userData,
-    })
+  const handleSaveProfile = async () => {
+    setIsSaving(true)
+    
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        router.push("/login")
+        return
+      }
 
-    if (success) {
-      toast.success(
-        language === 'uz' ? "Profil muvaffaqiyatli yangilandi!" :
-        language === 'ru' ? "Профиль успешно обновлен!" :
-        "Profile updated successfully!"
-      )
-    } else {
-      alert(getTranslation("profileUpdateFailed", language))
+      const result = await userAPI.updateProfile(userData, token)
+      
+      if (result.success) {
+        // User state'ni yangilash
+        setUser((prev: any) => ({ ...prev, ...userData }))
+        
+        toast.success(
+          language === 'uz' ? "Profil muvaffaqiyatli yangilandi!" :
+          language === 'ru' ? "Профиль успешно обновлен!" :
+          "Profile updated successfully!"
+        )
+      } else {
+        toast.error(result.message || 'Profilni yangilashda xatolik!')
+      }
+    } catch (error) {
+      console.error('Profile update error:', error)
+      toast.error('Server bilan bog\'lanishda xatolik!')
+    } finally {
+      setIsSaving(false)
     }
   }
 
@@ -274,8 +299,13 @@ export default function SettingsPage() {
                       <Trash2 className="h-4 w-4" />
                       {getTranslation("deleteAccount", language)}
                     </Button>
-                    <Button type="button" onClick={handleSaveProfile} className="text-sm">
-                      {getTranslation("saveChanges", language)}
+                    <Button 
+                      type="button" 
+                      onClick={handleSaveProfile} 
+                      className="text-sm"
+                      disabled={isSaving}
+                    >
+                      {isSaving ? 'Saqlanmoqda...' : getTranslation("saveChanges", language)}
                     </Button>
                   </div>
                 </form>

@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { regions, getDistricts, getRegionLabel, getDistrictLabel } from "@/lib/location-data"
 import { professions, getProfessionLabel } from "@/lib/profession-data"
-import { checkUserAuthentication, getUserData, getAllSpecialists, logout } from "@/lib/auth"
+import { checkUserAuthentication, getUserData, getAllSpecialists } from "@/lib/auth"
 import { getTranslation, getStoredLanguage } from "@/lib/i18n"
 import Header from "@/components/header"
 import BottomNavigation from "@/components/bottom-navigation"
@@ -23,6 +23,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Phone, MapPin, Briefcase, Star, Calendar, Camera, Upload, Trash2 } from "lucide-react"
 import HammerLoader from "@/components/hammer-loader"
+import { getCurrentUser, isTokenValid, logout } from "@/lib/utils"
 
 // Import the storage utility
 import { saveUserMedia, getUserMedia, updateSpecialistAvailability } from "@/lib/storage"
@@ -65,47 +66,57 @@ export default function HomePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    const isAuthenticated = checkUserAuthentication()
+    const loadUserData = async () => {
+      // Token tekshirish
+      if (!isTokenValid()) {
+        router.push("/login")
+        return
+      }
 
-    if (!isAuthenticated) {
-      router.push("/login")
-      return
-    }
-
-    const userData = getUserData()
-    setUser(userData)
-
-    // Set availability status
-    setIsAvailable(userData?.isAvailable !== false) // Default to true if not set
-
-    // Get stored language
-    const storedLanguage = getStoredLanguage()
-    setLanguage(storedLanguage)
-
-    // If user is a client, load all specialists
-    if (userData?.type === "client") {
-      const allSpecialists = getAllSpecialists()
-      setSpecialists(allSpecialists)
-      setFilteredSpecialists(allSpecialists)
-    }
-
-    // Load saved avatar image
-    if (userData?.id) {
-      if (userData.avatar) {
-        // Backend'dan avatar URL
-        const fullAvatarUrl = `http://localhost:5000${userData.avatar}`
-        setAvatarImage(fullAvatarUrl)
-      } else {
-        // Fallback: localStorage'dan olish (eski versiya uchun)
-        const savedAvatar = localStorage.getItem(`fixoo_avatar_${userData.id}`)
-        if (savedAvatar) {
-          setAvatarImage(savedAvatar)
+      try {
+        // User ma'lumotlarini backend'dan olish
+        const userData = await getCurrentUser()
+        
+        if (!userData) {
+          router.push("/login")
+          return
         }
+
+        setUser(userData)
+
+        // Set availability status
+        setIsAvailable(userData?.isAvailable !== false) // Default to true if not set
+
+        // Get stored language
+        const storedLanguage = getStoredLanguage()
+        setLanguage(storedLanguage)
+
+        // If user is a client, load all specialists
+        if (userData?.role === "client") {
+          // TODO: Bu yerda backend'dan specialists olish kerak
+          const allSpecialists = getAllSpecialists()
+          setSpecialists(allSpecialists)
+          setFilteredSpecialists(allSpecialists)
+        }
+
+        // Load saved avatar image
+        if (userData?.id) {
+          if (userData.avatar) {
+            // Backend'dan avatar URL
+            const fullAvatarUrl = `https://fixoo-server-f1rh.onrender.com${userData.avatar}`
+            setAvatarImage(fullAvatarUrl)
+          }
+        }
+
+      } catch (error) {
+        console.error('Error loading user data:', error)
+        router.push("/login")
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    // Loading tugadi
-    setIsLoading(false)
+    loadUserData()
   }, [router])
 
   useEffect(() => {
@@ -153,7 +164,6 @@ export default function HomePage() {
 
   const handleLogout = () => {
     logout()
-    router.push("/login")
   }
 
   const handleFilterChange = (key: string, value: string) => {
@@ -197,7 +207,7 @@ export default function HomePage() {
 
   // Add a useEffect to load user media
   useEffect(() => {
-    if (user?.id && user?.type === "specialist") {
+    if (user?.id && user?.role === "specialist") {
       // Load user media from localStorage
       const media = getUserMedia(user.id)
       if (media && media.length > 0) {
@@ -261,7 +271,7 @@ export default function HomePage() {
         const result = await avatarAPI.uploadAvatar(file)
         
         if (result.success) {
-          const fullAvatarUrl = `http://localhost:5000${result.data.avatar}`
+          const fullAvatarUrl = `https://fixoo-server-f1rh.onrender.com${result.data.avatar}`
           setAvatarImage(fullAvatarUrl)
           
           toast.success(
@@ -291,7 +301,7 @@ export default function HomePage() {
       <Header user={user} onLogout={handleLogout} language={language} onLanguageChange={handleLanguageChange} />
 
       <main className="container mx-auto px-4 py-8">
-        {user.type === "client" ? (
+        {user.role === "client" ? (
           <div className="space-y-6">
             {/* Welcome Section */}
             <div className="bg-white p-6 rounded-lg shadow-sm text-center">
@@ -415,7 +425,7 @@ export default function HomePage() {
         )}
       </main>
 
-      {user.type === "specialist" ? (
+      {user.role === "specialist" ? (
         <BottomNavigation language={language} />
       ) : (
         <ClientBottomNavigation language={language} />

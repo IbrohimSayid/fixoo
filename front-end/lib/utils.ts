@@ -13,9 +13,62 @@ const API_BASE_URL = process.env.NODE_ENV === 'production'
 // Auth token olish
 const getAuthToken = () => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('fixoo_token')
+    const token = localStorage.getItem('token')
+    const expiry = localStorage.getItem('token_expiry')
+    
+    if (token && expiry) {
+      const expiryDate = new Date(expiry)
+      const now = new Date()
+      
+      if (now < expiryDate) {
+        return token
+      } else {
+        // Token muddati tugagan
+        localStorage.removeItem('token')
+        localStorage.removeItem('token_expiry')
+        return null
+      }
+    }
+    
+    return token
   }
   return null
+}
+
+// Token tekshirish
+export const isTokenValid = () => {
+  return getAuthToken() !== null
+}
+
+// User ma'lumotlarini backend'dan olish
+export const getCurrentUser = async () => {
+  const token = getAuthToken()
+  if (!token) {
+    return null
+  }
+  
+  try {
+    const response = await apiCall('/auth/profile', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    
+    return response.data
+  } catch (error) {
+    console.error('Error getting current user:', error)
+    // Token noto'g'ri bo'lsa, tozalash
+    localStorage.removeItem('token')
+    localStorage.removeItem('token_expiry')
+    return null
+  }
+}
+
+// Logout funksiyasi
+export const logout = () => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('token_expiry')
+  window.location.href = '/login'
 }
 
 // API call helper
